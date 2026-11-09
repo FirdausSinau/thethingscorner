@@ -3,7 +3,7 @@
 Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk The Things Corner.
 
 **Status:** Slice 1 selesai - auth dan role  
-**Stack:** Laravel 13, PHP 8.4, MySQL 8, Blade, Tailwind CSS 4, Vite, Alpine.js  
+**Stack:** Laravel 13, PHP 8.4, PostgreSQL 16+, Blade, Tailwind CSS 4, Vite, Alpine.js  
 **Repository:** https://github.com/FirdausSinau/thethingscorner.git
 
 ---
@@ -30,9 +30,9 @@ Semua dokumen perencanaan ada di `docs/`:
 
 ## Kebutuhan environment
 
-- PHP 8.3+ (disarankan 8.4) dengan `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `gd`
+- PHP 8.3+ (disarankan 8.4) dengan `pdo_pgsql`, `mbstring`, `openssl`, `fileinfo`, `gd`
 - Composer 2
-- MySQL 8 / MariaDB
+- PostgreSQL 16+
 - Node.js 22+ dan npm
 - Git
 
@@ -53,13 +53,11 @@ php artisan key:generate
 
 Buat database:
 
-```sql
-CREATE DATABASE db_thethingscorner
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+```powershell
+psql -U postgres -c "CREATE DATABASE db_thethingscorner;"
 ```
 
-Sesuaikan koneksi MySQL di `.env`, lalu:
+Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` PostgreSQL di `.env`, lalu:
 
 ```powershell
 php artisan migrate --seed

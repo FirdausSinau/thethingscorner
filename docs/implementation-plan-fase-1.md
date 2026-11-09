@@ -90,7 +90,7 @@ feat: add review reply and moderation
 **Langkah:**
 
 1. Buat project Laravel 13.
-2. Konfigurasi MySQL.
+2. Konfigurasi PostgreSQL.
 3. Setup Git, `.gitignore`, `.env.example`.
 4. Setup Vite + Tailwind + Alpine.
 5. Setup layout dasar dan halaman kosong.
@@ -114,7 +114,7 @@ feat: add review reply and moderation
 **Acceptance criteria:**
 
 - `php artisan serve` menampilkan halaman awal.
-- Koneksi MySQL berhasil.
+- Koneksi PostgreSQL berhasil.
 - Asset build berhasil.
 - Halaman admin kosong bisa diakses.
 - Staging bisa dibuka.

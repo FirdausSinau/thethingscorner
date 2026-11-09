@@ -1,7 +1,7 @@
 # Decision Log — The Things Corner
 
-**Versi:** 0.1  
-**Tanggal:** 6 November 2026  
+**Versi:** 0.2  
+**Tanggal:** 9 November 2026  
 **Status:** Draft  
 **Referensi:** RFP v0.3, PRD Fase 1 v0.2
 
@@ -54,6 +54,7 @@ Aturan:
 | D-23 | Desain | Sederhana, jelas, tanpa animasi berat | Confirmed | UI | Tim |
 | D-24 | Fitur ditunda | WA API, Google Maps, analytics, kupon, COD, loyalty, Sentry, PDF, CAPTCHA, Cloudinary, chat, Q&A, wishlist | Deferred | Scope | Client |
 | D-25 | Perubahan scope | Lewat change request; fitur baru masuk daftar fase 2 | Confirmed | Timeline | Tim + client |
+| D-26 | Database | PostgreSQL 16+ untuk local, staging, dan production | Confirmed | Config `.env`, backup, deployment | Tim |
 
 ---
 
@@ -130,6 +131,30 @@ Saat data asli tersedia:
 - stock opname awal;
 - jangan import data pelanggan asli ke repo publik.
 
+### D-26 - Database
+
+Keputusan: **PostgreSQL 16+** untuk local, staging, dan production.
+
+Alasan:
+
+- Tim tidak memakai MySQL.
+- PostgreSQL sudah tersedia di laptop pengembang.
+- Laravel mendukung `pgsql` tanpa perubahan kode.
+- Belum ada query atau fitur yang bergantung pada MySQL.
+
+Implementasi:
+
+- `.env`: `DB_CONNECTION=pgsql`, port `5432`.
+- Ekstensi PHP: `pdo_pgsql`.
+- Test tetap memakai SQLite in-memory; migrasi dan test suite juga diuji pada PostgreSQL 18.6.
+- Backup production memakai `pg_dump`.
+
+Jika berubah:
+
+- ganti `DB_CONNECTION` dan kredensial di `.env`;
+- jalankan ulang migrasi di database baru;
+- tidak perlu ubah controller/Blade.
+
 ---
 
 ## 4. Fitur yang ditunda
@@ -176,3 +201,4 @@ Saat data asli tersedia:
 | Versi | Tanggal | Perubahan |
 |---|---|---|
 | 0.1 | 6 Nov 2026 | Decision log awal |
+| 0.2 | 9 Nov 2026 | Tambah D-26: database default PostgreSQL |

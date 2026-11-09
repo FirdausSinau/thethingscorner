@@ -1,6 +1,6 @@
 # Setup Lokal Tim - The Things Corner
 
-**Versi:** 1.0  
+**Versi:** 1.1  
 **Tanggal:** 9 November 2026  
 **Untuk:** Firdaus, Anggota A, Anggota B
 
@@ -17,7 +17,7 @@ php -v
 composer -V
 node -v
 npm -v
-mysql --version
+psql --version
 git --version
 ```
 
@@ -28,18 +28,18 @@ Yang dibutuhkan:
 | PHP | 8.3 (disarankan 8.4) |
 | Composer | 2 |
 | Node.js | 22 |
-| MySQL | 8 |
+| PostgreSQL | 16 |
 | Git | terbaru |
 
-Ekstensi PHP yang wajib aktif: `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `gd`.
+Ekstensi PHP yang wajib aktif: `pdo_pgsql`, `mbstring`, `openssl`, `fileinfo`, `gd`.
 
 Cek ekstensi:
 
 ```powershell
-php -m | findstr /i "pdo_mysql mbstring openssl fileinfo gd"
+php -m | findstr /i "pdo_pgsql mbstring openssl fileinfo gd"
 ```
 
-Kalau `pdo_mysql` tidak muncul, aktifkan di `php.ini` lalu restart terminal.
+Kalau `pdo_pgsql` tidak muncul, aktifkan di `php.ini` lalu restart terminal.
 
 ---
 
@@ -69,25 +69,25 @@ Cek `.env`:
 ```dotenv
 APP_URL=http://127.0.0.1:8000
 
-DB_CONNECTION=mysql
+DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
-DB_PORT=3306
+DB_PORT=5432
 DB_DATABASE=db_thethingscorner
-DB_USERNAME=root
+DB_USERNAME=postgres
 DB_PASSWORD=
 ```
 
-Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` dengan MySQL di laptop masing-masing.
+Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` dengan PostgreSQL di laptop masing-masing. `DB_PASSWORD` adalah password yang dibuat saat instalasi PostgreSQL.
 
 ### 2.3 Buat database
 
 Dari terminal:
 
 ```powershell
-mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS db_thethingscorner CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+psql -U postgres -c "CREATE DATABASE db_thethingscorner;"
 ```
 
-Kalau `mysql` tidak ada di PATH, buat database lewat phpMyAdmin atau XAMPP Shell dengan SQL yang sama.
+Kalau `psql` tidak dikenali, buka **SQL Shell (psql)** dari Start Menu, atau tambahkan folder `C:\Program Files\PostgreSQL\<versi>\bin` ke PATH. Bisa juga membuat database lewat pgAdmin.
 
 ### 2.4 Migrasi dan data demo
 
@@ -207,8 +207,8 @@ Kalau halamannya justru menampilkan 500, bukan 505, lihat bagian berikut.
 | 500 setelah clone | `.env` belum ada atau `APP_KEY` kosong | `Copy-Item .env.example .env` lalu `php artisan key:generate` |
 | 500 `Vite manifest not found` | Asset belum dibuild | `npm install` lalu `npm run build` |
 | 500 `Unknown database` | Database belum dibuat atau nama di `.env` salah | Buat `db_thethingscorner`, cek `DB_DATABASE` |
-| 500 `Access denied for user` | User/password MySQL salah | Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` |
-| 500 `could not find driver` | `pdo_mysql` belum aktif | Aktifkan di `php.ini`, restart terminal |
+| 500 `password authentication failed` | User/password PostgreSQL salah | Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` |
+| 500 `could not find driver` | `pdo_pgsql` belum aktif | Aktifkan di `php.ini`, restart terminal |
 | 419 Page Expired | Session/database belum siap | `php artisan migrate`, `php artisan optimize:clear` |
 | 403 saat buka admin | Login sebagai role yang salah | Pakai akun admin yang sesuai |
 | `bootstrap/cache must be writable` | Folder terkunci OneDrive | Pindahkan project keluar OneDrive atau `attrib -r "bootstrap\cache" /s /d` |
@@ -231,7 +231,7 @@ Kirim ke grup tim:
 3. URL yang dibuka.
 4. Output `php -v`, `composer -V`, `node -v`.
 5. 50 baris terakhir `storage/logs/laravel.log` jika ada.
-6. Output `php -m | findstr /i "pdo_mysql"`.
+6. Output `php -m | findstr /i "pdo_pgsql"`.
 
 Jangan kirim isi `.env` lengkap karena berisi password dan key.
 

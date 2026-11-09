@@ -20,7 +20,7 @@ Browser
   → Controller
   → Service
   → Model / Eloquent
-  → MySQL
+  → PostgreSQL
   → Blade / JSON
 ```
 
@@ -625,7 +625,7 @@ Gunakan sample data di `docs/data/`. Uji semua status pesanan, PO, review, dan l
 
 | Slice | Isi | Output |
 |---|---|---|
-| 0 | Setup Laravel, MySQL, Git, staging | Aplikasi dasar jalan |
+| 0 | Setup Laravel, PostgreSQL, Git, staging | Aplikasi dasar jalan |
 | 1 | Auth, role, akun admin | Login dan akses terkontrol |
 | 2 | Katalog, kategori, varian | Produk tampil |
 | 3 | Keranjang persisten | Cart tanpa mengunci stok |
@@ -657,7 +657,7 @@ Setiap slice:
 
 ### 14.1 Lokal
 
-- Laravel + MySQL.
+- Laravel + PostgreSQL.
 - `php artisan serve`.
 - Fake payment/shipping.
 - `ngrok` untuk webhook.
@@ -665,7 +665,7 @@ Setiap slice:
 
 ### 14.2 Staging
 
-- VPS + Nginx + PHP-FPM + MySQL.
+- VPS + Nginx + PHP-FPM + PostgreSQL.
 - Domain staging + SSL.
 - Sandbox provider.
 - Queue worker dan scheduler.
