@@ -18,6 +18,7 @@ Semua dokumen perencanaan ada di `docs/`:
 | `docs/PRD Fase 1 - The Things Corner.md` | Kebutuhan produk dan acceptance criteria |
 | `docs/erd.md` | ERD dan data dictionary |
 | `docs/technical-design-fase-1.md` | Arsitektur, route, integrasi, deployment |
+| `docs/backend-overview.md` | Alur backend, service, transaksi, dan jalur belajar backend |
 | `docs/decisions.md` | Decision log dan asumsi |
 | `docs/design-system.md` | Token warna, tipografi, komponen |
 | `docs/wireframes.md` | Wireframe pembeli dan admin |

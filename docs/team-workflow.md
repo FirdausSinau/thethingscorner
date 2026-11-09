@@ -1,6 +1,6 @@
 # Team Workflow & Pembagian Tugas — The Things Corner
 
-**Versi:** 0.1  
+**Versi:** 0.2  
 **Tanggal:** 9 November 2026  
 **Tim:** 3 orang  
 **Branch:** `main`, `firdaus`, `anggota-a`, `anggota-b` (ganti dengan nama branch asli)
@@ -26,6 +26,49 @@ Pembagian yang disarankan:
 | Anggota B | Admin operations & reporting | Dashboard admin, produk, stok, pesanan admin, PO admin, review admin, laporan, Shopee CSV |
 
 Kalau salah satu anggota lebih kuat backend, tukar sebagian tugas. Yang penting **satu area punya satu owner utama**.
+
+### 1.1 Per domain atau per slice?
+
+Jawaban singkat:
+
+> **Domain untuk ownership, slice untuk urutan delivery.**
+
+Jangan membagi kepemilikan tetap per slice. Alasannya:
+
+- Satu slice biasanya menyentuh migration, model, route, controller, Blade, dan test sekaligus.
+- Slice berikutnya bergantung pada slice sebelumnya. Kalau pemiliknya berganti-ganti, semua orang harus memahami ulang kode yang sama.
+- Konflik paling sering terjadi di migration, layout, dan service bersama, bukan di pembagian fitur.
+- Domain yang stabil membuat seseorang makin cepat karena sudah mengenal model dan alur kerjanya.
+
+Yang dipakai di project ini:
+
+| Lapisan | Pemilik | Sifat |
+|---|---|---|
+| Schema, model, migration, seeder | Firdaus | Satu pintu, harus direview |
+| Backend core dan service bersama | Firdaus | `CartService`, `CheckoutService`, `StockService`, payment, shipping |
+| Buyer storefront | Anggota A | Katalog publik, cart, checkout UI, pesanan pembeli, PO pembeli, review pembeli |
+| Admin operations | Anggota B | Dashboard admin, produk, stok, pesanan admin, PO admin, review admin, laporan, Shopee CSV |
+| Integrasi eksternal | Firdaus | Payment, shipping, scheduler, webhook, deployment |
+| QA dan UAT | Semua | Firdaus lead security, B lead operasional, A lead UI |
+
+Slice tetap dipakai sebagai **unit pekerjaan dan PR**. Contoh: Anggota A mengerjakan Slice 3 (cart), sementara Anggota B mengerjakan admin produk dari Slice 2. Keduanya PR terpisah, tapi domainnya tidak berubah.
+
+Aturan handoff:
+
+- Kalau butuh tabel/kolom baru, ajukan ke Firdaus. Jangan buat migration sendiri untuk tabel yang sama.
+- Kalau butuh method service baru, taruh di service domain dan minta review Firdaus.
+- Kalau butuh komponen UI baru, Anggota A yang membuat; B memakai.
+- Kalau butuh route admin, taruh di `routes/admin.php`; route pembeli di `routes/storefront.php`.
+- Jangan menunggu satu slice selesai total baru merge. Pecah PR per subtile yang sudah bisa dites.
+
+Kalau ada anggota yang ingin belajar backend, jangan langsung diberi payment/checkout. Mulai dari domain yang terisolasi:
+
+1. Admin product CRUD dan validasi.
+2. `StockService` + `stock_movements` + transaksi.
+3. `ShopeeImportService` (CSV, validasi, idempotency).
+4. Query laporan dan export.
+
+Firdaus tetap memegang schema dan review transaksi. Penjelasan arsitektur backend ada di [`docs/backend-overview.md`](backend-overview.md).
 
 ---
 
@@ -124,6 +167,23 @@ Tujuannya: mengurangi konflik di `routes/web.php`, layout, dan migration.
 | 12 | Laporan dan export | Anggota B (UI) | Firdaus query/export |
 | 13 | Settings dan integrasi | Firdaus | Anggota B UI |
 | 14 | Security, QA, UAT, deploy | Firdaus lead | Semua testing |
+
+Cara membaca tabel ini: kolom owner menunjukkan **domain yang bertanggung jawab**, bukan orang yang mengerjakan seluruh slice sendirian. Slice 4, misalnya, tetap milik domain buyer (Anggota A), tetapi transaction dan row lock di `CheckoutService` ditulis/direview bersama Firdaus.
+
+---
+
+## 4.1 Backend learning track
+
+Untuk anggota yang ingin masuk backend, urutan yang paling aman:
+
+| Tahap | Yang dikerjakan | Yang dipelajari |
+|---|---|---|
+| 1 | Admin product CRUD + FormRequest + feature test | request lifecycle, validasi, authorization |
+| 2 | `StockService` + `stock_movements` | transaksi database, audit, mencegah stok negatif |
+| 3 | `ShopeeImportService` | parsing CSV, validasi baris, idempotency |
+| 4 | Query laporan dan export | query agregasi, index, performa |
+
+Payment dan checkout ditunda sampai tahap 1-2 stabil karena menyentuh uang dan stok.
 
 ---
 
@@ -224,7 +284,9 @@ Reviewer fokus pada:
 | Anggota A | UI/UX, Blade, Tailwind, interaksi pembeli | Tinggi di storefront |
 | Anggota B | Admin, laporan, data, QA | Tinggi di operasional |
 
-Kalau ada yang lebih kuat di backend, tukar sebagian: misalnya Anggota B mengambil `StockService`, Anggota A mengambil `CartService`, Firdaus tetap memegang schema dan integrasi.
+Kalau ada yang lebih kuat di backend, tukar sebagian: misalnya Anggota B mengambil `StockService`, Shopee import, dan query laporan; Anggota A mengambil `CartService`. Firdaus tetap memegang schema, transaction review, dan integrasi eksternal.
+
+Anggota yang baru belajar backend sebaiknya tidak memulai dari payment atau checkout. Mulai dari CRUD admin, lalu stok, lalu import CSV. Detail alur backend ada di [`docs/backend-overview.md`](backend-overview.md).
 
 ---
 
