@@ -56,7 +56,7 @@ feat: add review reply and moderation
 | Slice | Nama | Status |
 |---|---|---|
 | 0 | Setup project | Selesai (commit `35545cc`) |
-| 1 | Auth dan role | Sebagian: register/login/logout, role middleware, dashboard per role; reset password dan kelola Admin Biasa belum (commit `990ea92`) |
+| 1 | Auth dan role | Selesai: register/login/logout, reset password, role middleware, dashboard per role, kelola Admin Biasa (commit `990ea92`, `91280d5`) |
 | 2 | Katalog dan varian | Belum |
 | 3 | Keranjang persisten | Belum |
 | 4 | Checkout dan reservasi | Belum |
@@ -77,6 +77,7 @@ feat: add review reply and moderation
 |---|---|---|---|
 | 2026-11-09 | 0 | Laravel 13.40, MySQL `db_thethingscorner`, migrasi default, storage link, build Vite, docs, GitHub push. Base layout selesai. | `35545cc` |
 | 2026-11-09 | 1 | Register/login/logout, enum role + `is_active`, middleware `role`, dashboard pembeli/admin, seeder demo. 15 test lulus. Responsif dicek di 484px dan 1280px. | `990ea92` |
+| 2026-11-09 | 1 | Reset password lewat email (notifikasi Indonesia), kelola Admin Biasa oleh Admin Master (buat, nonaktifkan, aktifkan), proteksi akun Admin Master dan eskalasi role. 31 test lulus. UI dicek di mobile dan desktop. | `91280d5` |
 
 ---
 
