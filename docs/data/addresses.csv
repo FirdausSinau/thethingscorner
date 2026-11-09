@@ -1,0 +1,5 @@
+user_email,label,recipient,phone,province,city,district,postal_code,detail,is_default
+budi@demo.local,Rumah,Budi Santoso,081200000003,Jawa Barat,Kota Bandung,Coblong,40131,Jl. Merdeka No. 10,1
+budi@demo.local,Kantor,Budi Santoso,081200000003,Jawa Barat,Kota Bandung,Sukajadi,40162,Jl. Cihampelas No. 22,0
+sari@demo.local,Rumah,Sari Dewi,081200000004,DKI Jakarta,Jakarta Selatan,Kebayoran Baru,12190,Jl. Sudirman No. 5,1
+rina@demo.local,Rumah,Rina Putri,081200000005,Jawa Timur,Kota Surabaya,Gubeng,60281,Jl. Diponegoro No. 8,1

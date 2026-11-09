@@ -1,0 +1,11 @@
+order_code,user_email,channel,status,subtotal,shipping_cost,total,recipient,phone,address,city,postal_code,created_at,paid_at,completed_at
+INV-2026-0001,budi@demo.local,web,SELESAI,219000,20000,239000,Budi Santoso,081200000003,Jl. Merdeka No. 10,Kota Bandung,40131,2026-10-20 09:00:00,2026-10-20 09:15:00,2026-10-28 10:00:00
+INV-2026-0002,sari@demo.local,web,DIKIRIM,249000,25000,274000,Sari Dewi,081200000004,Jl. Sudirman No. 5,Jakarta Selatan,12190,2026-10-28 10:00:00,2026-10-28 10:10:00,
+INV-2026-0003,rina@demo.local,web,DIBAYAR,189000,20000,209000,Rina Putri,081200000005,Jl. Diponegoro No. 8,Kota Surabaya,60281,2026-11-01 11:00:00,2026-11-01 11:05:00,
+INV-2026-0004,budi@demo.local,web,MENUNGGU_PEMBAYARAN,259000,30000,289000,Budi Santoso,081200000003,Jl. Merdeka No. 10,Kota Bandung,40131,2026-11-04 14:00:00,,
+INV-2026-0005,sari@demo.local,shopee,SELESAI,289000,0,289000,Sari Dewi,081200000004,Jl. Sudirman No. 5,Jakarta Selatan,12190,2026-10-25 09:00:00,2026-10-25 09:30:00,2026-11-02 12:00:00
+INV-2026-0006,rina@demo.local,shopee,DIBATALKAN,179000,0,179000,Rina Putri,081200000005,Jl. Diponegoro No. 8,Kota Surabaya,60281,2026-10-25 10:00:00,,
+INV-2026-0007,budi@demo.local,web,KEDALUWARSA,199000,20000,219000,Budi Santoso,081200000003,Jl. Merdeka No. 10,Kota Bandung,40131,2026-10-30 08:00:00,,
+INV-2026-0008,sari@demo.local,web,DIKEMAS,239000,25000,264000,Sari Dewi,081200000004,Jl. Sudirman No. 5,Jakarta Selatan,12190,2026-11-05 09:00:00,2026-11-05 09:20:00,
+INV-2026-0009,rina@demo.local,web,SELESAI,279000,30000,309000,Rina Putri,081200000005,Jl. Diponegoro No. 8,Kota Surabaya,60281,2026-10-29 13:00:00,2026-10-29 13:10:00,2026-11-03 11:00:00
+INV-2026-0010,budi@demo.local,web,DIKIRIM,209000,20000,229000,Budi Santoso,081200000003,Jl. Merdeka No. 10,Kota Bandung,40131,2026-11-02 15:00:00,2026-11-02 15:10:00,

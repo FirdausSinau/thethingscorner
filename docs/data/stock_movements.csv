@@ -1,0 +1,19 @@
+variant_sku,type,source,reference_type,reference_id,qty,stock_before,stock_after,note,actor_email,created_at
+DEMO-MULES-AYU-38-BLK,in,initial,initial,0,14,0,14,Stok awal demo,adminbiasa@demo.local,2026-10-01 09:00:00
+DEMO-MULES-AYU-38-BLK,out,web,order,INV-2026-0001,-1,14,13,Penjualan web,adminbiasa@demo.local,2026-10-20 10:00:00
+DEMO-MULES-AYU-38-BLK,out,shopee,shopee_order,DEMO-SHP-001,-2,13,11,Penjualan Shopee,adminbiasa@demo.local,2026-11-01 11:00:00
+DEMO-MULES-AYU-38-BLK,adjustment,manual,adjustment,ADJ-001,-1,11,10,Barang rusak,admin@demo.local,2026-11-03 15:00:00
+DEMO-SNEAKERS-VIO-39-WHT,in,initial,initial,0,10,0,10,Stok awal demo,adminbiasa@demo.local,2026-10-01 09:00:00
+DEMO-SNEAKERS-VIO-39-WHT,out,web,order,INV-2026-0002,-1,10,9,Penjualan web,adminbiasa@demo.local,2026-10-28 12:00:00
+DEMO-HEELS-RINA-37-BLK,in,initial,initial,0,8,0,8,Stok awal demo,adminbiasa@demo.local,2026-10-01 09:00:00
+DEMO-HEELS-RINA-37-BLK,out,shopee,shopee_order,DEMO-SHP-003,-2,8,6,Penjualan Shopee,adminbiasa@demo.local,2026-11-02 13:00:00
+DEMO-BOOTS-DARA-38-BRN,in,initial,initial,0,6,0,6,Stok awal demo,adminbiasa@demo.local,2026-10-01 09:00:00
+DEMO-BOOTS-DARA-38-BRN,out,shopee,shopee_order,DEMO-SHP-004,-1,6,5,Penjualan Shopee,adminbiasa@demo.local,2026-11-03 14:00:00
+DEMO-FLATS-NIA-37-CRM,in,initial,initial,0,12,0,12,Stok awal demo,adminbiasa@demo.local,2026-10-01 09:00:00
+DEMO-FLATS-NIA-37-CRM,out,shopee,shopee_order,DEMO-SHP-007,-3,12,9,Penjualan Shopee,adminbiasa@demo.local,2026-11-05 09:00:00
+DEMO-FLATFORM-SARI-38-TAN,in,initial,initial,0,9,0,9,Stok awal demo,adminbiasa@demo.local,2026-10-01 09:00:00
+DEMO-FLATFORM-SARI-38-TAN,out,shopee,shopee_order,DEMO-SHP-008,-1,9,8,Penjualan Shopee,adminbiasa@demo.local,2026-11-05 10:00:00
+DEMO-DOCMART-LITA-39-BLK,in,initial,initial,0,6,0,6,Stok awal demo,adminbiasa@demo.local,2026-10-01 09:00:00
+DEMO-DOCMART-LITA-39-BLK,out,web,order,INV-2026-0005,-1,6,5,Penjualan web,adminbiasa@demo.local,2026-10-25 11:00:00
+DEMO-MULES-KAYU-39-BRN,in,initial,initial,0,6,0,6,Stok awal demo,adminbiasa@demo.local,2026-10-01 09:00:00
+DEMO-MULES-KAYU-39-BRN,adjustment,manual,adjustment,ADJ-002,-1,6,5,Stock opname,admin@demo.local,2026-11-04 16:00:00

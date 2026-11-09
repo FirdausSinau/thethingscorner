@@ -1,0 +1,4 @@
+po_code,user_email,model,material,size,qty,price,dp_amount,status,deadline,reference_image,notes
+PO-2026-0001,budi@demo.local,Mules Custom Kulit,Kulit sintetis,38,1,350000,175000,PRODUKSI,2026-11-20,demo/po-001.jpg,Tambah insole nyaman
+PO-2026-0002,sari@demo.local,Heels Custom,Suede,37,1,400000,200000,MENUNGGU_DP,2026-12-01,demo/po-002.jpg,Warna nude
+PO-2026-0003,rina@demo.local,Boots Custom,Kulit,39,1,450000,225000,SELESAI,2026-10-30,demo/po-003.jpg,Sol tebal

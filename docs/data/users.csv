@@ -1,0 +1,6 @@
+name,email,phone,role,is_active
+Admin Master,admin@demo.local,081200000001,admin_master,1
+Admin Biasa,adminbiasa@demo.local,081200000002,admin,1
+Budi Santoso,budi@demo.local,081200000003,buyer,1
+Sari Dewi,sari@demo.local,081200000004,buyer,1
+Rina Putri,rina@demo.local,081200000005,buyer,1
