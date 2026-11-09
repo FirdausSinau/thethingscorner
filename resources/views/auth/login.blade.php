@@ -25,7 +25,13 @@
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium text-ink">Password</label>
+                <div class="flex items-center justify-between gap-3">
+                    <label for="password" class="block text-sm font-medium text-ink">Password</label>
+                    <a href="{{ route('password.request') }}"
+                       class="text-xs font-semibold text-primary transition hover:text-primary-dark">
+                        Lupa password?
+                    </a>
+                </div>
                 <input id="password" name="password" type="password" required
                        autocomplete="current-password"
                        @error('password') aria-invalid="true" aria-describedby="password-error" @enderror

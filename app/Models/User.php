@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
+use App\Notifications\ResetPasswordNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -51,5 +52,13 @@ class User extends Authenticatable
     public function isAdminMaster(): bool
     {
         return $this->role === UserRole::AdminMaster;
+    }
+
+    /**
+     * Send the password reset link with the store's Indonesian copy.
+     */
+    public function sendPasswordResetNotification(#[\SensitiveParameter] $token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

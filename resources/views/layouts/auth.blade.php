@@ -23,7 +23,15 @@
         </header>
 
         <main class="flex flex-1 items-center justify-center px-5 py-12">
-            @yield('content')
+            <div class="w-full max-w-md">
+                @if (session('status'))
+                    <div class="mb-4 rounded-xl border border-success/20 bg-success/5 px-4 py-3 text-sm text-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                @yield('content')
+            </div>
         </main>
 
         <footer class="px-5 pb-8 text-center text-xs text-muted">

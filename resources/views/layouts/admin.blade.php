@@ -37,14 +37,42 @@
         </div>
     </header>
 
+    <nav class="border-b border-border bg-surface md:hidden">
+        <div class="mx-auto flex w-full max-w-7xl items-center gap-1 overflow-x-auto px-5 py-2 text-sm">
+            <a href="{{ route('admin.dashboard') }}"
+               class="shrink-0 rounded-full px-3 py-2 font-medium transition {{ request()->routeIs('admin.dashboard') ? 'bg-primary/10 text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
+                Dashboard
+            </a>
+
+            @if (auth()->user()->isAdminMaster())
+                <a href="{{ route('admin.admins.index') }}"
+                   class="shrink-0 rounded-full px-3 py-2 font-medium transition {{ request()->routeIs('admin.admins.*') ? 'bg-primary/10 text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
+                    Akun admin
+                </a>
+            @endif
+        </div>
+    </nav>
+
     <div class="mx-auto flex w-full max-w-7xl gap-8 px-5 py-8 md:px-8">
         <aside class="hidden w-56 shrink-0 md:block">
             <nav class="space-y-1 text-sm">
                 <a href="{{ route('admin.dashboard') }}"
-                   class="flex items-center justify-between rounded-xl bg-primary/5 px-3 py-2.5 font-medium text-primary-dark"
-                   aria-current="page">
+                   class="flex items-center justify-between rounded-xl px-3 py-2.5 transition {{ request()->routeIs('admin.dashboard') ? 'bg-primary/5 font-medium text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}"
+                   @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif>
                     Dashboard
                 </a>
+
+                @if (auth()->user()->isAdminMaster())
+                    <a href="{{ route('admin.admins.index') }}"
+                       class="flex items-center justify-between rounded-xl px-3 py-2.5 transition {{ request()->routeIs('admin.admins.*') ? 'bg-primary/5 font-medium text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}"
+                       @if (request()->routeIs('admin.admins.*')) aria-current="page" @endif>
+                        Akun admin
+                    </a>
+                @endif
+
+                <p class="px-3 pb-1 pt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted/70">
+                    Segera
+                </p>
 
                 @foreach ([
                     'Produk',
