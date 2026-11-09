@@ -5,6 +5,8 @@
 **Tim:** 3 orang  
 **Branch:** `main`, `firdaus`, `anggota-a`, `anggota-b` (ganti dengan nama branch asli)
 
+**Setup laptop:** lihat [`docs/setup-local.md`](setup-local.md) sebelum pull pertama.
+
 ---
 
 ## 1. Prinsip pembagian

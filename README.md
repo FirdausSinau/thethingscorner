@@ -2,7 +2,7 @@
 
 Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk The Things Corner.
 
-**Status:** Slice 0 — setup project  
+**Status:** Slice 1 selesai - auth dan role  
 **Stack:** Laravel 13, PHP 8.4, MySQL 8, Blade, Tailwind CSS 4, Vite, Alpine.js  
 **Repository:** https://github.com/FirdausSinau/thethingscorner.git
 
@@ -22,31 +22,31 @@ Semua dokumen perencanaan ada di `docs/`:
 | `docs/design-system.md` | Token warna, tipografi, komponen |
 | `docs/wireframes.md` | Wireframe pembeli dan admin |
 | `docs/implementation-plan-fase-1.md` | Rencana per slice |
+| `docs/setup-local.md` | Setup laptop tim dan troubleshooting |
+| `docs/team-workflow.md` | Pembagian peran, branch, dan alur PR |
 | `docs/data/` | Sample dataset dan template CSV |
 
 ---
 
 ## Kebutuhan environment
 
-- PHP 8.4+
+- PHP 8.3+ (disarankan 8.4) dengan `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `gd`
 - Composer 2
 - MySQL 8 / MariaDB
 - Node.js 22+ dan npm
 - Git
 
+Panduan lengkap per langkah, termasuk troubleshooting error 505, ada di
+[`docs/setup-local.md`](docs/setup-local.md).
+
 ---
 
-## Instalasi
+## Mulai cepat
 
-```bash
-composer install
-cp .env.example .env
-php artisan key:generate
-```
-
-Di Windows PowerShell:
+Clone di luar OneDrive, lalu dari folder `Bisnis Sepatu`:
 
 ```powershell
+composer install
 Copy-Item .env.example .env
 php artisan key:generate
 ```
@@ -59,28 +59,19 @@ CREATE DATABASE db_thethingscorner
   COLLATE utf8mb4_unicode_ci;
 ```
 
-Atur koneksi di `.env`:
+Sesuaikan koneksi MySQL di `.env`, lalu:
 
-```dotenv
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=db_thethingscorner
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-Lanjutkan:
-
-```bash
-php artisan migrate
+```powershell
+php artisan migrate --seed
 php artisan storage:link
 npm install
 npm run build
-php artisan serve
+php artisan serve --host=127.0.0.1 --port=8000
 ```
 
-Buka `http://127.0.0.1:8000`.
+Buka `http://127.0.0.1:8000`, bukan `https://` dan bukan folder `public/`.
+
+Kalau muncul **505**, cek terminal `php artisan serve`, pastikan port yang dibuka sama, dan ikuti bagian 5 di `docs/setup-local.md`.
 
 ---
 
@@ -110,7 +101,7 @@ WHATSAPP_ADMIN_NUMBER=
 
 Data dummy ada di `docs/data/`. Nanti dimasukkan lewat seeder/factory.
 
-Akun demo yang direncanakan:
+Akun demo yang tersedia:
 
 | Email | Role | Password |
 |---|---|---|
@@ -118,11 +109,31 @@ Akun demo yang direncanakan:
 | `adminbiasa@demo.local` | Admin Biasa | `rahasia123` |
 | `budi@demo.local` | Pembeli | `rahasia123` |
 
-Seeder belum dibuat pada Slice 0.
+Seeder sudah tersedia. Jalankan `php artisan migrate --seed` saat setup, atau
+`php artisan db:seed --class=DemoUserSeeder` untuk mengembalikan akun demo.
 
 ---
 
-## Troubleshooting Windows / OneDrive
+## Troubleshooting
+
+### Error 505 HTTP Version Not Supported
+
+505 biasanya bukan error Laravel, tetapi masalah URL atau web server lokal:
+
+1. Buka `http://127.0.0.1:8000`, bukan `https://`.
+2. Jangan buka `http://127.0.0.1:8000/public`.
+3. Lihat terminal `php artisan serve`. Kalau port pindah, buka port yang tertulis.
+4. Matikan XAMPP/IIS/Docker yang memakai port 8000, atau jalankan:
+
+```powershell
+php artisan serve --host=127.0.0.1 --port=8080
+```
+
+5. Coba incognito dan matikan VPN/proxy yang memaksa HTTPS.
+
+Panduan lengkap ada di [`docs/setup-local.md`](docs/setup-local.md) bagian 5.
+
+### Windows / OneDrive
 
 Jika muncul:
 

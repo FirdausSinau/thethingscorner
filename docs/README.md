@@ -1,6 +1,6 @@
 # Dokumentasi Proyek — The Things Corner
 
-**Update terakhir:** 6 November 2026
+**Update terakhir:** 9 November 2026
 
 | Dokumen | Versi | Isi |
 |---|---|---|
@@ -12,6 +12,7 @@
 | `docs/wireframes.md` | 0.1 | Wireframe pembeli dan admin |
 | `docs/implementation-plan-fase-1.md` | 0.1 | Rencana per slice, test, commit, deployment |
 | `docs/team-workflow.md` | 0.1 | Pembagian tugas, branch, PR, kepemilikan folder |
+| `docs/setup-local.md` | 1.0 | Setup laptop tim, akun demo, update harian, troubleshooting 505 |
 | `docs/data-request.md` | 0.1 | Daftar data yang perlu diminta ke client |
 | `docs/data/README.md` | 0.1 | Penjelasan sample dataset dan urutan import |
 | `docs/data/*.csv` | 0.1 | Data dummy dan template CSV |
@@ -37,4 +38,4 @@
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
-- Implementasi: setup Laravel + Git selesai (`35545cc`), base layout dan fitur belum.
+- Implementasi: setup Laravel + Git selesai (`35545cc`). Slice 1 auth/role selesai (`990ea92`, `91280d5`). Slice 2 katalog belum.
