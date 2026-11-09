@@ -33,6 +33,7 @@ Dokumen operasional, setup laptop, data request, dan file client ada di `project
 |---|---|
 | `project-management/README.md` | Index dokumen kerja tim |
 | `project-management/work-plan.md` | Domain, pembagian slice, urutan kerja |
+| `project-management/database-rules.md` | Aturan Neon, migrasi, branch database, backup |
 | `project-management/team-workflow.md` | Branch, PR, aturan konflik |
 | `project-management/setup-local.md` | Setup laptop dan troubleshooting |
 | `project-management/data-request.md` | Checklist data untuk client |

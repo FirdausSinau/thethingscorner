@@ -39,7 +39,8 @@ Dokumen kerja tim:
 1. [`../project-management/setup-local.md`](../project-management/setup-local.md) - menyiapkan laptop.
 2. [`../project-management/team-workflow.md`](../project-management/team-workflow.md) - branch dan PR.
 3. [`../project-management/work-plan.md`](../project-management/work-plan.md) - domain, slice, dan urutan kerja.
-4. [`../project-management/data-request.md`](../project-management/data-request.md) - data yang perlu diminta ke client.
+4. [`../project-management/database-rules.md`](../project-management/database-rules.md) - aturan Neon dan migrasi.
+5. [`../project-management/data-request.md`](../project-management/data-request.md) - data yang perlu diminta ke client.
 
 ---
 

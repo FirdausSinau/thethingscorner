@@ -1,6 +1,6 @@
 # Setup Lokal Tim - The Things Corner
 
-**Versi:** 1.1  
+**Versi:** 1.2  
 **Tanggal:** 9 November 2026  
 **Untuk:** Firdaus, Anggota A, Anggota B
 
@@ -113,6 +113,8 @@ http://127.0.0.1:8000
 ```
 
 Jangan buka `https://`, jangan buka folder `public/`, dan jangan buka port Vite (`5173`) untuk halaman Laravel.
+
+Kalau tim memakai Neon sebagai database bersama, baca [`database-rules.md`](database-rules.md) sebelum menjalankan migrasi.
 
 ---
 

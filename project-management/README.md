@@ -17,8 +17,9 @@ Dokumentasi teknis ada di [`../docs/`](../docs/README.md).
 | Dokumen | Versi | Isi |
 |---|---|---|
 | [`work-plan.md`](work-plan.md) | 1.0 | Domain owner, pembagian per slice, urutan batch, checklist integrasi |
+| [`database-rules.md`](database-rules.md) | 1.0 | Aturan Neon, migrasi, branch database, backup, credential |
 | [`team-workflow.md`](team-workflow.md) | 0.3 | Branch, PR, kepemilikan folder, aturan konflik, definition of done |
-| [`setup-local.md`](setup-local.md) | 1.1 | Setup laptop, PostgreSQL, akun demo, update harian, troubleshooting 505 |
+| [`setup-local.md`](setup-local.md) | 1.2 | Setup laptop, PostgreSQL, akun demo, update harian, troubleshooting 505 |
 | [`data-request.md`](data-request.md) | 0.1 | Checklist data yang perlu diminta ke client |
 
 Urutan membaca untuk anggota baru:
@@ -26,8 +27,9 @@ Urutan membaca untuk anggota baru:
 1. `setup-local.md` untuk menyiapkan laptop.
 2. `team-workflow.md` untuk aturan branch dan PR.
 3. `work-plan.md` untuk tahu bagian dan urutan pekerjaan.
-4. `../docs/backend-overview.md` untuk memahami backend.
-5. `../docs/PRD Fase 1 - The Things Corner.md` untuk kebutuhan produk.
+4. `database-rules.md` sebelum menyentuh database bersama.
+5. `../docs/backend-overview.md` untuk memahami backend.
+6. `../docs/PRD Fase 1 - The Things Corner.md` untuk kebutuhan produk.
 
 ---
 

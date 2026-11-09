@@ -6,7 +6,8 @@
 **Branch:** `main`, `firdaus`, `anggota-a`, `anggota-b` (ganti dengan nama branch asli)
 
 **Setup laptop:** lihat [`setup-local.md`](setup-local.md) sebelum pull pertama.  
-**Pembagian kerja:** lihat [`work-plan.md`](work-plan.md).
+**Pembagian kerja:** lihat [`work-plan.md`](work-plan.md).  
+**Database bersama:** lihat [`database-rules.md`](database-rules.md) sebelum migrate ke Neon.
 
 ---
 
