@@ -7,6 +7,8 @@
 
 Dokumen ini dipakai kalau tim memakai Neon sebagai database bersama. Aturan yang sama berlaku untuk staging dan production.
 
+**Keputusan tim saat ini:** satu database Neon bersama, tanpa branch. Karena itu aturan ketat di dokumen ini berlaku: hanya satu migration owner, tidak ada `migrate:fresh`, dan test tetap memakai SQLite.
+
 ---
 
 ## 1. Keputusan

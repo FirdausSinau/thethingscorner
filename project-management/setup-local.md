@@ -1,6 +1,6 @@
 # Setup Lokal Tim - The Things Corner
 
-**Versi:** 1.2  
+**Versi:** 1.3  
 **Tanggal:** 9 November 2026  
 **Untuk:** Firdaus, Anggota A, Anggota B
 
@@ -98,7 +98,30 @@ php artisan storage:link
 
 Perintah ini membuat tabel, akun demo, dan folder `public/storage`.
 
-### 2.5 Build asset dan jalankan
+### 2.5 Kalau memakai Neon bersama
+
+Tim memakai satu database Neon bersama tanpa branch. Minta connection string ke Firdaus, lalu isi `.env`:
+
+```dotenv
+DB_CONNECTION=pgsql
+DB_URL="postgresql://user:password@host/database?sslmode=require"
+DB_SSLMODE=require
+```
+
+Hapus atau comment `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` supaya tidak membingungkan.
+
+Lalu:
+
+```powershell
+php artisan config:clear
+php artisan migrate:status
+```
+
+Kalau semua migration berstatus `Ran`, **jangan jalankan migrate**. Database sudah siap. Kalau ada yang `Pending`, hubungi Firdaus. Jangan migrate sendiri.
+
+Aturan lengkap ada di [`database-rules.md`](database-rules.md).
+
+### 2.6 Build asset dan jalankan
 
 ```powershell
 npm install

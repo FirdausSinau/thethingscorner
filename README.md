@@ -82,7 +82,7 @@ php artisan serve --host=127.0.0.1 --port=8000
 
 Buka `http://127.0.0.1:8000`, bukan `https://` dan bukan folder `public/`.
 
-Kalau muncul **505**, cek terminal `php artisan serve`, pastikan port yang dibuka sama, dan ikuti bagian 5 di `project-management/setup-local.md`.
+Kalau memakai database Neon bersama, ikuti bagian 2.5 di `project-management/setup-local.md` dan aturan di `project-management/database-rules.md`. Kalau muncul **505**, cek terminal `php artisan serve`, pastikan port yang dibuka sama, dan ikuti bagian 5 di `project-management/setup-local.md`.
 
 ---
 

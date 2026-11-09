@@ -47,7 +47,7 @@ Dokumen kerja tim:
 ## 3. Status
 
 - Fase 1 sudah disepakati secara lingkup.
-- Database: PostgreSQL 16+.
+- Database: PostgreSQL 16+ untuk lokal, Neon untuk database bersama.
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
