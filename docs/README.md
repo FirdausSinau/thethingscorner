@@ -35,3 +35,4 @@
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
+- Implementasi: setup Laravel + Git selesai (`35545cc`), base layout dan fitur belum.

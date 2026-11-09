@@ -55,7 +55,7 @@ feat: add review reply and moderation
 
 | Slice | Nama | Status |
 |---|---|---|
-| 0 | Setup project | Belum |
+| 0 | Setup project | Setup selesai; base layout belum (commit `35545cc`) |
 | 1 | Auth dan role | Belum |
 | 2 | Katalog dan varian | Belum |
 | 3 | Keranjang persisten | Belum |
@@ -70,6 +70,12 @@ feat: add review reply and moderation
 | 12 | Laporan dan export | Belum |
 | 13 | Settings dan integrasi | Belum |
 | 14 | Security, QA, UAT, deploy | Belum |
+
+### 2.1 Log progres
+
+| Tanggal | Slice | Hasil | Commit |
+|---|---|---|---|
+| 2026-11-09 | 0 | Laravel 13.40, MySQL `db_thethingscorner`, migrasi default, storage link, build Vite, docs, GitHub push. Base layout belum. | `35545cc` |
 
 ---
 
