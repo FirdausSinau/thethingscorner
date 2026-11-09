@@ -11,6 +11,7 @@
 | `docs/design-system.md` | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
 | `docs/wireframes.md` | 0.1 | Wireframe pembeli dan admin |
 | `docs/implementation-plan-fase-1.md` | 0.1 | Rencana per slice, test, commit, deployment |
+| `docs/team-workflow.md` | 0.1 | Pembagian tugas, branch, PR, kepemilikan folder |
 | `docs/data-request.md` | 0.1 | Daftar data yang perlu diminta ke client |
 | `docs/data/README.md` | 0.1 | Penjelasan sample dataset dan urutan import |
 | `docs/data/*.csv` | 0.1 | Data dummy dan template CSV |
