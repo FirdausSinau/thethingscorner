@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -18,6 +18,17 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * Mirror database defaults so a newly created model can be checked
+     * before it is refreshed from the database.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'role' => 'buyer',
+        'is_active' => true,
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -27,6 +38,18 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => UserRole::class,
+            'is_active' => 'boolean',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role->isAdmin();
+    }
+
+    public function isAdminMaster(): bool
+    {
+        return $this->role === UserRole::AdminMaster;
     }
 }
