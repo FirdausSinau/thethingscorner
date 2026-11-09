@@ -68,7 +68,7 @@
 
 ## 3. Template file
 
-Gunakan template di `docs/data/`:
+Gunakan template di `../docs/data/`:
 
 | Template | Isi |
 |---|---|

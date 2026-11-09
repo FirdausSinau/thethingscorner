@@ -1,11 +1,12 @@
 # Team Workflow & Pembagian Tugas — The Things Corner
 
-**Versi:** 0.2  
+**Versi:** 0.3  
 **Tanggal:** 9 November 2026  
 **Tim:** 3 orang  
 **Branch:** `main`, `firdaus`, `anggota-a`, `anggota-b` (ganti dengan nama branch asli)
 
-**Setup laptop:** lihat [`docs/setup-local.md`](setup-local.md) sebelum pull pertama.
+**Setup laptop:** lihat [`setup-local.md`](setup-local.md) sebelum pull pertama.  
+**Pembagian kerja:** lihat [`work-plan.md`](work-plan.md).
 
 ---
 
@@ -68,7 +69,7 @@ Kalau ada anggota yang ingin belajar backend, jangan langsung diberi payment/che
 3. `ShopeeImportService` (CSV, validasi, idempotency).
 4. Query laporan dan export.
 
-Firdaus tetap memegang schema dan review transaksi. Penjelasan arsitektur backend ada di [`docs/backend-overview.md`](backend-overview.md).
+Firdaus tetap memegang schema dan review transaksi. Penjelasan arsitektur backend ada di [`../docs/backend-overview.md`](../docs/backend-overview.md).
 
 ---
 
@@ -142,7 +143,8 @@ Buka PR ke `main` saat slice sudah bisa didemokan.
 | `routes/webhooks.php` | Firdaus | Payment/shipping |
 | `config/services.php` | Firdaus | Provider config |
 | `.env.example` | Firdaus | Jangan commit `.env` |
-| `docs/` | Firdaus + semua | Update dokumen terkait |
+| `docs/` | Firdaus + semua | Dokumentasi teknis dan produk |
+| `project-management/` | Firdaus + semua | Setup, pembagian kerja, data request, dokumen client |
 
 Tujuannya: mengurangi konflik di `routes/web.php`, layout, dan migration.
 
@@ -170,6 +172,8 @@ Tujuannya: mengurangi konflik di `routes/web.php`, layout, dan migration.
 
 Cara membaca tabel ini: kolom owner menunjukkan **domain yang bertanggung jawab**, bukan orang yang mengerjakan seluruh slice sendirian. Slice 4, misalnya, tetap milik domain buyer (Anggota A), tetapi transaction dan row lock di `CheckoutService` ditulis/direview bersama Firdaus.
 
+Pembagian detail per orang, urutan batch, dan checklist integrasi ada di [`work-plan.md`](work-plan.md).
+
 ---
 
 ## 4.1 Backend learning track
@@ -187,34 +191,28 @@ Payment dan checkout ditunda sampai tahap 1-2 stabil karena menyentuh uang dan s
 
 ---
 
-## 5. Urutan kerja paralel
+## 5. Urutan kerja
 
-Contoh urutan:
+Urutan lengkap per bagian dan per batch ada di [`work-plan.md`](work-plan.md). Ringkasnya:
 
-### Minggu 1
+| Batch | Slice | Fokus |
+|---|---|---|
+| 0 | 0, 1 | Setup dan auth, sudah selesai |
+| 1 | 2 | Katalog publik dan admin produk |
+| 2 | 3, 4 | Cart dan checkout |
+| 3 | 5, 6 | Pembayaran dan pengiriman |
+| 4 | 7 | Pesanan dan tracking |
+| 5 | 8, 9 | PO dan review |
+| 6 | 10, 11, 12 | Stok, Shopee CSV, laporan |
+| 7 | 13 | Settings dan integrasi |
+| 8 | 14 | QA, UAT, deploy |
 
-- Firdaus: schema awal, auth/role, layout skeleton, fake provider.
-- Anggota A: design system, layout pembeli, katalog publik.
-- Anggota B: layout admin, CRUD produk, varian, stok dasar.
+Aturan:
 
-### Minggu 2
-
-- Firdaus: payment fake + transfer manual, shipping fake.
-- Anggota A: cart, checkout, reservation.
-- Anggota B: admin stok, admin pesanan, filter.
-
-### Minggu 3
-
-- Firdaus: payment/shipping sandbox, webhook, scheduler.
-- Anggota A: tracking pembeli, PO pembeli, review.
-- Anggota B: admin PO, admin review, laporan, Shopee CSV.
-
-### Minggu 4
-
-- Semua: integrasi, testing, UAT, perbaikan, deploy.
-- Firdaus: security review, staging, production.
-- Anggota B: QA checklist.
-- Anggota A: UI audit dan responsive.
+- Maksimal 2 slice aktif bersamaan.
+- Firdaus publish schema dan kontrak route sebelum A/B mulai.
+- Setiap batch diakhiri integrasi, test, dan demo.
+- Jangan mulai batch berikutnya kalau dependency batch sebelumnya belum stabil.
 
 ---
 
@@ -286,7 +284,7 @@ Reviewer fokus pada:
 
 Kalau ada yang lebih kuat di backend, tukar sebagian: misalnya Anggota B mengambil `StockService`, Shopee import, dan query laporan; Anggota A mengambil `CartService`. Firdaus tetap memegang schema, transaction review, dan integrasi eksternal.
 
-Anggota yang baru belajar backend sebaiknya tidak memulai dari payment atau checkout. Mulai dari CRUD admin, lalu stok, lalu import CSV. Detail alur backend ada di [`docs/backend-overview.md`](backend-overview.md).
+Anggota yang baru belajar backend sebaiknya tidak memulai dari payment atau checkout. Mulai dari CRUD admin, lalu stok, lalu import CSV. Detail alur backend ada di [`../docs/backend-overview.md`](../docs/backend-overview.md).
 
 ---
 

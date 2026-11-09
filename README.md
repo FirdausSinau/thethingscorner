@@ -8,13 +8,13 @@ Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk The Thing
 
 ---
 
-## Dokumentasi
+## Dokumentasi teknis
 
-Semua dokumen perencanaan ada di `docs/`:
+Semua dokumen yang berkaitan dengan kode dan produk ada di `docs/`:
 
 | Dokumen | Isi |
 |---|---|
-| `docs/README.md` | Index dokumentasi |
+| `docs/README.md` | Index dokumentasi teknis |
 | `docs/PRD Fase 1 - The Things Corner.md` | Kebutuhan produk dan acceptance criteria |
 | `docs/erd.md` | ERD dan data dictionary |
 | `docs/technical-design-fase-1.md` | Arsitektur, route, integrasi, deployment |
@@ -23,9 +23,20 @@ Semua dokumen perencanaan ada di `docs/`:
 | `docs/design-system.md` | Token warna, tipografi, komponen |
 | `docs/wireframes.md` | Wireframe pembeli dan admin |
 | `docs/implementation-plan-fase-1.md` | Rencana per slice |
-| `docs/setup-local.md` | Setup laptop tim dan troubleshooting |
-| `docs/team-workflow.md` | Pembagian peran, branch, dan alur PR |
 | `docs/data/` | Sample dataset dan template CSV |
+
+## Dokumentasi kerja tim
+
+Dokumen operasional, setup laptop, data request, dan file client ada di `project-management/`:
+
+| Dokumen | Isi |
+|---|---|
+| `project-management/README.md` | Index dokumen kerja tim |
+| `project-management/work-plan.md` | Domain, pembagian slice, urutan kerja |
+| `project-management/team-workflow.md` | Branch, PR, aturan konflik |
+| `project-management/setup-local.md` | Setup laptop dan troubleshooting |
+| `project-management/data-request.md` | Checklist data untuk client |
+| `project-management/client-docs/` | Dokumen client `.docx` (tidak masuk Git) |
 
 ---
 
@@ -38,7 +49,7 @@ Semua dokumen perencanaan ada di `docs/`:
 - Git
 
 Panduan lengkap per langkah, termasuk troubleshooting error 505, ada di
-[`docs/setup-local.md`](docs/setup-local.md).
+[`project-management/setup-local.md`](project-management/setup-local.md).
 
 ---
 
@@ -70,7 +81,7 @@ php artisan serve --host=127.0.0.1 --port=8000
 
 Buka `http://127.0.0.1:8000`, bukan `https://` dan bukan folder `public/`.
 
-Kalau muncul **505**, cek terminal `php artisan serve`, pastikan port yang dibuka sama, dan ikuti bagian 5 di `docs/setup-local.md`.
+Kalau muncul **505**, cek terminal `php artisan serve`, pastikan port yang dibuka sama, dan ikuti bagian 5 di `project-management/setup-local.md`.
 
 ---
 
@@ -130,7 +141,7 @@ php artisan serve --host=127.0.0.1 --port=8080
 
 5. Coba incognito dan matikan VPN/proxy yang memaksa HTTPS.
 
-Panduan lengkap ada di [`docs/setup-local.md`](docs/setup-local.md) bagian 5.
+Panduan lengkap ada di [`project-management/setup-local.md`](project-management/setup-local.md) bagian 5.
 
 ### Windows / OneDrive
 

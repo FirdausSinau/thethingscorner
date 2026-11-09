@@ -259,4 +259,4 @@ git checkout anggota-a
 git merge main
 ```
 
-Aturan lengkap ada di `docs/team-workflow.md`.
+Aturan lengkap ada di [`team-workflow.md`](team-workflow.md) dan urutan kerja di [`work-plan.md`](work-plan.md).

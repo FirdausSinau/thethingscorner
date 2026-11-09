@@ -1,40 +1,49 @@
-# Dokumentasi Proyek — The Things Corner
+# Dokumentasi Teknis - The Things Corner
 
 **Update terakhir:** 9 November 2026
 
+Folder ini hanya berisi dokumentasi yang berkaitan dengan kode dan produk. Dokumen kerja tim, setup laptop, data request, dan file client ada di [`../project-management/`](../project-management/README.md).
+
+---
+
+## 1. Dokumen teknis
+
 | Dokumen | Versi | Isi |
 |---|---|---|
-| `docs/PRD Fase 1 - The Things Corner.md` | 0.2 | Kebutuhan produk, role, fitur, aturan bisnis, acceptance criteria |
-| `docs/erd.md` | 0.1 | ERD, relasi, constraint, index, enum status |
-| `docs/technical-design-fase-1.md` | 0.1 | Arsitektur, state machine, route, authorization, integrasi, deployment |
-| `docs/backend-overview.md` | 0.1 | Alur backend, folder, service, transaksi, keamanan, jalur belajar backend |
-| `docs/decisions.md` | 0.2 | Decision log dan asumsi sementara |
-| `docs/design-system.md` | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
-| `docs/wireframes.md` | 0.1 | Wireframe pembeli dan admin |
-| `docs/implementation-plan-fase-1.md` | 0.1 | Rencana per slice, test, commit, deployment |
-| `docs/team-workflow.md` | 0.2 | Pembagian tugas per domain, branch, PR, kepemilikan folder, jalur backend |
-| `docs/setup-local.md` | 1.1 | Setup laptop tim, PostgreSQL, akun demo, update harian, troubleshooting 505 |
-| `docs/data-request.md` | 0.1 | Daftar data yang perlu diminta ke client |
-| `docs/data/README.md` | 0.1 | Penjelasan sample dataset dan urutan import |
-| `docs/data/*.csv` | 0.1 | Data dummy dan template CSV |
-| `Dokumen Kebutuhan Awal dan Opsi Solusi - The Things Corner (RFP) v0.3.docx` | 0.3 | Dokumen client: kebutuhan, opsi provider, biaya, fase |
-| `Panduan Persiapan Client dan Developer - The Things Corner.docx` | 0.2 | Panduan persiapan client/developer dan keputusan fase |
-| `Format Deskripsi Topik dan Kebutuhan Awal Proyek - The Things Corner.docx` | — | Form tugas yang sudah diisi |
+| [`PRD Fase 1 - The Things Corner.md`](PRD%20Fase%201%20-%20The%20Things%20Corner.md) | 0.2 | Kebutuhan produk, role, fitur, aturan bisnis, acceptance criteria |
+| [`erd.md`](erd.md) | 0.1 | ERD, relasi, constraint, index, enum status |
+| [`technical-design-fase-1.md`](technical-design-fase-1.md) | 0.1 | Arsitektur, state machine, route, authorization, integrasi, deployment |
+| [`backend-overview.md`](backend-overview.md) | 0.1 | Alur backend, folder, service, transaksi, keamanan, jalur belajar backend |
+| [`decisions.md`](decisions.md) | 0.2 | Decision log dan asumsi sementara |
+| [`design-system.md`](design-system.md) | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
+| [`wireframes.md`](wireframes.md) | 0.1 | Wireframe pembeli dan admin |
+| [`implementation-plan-fase-1.md`](implementation-plan-fase-1.md) | 0.1 | Rencana per slice, test, commit, deployment |
+| [`data/README.md`](data/README.md) | 0.1 | Penjelasan sample dataset dan urutan import |
+| [`data/*.csv`](data/) | 0.1 | Data dummy dan template CSV |
 
-## Urutan membaca
+---
 
-1. RFP v0.3 — konteks client dan pilihan solusi.
-2. PRD Fase 1 — apa yang dibangun.
-3. ERD — data dan relasi.
-4. Technical design — bagaimana membangun.
-5. Decision log — asumsi dan keputusan yang belum dikunci.
-6. Design system + wireframes — arah UI.
-7. Implementation plan — urutan pengerjaan.
-8. Backend overview — cara kerja backend dan jalur belajar untuk anggota tim.
-9. Sample data — contoh untuk pengujian.
-10. Panduan persiapan — apa yang perlu disiapkan client/developer.
+## 2. Urutan membaca
 
-## Status
+1. PRD Fase 1 - apa yang dibangun.
+2. ERD - data dan relasi.
+3. Technical design - bagaimana membangun.
+4. Backend overview - cara kerja backend dan jalur belajar.
+5. Decision log - asumsi dan keputusan yang belum dikunci.
+6. Design system + wireframes - arah UI.
+7. Implementation plan - urutan pengerjaan per slice.
+8. Sample data - contoh untuk pengujian.
+
+Dokumen kerja tim:
+
+1. [`../project-management/setup-local.md`](../project-management/setup-local.md) - menyiapkan laptop.
+2. [`../project-management/team-workflow.md`](../project-management/team-workflow.md) - branch dan PR.
+3. [`../project-management/work-plan.md`](../project-management/work-plan.md) - domain, slice, dan urutan kerja.
+4. [`../project-management/data-request.md`](../project-management/data-request.md) - data yang perlu diminta ke client.
+
+---
+
+## 3. Status
 
 - Fase 1 sudah disepakati secara lingkup.
 - Database: PostgreSQL 16+.
