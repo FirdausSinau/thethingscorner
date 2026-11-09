@@ -2,7 +2,7 @@
 
 **Versi:** 0.1  
 **Tanggal:** 6 November 2026  
-**Status:** Rencana, belum dikerjakan  
+**Status:** Dikerjakan bertahap  
 **Referensi:** PRD v0.2, ERD v0.1, Technical Design v0.1, Decision Log v0.1
 
 ---
@@ -55,8 +55,8 @@ feat: add review reply and moderation
 
 | Slice | Nama | Status |
 |---|---|---|
-| 0 | Setup project | Setup selesai; base layout belum (commit `35545cc`) |
-| 1 | Auth dan role | Belum |
+| 0 | Setup project | Selesai (commit `35545cc`) |
+| 1 | Auth dan role | Sebagian: register/login/logout, role middleware, dashboard per role; reset password dan kelola Admin Biasa belum (commit `990ea92`) |
 | 2 | Katalog dan varian | Belum |
 | 3 | Keranjang persisten | Belum |
 | 4 | Checkout dan reservasi | Belum |
@@ -75,7 +75,8 @@ feat: add review reply and moderation
 
 | Tanggal | Slice | Hasil | Commit |
 |---|---|---|---|
-| 2026-11-09 | 0 | Laravel 13.40, MySQL `db_thethingscorner`, migrasi default, storage link, build Vite, docs, GitHub push. Base layout belum. | `35545cc` |
+| 2026-11-09 | 0 | Laravel 13.40, MySQL `db_thethingscorner`, migrasi default, storage link, build Vite, docs, GitHub push. Base layout selesai. | `35545cc` |
+| 2026-11-09 | 1 | Register/login/logout, enum role + `is_active`, middleware `role`, dashboard pembeli/admin, seeder demo. 15 test lulus. Responsif dicek di 484px dan 1280px. | `990ea92` |
 
 ---
 
