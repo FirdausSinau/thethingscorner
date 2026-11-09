@@ -11,6 +11,7 @@
 | `docs/design-system.md` | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
 | `docs/wireframes.md` | 0.1 | Wireframe pembeli dan admin |
 | `docs/implementation-plan-fase-1.md` | 0.1 | Rencana per slice, test, commit, deployment |
+| `docs/data-request.md` | 0.1 | Daftar data yang perlu diminta ke client |
 | `docs/data/README.md` | 0.1 | Penjelasan sample dataset dan urutan import |
 | `docs/data/*.csv` | 0.1 | Data dummy dan template CSV |
 | `Dokumen Kebutuhan Awal dan Opsi Solusi - The Things Corner (RFP) v0.3.docx` | 0.3 | Dokumen client: kebutuhan, opsi provider, biaya, fase |
