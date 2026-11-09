@@ -62,6 +62,33 @@ Jangan memakai role `neondb_owner` untuk aplikasi sehari-hari. Buat role aplikas
 - Mengedit migration lama yang sudah pernah dijalankan.
 - Menaruh connection string atau password di Git, screenshot, atau dokumen publik.
 
+### Kenapa migrate bersama tidak aman
+
+Menjalankan semua file migration di database kosong itu normal. Yang tidak aman adalah **beberapa orang menjalankan migrate ke satu database yang sama**.
+
+Alasannya bukan karena kode migration-nya pasti salah, tetapi karena:
+
+- Migration mengubah schema, bukan hanya data.
+- Dua proses migrate bersamaan bisa saling mengunci tabel atau berebut mencatat migration yang sama.
+- Satu orang bisa menjalankan migration yang belum ada di branch orang lain, sehingga kode dan schema tidak cocok.
+- `migrate:rollback` oleh satu orang mengubah schema untuk semua orang.
+- Migration yang menghapus atau mengubah kolom bisa menghilangkan data.
+- `php artisan migrate` tidak menjalankan seeder. Seeder hanya jalan kalau dipanggil terpisah.
+- `migrate:fresh --seed` menghapus semua tabel lalu mengisi ulang data demo. Data yang dibuat setelah seeder ikut hilang.
+
+Seeder hanya mengembalikan **data awal**. Seeder tidak mengembalikan:
+
+- order dan item pesanan yang sedang dites;
+- cart dan reservasi stok;
+- pembayaran dan bukti transfer;
+- review dan balasan;
+- custom PO dan log status;
+- stock movement dan hasil import Shopee;
+- file upload seperti foto produk dan bukti transfer;
+- session, log, dan data yang dibuat manual di pgAdmin.
+
+Jadi "ada seeder" bukan jaminan aman. Seeder hanya membuat data demo bisa dibuat ulang, bukan membuat migrate bersama menjadi aman.
+
 ---
 
 ## 4. Alur perubahan schema
