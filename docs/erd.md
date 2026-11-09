@@ -1,8 +1,8 @@
 # ERD Fase 1 — The Things Corner
 
-**Versi:** 0.1  
-**Tanggal:** 6 November 2026  
-**Status:** Draft untuk review  
+**Versi:** 0.2  
+**Tanggal:** 9 November 2026  
+**Status:** Draft, `product_images` ditambahkan untuk Slice 2  
 **Referensi:** PRD Fase 1 v0.2, RFP v0.3
 
 ---
@@ -35,6 +35,7 @@ erDiagram
 
     CATEGORIES ||--o{ PRODUCTS : contains
     PRODUCTS ||--o{ PRODUCT_VARIANTS : has
+    PRODUCTS ||--o{ PRODUCT_IMAGES : has
     PRODUCTS ||--o{ REVIEWS : receives
 
     PRODUCT_VARIANTS ||--o{ STOCK_MOVEMENTS : logs
@@ -104,6 +105,14 @@ erDiagram
         decimal price
         int stock_on_hand
         int stock_reserved
+    }
+
+    PRODUCT_IMAGES {
+        bigint id PK
+        bigint product_id FK
+        string path
+        string alt_text
+        int sort_order
     }
 
     STOCK_MOVEMENTS {
@@ -296,6 +305,7 @@ erDiagram
 | `categories` | Kategori produk | `slug` unik |
 | `products` | Produk | `slug` unik; `category_id` FK |
 | `product_variants` | Varian ukuran/warna/SKU | `sku` unik; `product_id` FK; `stock_on_hand >= 0` |
+| `product_images` | Foto produk | `product_id` FK; `path` di disk public; urut `sort_order` |
 | `stock_movements` | Riwayat mutasi stok | append-only; `variant_id` FK; `actor_id` FK |
 | `cart_items` | Keranjang persisten | unik `(user_id, variant_id)` |
 | `stock_reservations` | Stok ditahan saat checkout | `order_id`, `variant_id` FK; index `(expires_at, status)` |
@@ -326,6 +336,7 @@ erDiagram
 | `users → notifications` | 1:N | cascade |
 | `categories → products` | 1:N | restrict |
 | `products → product_variants` | 1:N | restrict |
+| `products → product_images` | 1:N | cascade |
 | `product_variants → stock_movements` | 1:N | restrict |
 | `product_variants → cart_items` | 1:N | cascade |
 | `product_variants → order_items` | 1:N | restrict |

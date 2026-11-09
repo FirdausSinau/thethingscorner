@@ -11,9 +11,10 @@ Folder ini hanya berisi dokumentasi yang berkaitan dengan kode dan produk. Dokum
 | Dokumen | Versi | Isi |
 |---|---|---|
 | [`PRD Fase 1 - The Things Corner.md`](PRD%20Fase%201%20-%20The%20Things%20Corner.md) | 0.2 | Kebutuhan produk, role, fitur, aturan bisnis, acceptance criteria |
-| [`erd.md`](erd.md) | 0.1 | ERD, relasi, constraint, index, enum status |
+| [`erd.md`](erd.md) | 0.2 | ERD, relasi, constraint, index, enum status |
 | [`technical-design-fase-1.md`](technical-design-fase-1.md) | 0.1 | Arsitektur, state machine, route, authorization, integrasi, deployment |
 | [`backend-overview.md`](backend-overview.md) | 0.1 | Alur backend, folder, service, transaksi, keamanan, jalur belajar backend |
+| [`catalog-contract.md`](catalog-contract.md) | 1.0 | Kontrak schema, model, route, data Blade, dan pembagian Slice 2 |
 | [`decisions.md`](decisions.md) | 0.2 | Decision log dan asumsi sementara |
 | [`design-system.md`](design-system.md) | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
 | [`wireframes.md`](wireframes.md) | 0.1 | Wireframe pembeli dan admin |

@@ -19,6 +19,7 @@ Semua dokumen yang berkaitan dengan kode dan produk ada di `docs/`:
 | `docs/erd.md` | ERD dan data dictionary |
 | `docs/technical-design-fase-1.md` | Arsitektur, route, integrasi, deployment |
 | `docs/backend-overview.md` | Alur backend, service, transaksi, dan jalur belajar backend |
+| `docs/catalog-contract.md` | Kontrak schema, model, route, dan data Blade Slice 2 |
 | `docs/decisions.md` | Decision log dan asumsi |
 | `docs/design-system.md` | Token warna, tipografi, komponen |
 | `docs/wireframes.md` | Wireframe pembeli dan admin |
