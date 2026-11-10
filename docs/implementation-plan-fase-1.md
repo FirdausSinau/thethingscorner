@@ -57,7 +57,7 @@ feat: add review reply and moderation
 |---|---|---|
 | 0 | Setup project | Selesai (commit `35545cc`) |
 | 1 | Auth dan role | Selesai: register/login/logout, reset password, role middleware, dashboard per role, kelola Admin Biasa (commit `990ea92`, `91280d5`) |
-| 2 | Katalog dan varian | Sebagian: schema, model, seeder, kontrak selesai; katalog publik dan admin belum (commit `f49b615`) |
+| 2 | Katalog dan varian | Tertahan: schema Neon diubah oleh migration tim produk; menunggu migration/kode di-push lalu rekonsiliasi (schema awal `f49b615`) |
 | 3 | Keranjang persisten | Belum |
 | 4 | Checkout dan reservasi | Belum |
 | 5 | Pembayaran | Belum |

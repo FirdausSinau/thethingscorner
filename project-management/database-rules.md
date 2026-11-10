@@ -1,7 +1,7 @@
 # Aturan Database Neon dan Migrasi
 
-**Versi:** 1.0  
-**Tanggal:** 9 November 2026  
+**Versi:** 1.1  
+**Tanggal:** 10 November 2026  
 **Status:** Aktif  
 **Berlaku untuk:** Firdaus, Anggota A, Anggota B
 
@@ -217,7 +217,36 @@ Kalau terjadi kesalahan:
 
 ---
 
-## 12. Ringkasan
+## 12. Insiden 10 November 2026 - tabrakan migration katalog
+
+Migration katalog dari tim produk dijalankan ke Neon setelah migration katalog awal. Akibatnya:
+
+- `products` berubah: `status`, `weight_grams`, `rating_avg`, `rating_count` hilang; muncul `base_price`, `is_active`, `is_preorder`, dan tanggal preorder.
+- `product_variants` berubah: `product_id`, `color`, `stock_on_hand`, `stock_reserved` hilang; muncul `product_color_id` dan `stock`.
+- Muncul tabel `product_colors` dan `product_color_images`.
+- Tabel `migrations` mencatat dua set migration dengan nama sama dan timestamp berbeda.
+- Data katalog awal 10 produk/30 varian hilang, diganti 1 produk/2 warna/7 varian.
+- `Product::active()` gagal karena kolom `status` tidak ada.
+
+Backup kondisi setelah insiden:
+
+```text
+%TEMP%\ttc-neon-after-teammate-migrations.sql
+```
+
+Aturan selama rekonsiliasi:
+
+- Schema freeze untuk `products`, `product_variants`, `product_colors`, `product_color_images`, dan `product_images`.
+- Hanya pemilik schema produk yang boleh menjalankan migration untuk tabel tersebut.
+- Firdaus fokus ke auth, core, dan service yang tidak mengubah schema produk.
+- Jangan menjalankan `migrate:fresh`, rollback, atau drop table sampai tim setuju.
+- Sebelum adaptasi kode, migration dan model dari tim produk harus di-push ke GitHub.
+- Setelah schema kanonik dipilih, update model, seeder, contract, dan test, lalu jalankan satu migration rekonsiliasi.
+- Jangan menambah tabel/kolom baru untuk diskon atau produk reject selama schema freeze.
+
+---
+
+## 13. Ringkasan
 
 - Migrate tetap boleh, tetapi terpusat.
 - Yang tidak boleh: semua orang migrate ke satu database bersama.

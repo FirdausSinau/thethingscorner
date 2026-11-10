@@ -17,7 +17,7 @@ Dokumentasi teknis ada di [`../docs/`](../docs/README.md).
 | Dokumen | Versi | Isi |
 |---|---|---|
 | [`work-plan.md`](work-plan.md) | 1.0 | Domain owner, pembagian per slice, urutan batch, checklist integrasi |
-| [`database-rules.md`](database-rules.md) | 1.0 | Aturan Neon, migrasi, branch database, backup, credential |
+| [`database-rules.md`](database-rules.md) | 1.1 | Aturan Neon, migrasi, branch database, backup, credential, insiden schema |
 | [`team-workflow.md`](team-workflow.md) | 0.3 | Branch, PR, kepemilikan folder, aturan konflik, definition of done |
 | [`setup-local.md`](setup-local.md) | 1.3 | Setup laptop, PostgreSQL/Neon, akun demo, update harian, troubleshooting 505 |
 | [`data-request.md`](data-request.md) | 0.1 | Checklist data yang perlu diminta ke client |

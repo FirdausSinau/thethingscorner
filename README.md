@@ -2,7 +2,7 @@
 
 Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk The Things Corner.
 
-**Status:** Slice 2 dalam pengerjaan - schema, model, dan seeder selesai  
+**Status:** Slice 2 tertahan - rekonsiliasi schema katalog dengan tim produk  
 **Stack:** Laravel 13, PHP 8.4, PostgreSQL 16+, Blade, Tailwind CSS 4, Vite, Alpine.js  
 **Repository:** https://github.com/FirdausSinau/thethingscorner.git
 

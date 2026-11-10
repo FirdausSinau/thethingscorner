@@ -1,11 +1,43 @@
 # Catalog Contract - Slice 2
 
-**Versi:** 1.0  
-**Tanggal:** 9 November 2026  
+**Versi:** 1.1  
+**Tanggal:** 10 November 2026  
 **Untuk:** Firdaus, Anggota A, Anggota B  
-**Status:** Schema dan seeder selesai, halaman publik dan admin belum
+**Status:** TERTAHAN, menunggu rekonsiliasi schema
+
+> **PENTING, 10 November 2026:** Neon sudah memakai schema katalog yang berbeda dari kontrak ini. Migration dari tim produk menambahkan `product_colors`, `product_color_images`, dan mengubah kolom `products` serta `product_variants`.
+>
+> Jangan mulai implementasi katalog publik atau admin berdasarkan kontrak versi ini sampai rekonsiliasi selesai. Firdaus akan memperbarui kontrak setelah migration dan kode tim produk di-push.
 
 Dokumen ini adalah kontrak kerja Slice 2. A dan B tidak perlu menebak nama tabel, kolom, relasi, route, atau bentuk data.
+
+---
+
+## 0. Status integrasi schema
+
+Per 10 November 2026, schema di Neon berbeda dari schema awal Slice 2:
+
+| Bagian | Schema awal | Schema Neon sekarang |
+|---|---|---|
+| Produk | `status`, `weight_grams`, `rating_avg`, `rating_count` | `base_price`, `is_active`, `is_preorder`, tanggal preorder |
+| Warna | kolom `color` di varian | tabel `product_colors` |
+| Foto | `product_images` | `product_images` dan `product_color_images` |
+| Varian | `product_id`, `color`, `stock_on_hand`, `stock_reserved` | `product_color_id`, `stock`, tanpa `stock_reserved` |
+
+Konsekuensi:
+
+- `Product::active()` gagal karena kolom `status` sudah tidak ada.
+- Seeder `DemoCatalogSeeder` tidak cocok dengan schema baru.
+- Test SQLite masih memakai migration lama, jadi belum mencerminkan Neon.
+- Kontrak route dan data Blade di bawah belum final.
+
+Yang dibutuhkan sebelum lanjut:
+
+1. Migration dan kode tim produk di-push ke GitHub.
+2. Firdaus membandingkan migration, model, relasi, dan seeder.
+3. Schema kanonik dipilih.
+4. Kontrak ini diperbarui.
+5. Baru A dan B mulai implementasi.
 
 ---
 
