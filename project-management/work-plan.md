@@ -88,6 +88,8 @@ Sudah selesai:
 
 ### Batch 1 - Katalog
 
+**Status 10 November 2026:** tertahan sampai schema katalog direkonsiliasi dengan migration tim produk.
+
 Fokus: Slice 2.
 
 Urutan:

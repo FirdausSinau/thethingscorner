@@ -80,6 +80,7 @@ feat: add review reply and moderation
 | 2026-11-09 | 1 | Reset password lewat email (notifikasi Indonesia), kelola Admin Biasa oleh Admin Master (buat, nonaktifkan, aktifkan), proteksi akun Admin Master dan eskalasi role. 31 test lulus. UI dicek di mobile dan desktop. | `91280d5` |
 | 2026-11-09 | 0 | Database default pindah ke PostgreSQL 16+. Migrasi dan 31 test diuji di PostgreSQL 18.6. Setup tim dan decision log diperbarui. | `7783ba2` |
 | 2026-11-09 | 2 | Schema categories/products/product_variants/product_images, model, enum ProductStatus, seeder 10 produk/30 varian, kontrak Slice 2. 35 test lulus. Migration dan seeder dijalankan ke Neon. | `f49b615` |
+| 2026-11-10 | 2 | Schema freeze. Migration tim produk mengubah tabel katalog di Neon dan menambah product_colors/product_color_images. Backup Neon dibuat, kontrak ditandai tertahan sampai migration dan kode di-push lalu direkonsiliasi. | `0461cfc` |
 
 ---
 
