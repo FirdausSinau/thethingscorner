@@ -6,14 +6,17 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+use App\Models\Product\Product;
+
 class DashboardController extends Controller
 {
-    public function index(Request $request): RedirectResponse|View
+    public function index()
     {
-        if ($request->user()->isAdmin()) {
-            return redirect()->route('admin.dashboard');
-        }
+        $products = Product::listed()
+            ->with(['category', 'images', 'colors.images', 'colors.variants'])
+            ->latest()
+            ->paginate(12);
 
-        return view('storefront.dashboard');
+        return view('storefront.dashboard', compact('products'));
     }
 }

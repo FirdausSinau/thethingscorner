@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'The Things Corner · Sepatu handmade custom Bandung')
+@section('title', 'Thethingscorner · Sepatu handmade custom Bandung')
 
 @section('content')
     <section class="mx-auto grid w-full max-w-6xl gap-12 px-5 py-16 md:grid-cols-[1.15fr_0.85fr] md:px-8 md:py-24">
@@ -14,7 +14,7 @@
             </h1>
 
             <p class="mt-6 max-w-xl text-base leading-7 text-muted md:text-lg">
-                Katalog dan custom pre-order The Things Corner sedang disiapkan.
+                Katalog dan custom pre-order Thethingscorner sedang disiapkan.
                 Masuk untuk melihat dashboard, atau daftar untuk mulai memesan.
             </p>
 
@@ -48,7 +48,7 @@
 
                 <div class="relative flex h-full flex-col justify-between">
                     <div class="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-muted">
-                        <span>The Things Corner</span>
+                        <span>Thethingscorner</span>
                         <span>Since 2015</span>
                     </div>
 

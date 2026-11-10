@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Lupa Password · The Things Corner')
+@section('title', 'Lupa Password · Thethingscorner')
 
 @section('content')
     <div class="w-full rounded-3xl border border-border bg-surface p-7 shadow-sm md:p-9">
