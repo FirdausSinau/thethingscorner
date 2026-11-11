@@ -57,7 +57,7 @@ feat: add review reply and moderation
 |---|---|---|
 | 0 | Setup project | Selesai (commit `35545cc`) |
 | 1 | Auth dan role | Selesai: register/login/logout, reset password, role middleware, dashboard per role, kelola Admin Biasa (commit `990ea92`, `91280d5`) |
-| 2 | Katalog dan varian | Selesai: katalog produk tampil detail,warna,size, kelola produk menambahkan produk, menambahkan warna, menghapus, dan update. `f49b615`) |
+| 2 | Katalog dan varian | Selesai: katalog publik, detail, admin produk/warna/varian/foto, storage lokal; schema warna/varian dari tim produk; 37 test lulus (commit `51ee81e`) |
 | 3 | Keranjang persisten | Belum |
 | 4 | Checkout dan reservasi | Belum |
 | 5 | Pembayaran | Belum |
@@ -81,6 +81,7 @@ feat: add review reply and moderation
 | 2026-11-09 | 0 | Database default pindah ke PostgreSQL 16+. Migrasi dan 31 test diuji di PostgreSQL 18.6. Setup tim dan decision log diperbarui. | `7783ba2` |
 | 2026-11-09 | 2 | Schema categories/products/product_variants/product_images, model, enum ProductStatus, seeder 10 produk/30 varian, kontrak Slice 2. 35 test lulus. Migration dan seeder dijalankan ke Neon. | `f49b615` |
 | 2026-11-10 | 2 | Schema freeze. Migration tim produk mengubah tabel katalog di Neon dan menambah product_colors/product_color_images. Backup Neon dibuat, kontrak ditandai tertahan sampai migration dan kode di-push lalu direkonsiliasi. | `0461cfc` |
+| 2026-11-11 | 2 | Rekonsiliasi selesai: adopsi schema produk -> warna -> varian, hapus migration/model duplikat, storage gambar ke disk public, route katalog publik dan detail, admin produk/warna/varian/foto, 37 test lulus. | `51ee81e` |
 
 ---
 
