@@ -2,7 +2,7 @@
 
 **Versi:** 1.0  
 **Tanggal:** 11 November 2026  
-**Untuk:** Firdaus, Anggota A, Anggota B  
+**Untuk:** Firdaus, Anand, Hafiez  
 **Status:** Backend selesai, UI checkout dan admin order belum
 
 Dokumen ini adalah kontrak Slice 4: checkout, order, dan reservasi stok.
@@ -185,7 +185,7 @@ Kalau gagal, semua perubahan di-rollback. Stok fisik `stock` tidak berubah.
 
 ## 5. Route yang perlu dibuat
 
-### Checkout, milik Anggota A
+### Checkout, milik Anand
 
 | Method | URL | Name | Handler |
 |---|---|---|---|
@@ -208,7 +208,7 @@ Controller:
 3. Panggil `CheckoutService`.
 4. Redirect ke halaman pesanan atau pembayaran Slice 5.
 
-### Admin order, milik Anggota B
+### Admin order, milik Hafiez
 
 | Method | URL | Name | Handler |
 |---|---|---|---|
@@ -300,3 +300,4 @@ Status: 6 test lulus, 32 assertions.
 - admin order list/detail;
 - shipment dan resi;
 - state machine order lengkap.
+

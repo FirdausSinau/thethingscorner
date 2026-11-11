@@ -54,4 +54,5 @@ Dokumen kerja tim:
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
-- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 dan 4 backend selesai; UI cart/checkout dan admin order masih dikerjakan A/B. Total 53 test lulus.
+- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 dan 4 backend selesai; UI cart/checkout dan admin order masih dikerjakan Anand/Hafiez. Total 53 test lulus.
+

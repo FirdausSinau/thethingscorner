@@ -2,7 +2,7 @@
 
 **Versi:** 2.1  
 **Tanggal:** 11 November 2026  
-**Untuk:** Firdaus, Anggota A, Anggota B  
+**Untuk:** Firdaus, Anand, Hafiez  
 **Status:** Diimplementasikan dan direkonsiliasi
 
 Dokumen ini menggantikan kontrak versi 1.0. Schema katalog sekarang mengikuti implementasi dari Hafiez, dengan penyesuaian storage lokal dan route publik oleh Firdaus.
@@ -239,6 +239,7 @@ Sudah diputuskan:
 ## 9. Pembagian kerja setelah rekonsiliasi
 
 - Firdaus: review schema, storage, test, dan integrasi.
-- Anggota A: review UI katalog dan detail, tambah filter/sort jika perlu.
-- Anggota B: review admin produk, varian, warna, dan upload foto.
+- Anand: review UI katalog dan detail, tambah filter/sort jika perlu.
+- Hafiez: review admin produk, varian, warna, dan upload foto.
 - Perubahan schema produk harus dikoordinasikan dengan Hafiez sebagai pemilik domain produk.
+

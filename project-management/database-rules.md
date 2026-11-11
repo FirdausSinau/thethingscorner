@@ -3,7 +3,7 @@
 **Versi:** 1.1  
 **Tanggal:** 10 November 2026  
 **Status:** Aktif  
-**Berlaku untuk:** Firdaus, Anggota A, Anggota B
+**Berlaku untuk:** Firdaus, Anand, Hafiez
 
 Dokumen ini dipakai kalau tim memakai Neon sebagai database bersama. Aturan yang sama berlaku untuk staging dan production.
 
@@ -34,7 +34,7 @@ Kalau memakai satu branch bersama, hanya **satu orang** yang boleh menjalankan m
 | Migration owner | Firdaus | Satu-satunya yang menjalankan migrasi ke Neon staging/main |
 | Application role | Aplikasi | Role database dengan hak DML, bukan owner |
 | Migration role | Firdaus | Role dengan hak DDL, hanya dipakai saat migrasi |
-| Developer | A dan B | Migrasi hanya di lokal atau branch Neon sendiri |
+| Developer | Anand dan Hafiez | Migrasi hanya di lokal atau branch Neon sendiri |
 
 Jangan memakai role `neondb_owner` untuk aplikasi sehari-hari. Buat role aplikasi yang hanya boleh `SELECT`, `INSERT`, `UPDATE`, `DELETE`.
 
@@ -134,8 +134,8 @@ Kalau memakai Neon branch:
 ```text
 main        -> staging, hanya migration owner yang menulis schema
 firdaus     -> branch kerja Firdaus
-anggota-a   -> branch kerja Anggota A
-anggota-b   -> branch kerja Anggota B
+Anand   -> branch kerja Anand
+hafiez   -> branch kerja Hafiez
 ```
 
 Aturan:
@@ -264,3 +264,4 @@ Penyelesaian 11 November 2026:
 - Yang tidak boleh: credential di Git.
 - Untuk kerja harian, gunakan lokal atau branch Neon pribadi.
 - Untuk staging, hanya migration owner yang menjalankan migrasi.
+

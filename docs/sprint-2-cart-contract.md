@@ -2,7 +2,7 @@
 
 **Versi:** 1.0  
 **Tanggal:** 11 November 2026  
-**Untuk:** Firdaus, Anggota A, Anggota B  
+**Untuk:** Firdaus, Anand, Hafiez  
 **Status:** Backend selesai, UI cart belum
 
 Dokumen ini adalah kontrak Slice 3: keranjang persisten tanpa mengunci stok.
@@ -81,7 +81,7 @@ Aturan:
 
 ---
 
-## 4. Route yang perlu dibuat Anggota A
+## 4. Route yang perlu dibuat Anand
 
 Semua memakai middleware `auth`.
 
@@ -151,7 +151,7 @@ Catatan UI:
 
 Di halaman detail produk, tombol "Tambah ke keranjang" saat ini masih placeholder.
 
-Anggota A perlu:
+Anand perlu:
 
 - form POST ke `cart.store`;
 - kirim `variant_id` dari ukuran yang dipilih;
@@ -187,3 +187,4 @@ Status: 9 test lulus, 16 assertions.
 - tombol tambah ke cart di detail produk;
 - checkout (Slice 4);
 - merge cart setelah login tidak diperlukan karena cart hanya untuk user login.
+

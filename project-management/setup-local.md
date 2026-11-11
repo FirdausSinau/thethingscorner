@@ -2,7 +2,7 @@
 
 **Versi:** 1.3  
 **Tanggal:** 9 November 2026  
-**Untuk:** Firdaus, Anggota A, Anggota B
+**Untuk:** Firdaus, Anand, Hafiez
 
 Panduan ini dipakai saat pertama kali menyiapkan project di laptop dan saat mengambil update terbaru dari `main`.
 
@@ -269,19 +269,20 @@ Branch pribadi dibuat sekali:
 ```powershell
 git checkout main
 git pull origin main
-git checkout -b anggota-a
-git push -u origin anggota-a
+git checkout -b Anand
+git push -u origin Anand
 ```
 
-Ganti `anggota-a` dengan nama branch masing-masing. Setelah itu kerja di branch sendiri, lalu buka Pull Request ke `main`.
+Ganti `Anand` dengan nama branch masing-masing. Setelah itu kerja di branch sendiri, lalu buka Pull Request ke `main`.
 
 Sebelum mulai kerja:
 
 ```powershell
 git checkout main
 git pull origin main
-git checkout anggota-a
+git checkout Anand
 git merge main
 ```
 
 Aturan lengkap ada di [`team-workflow.md`](team-workflow.md) dan urutan kerja di [`work-plan.md`](work-plan.md).
+

@@ -2,7 +2,7 @@
 
 **Versi:** 1.0  
 **Tanggal:** 9 November 2026  
-**Untuk:** Firdaus, Anggota A, Anggota B  
+**Untuk:** Firdaus, Anand, Hafiez  
 **Status:** Aktif
 
 Dokumen ini menjawab satu hal: siapa mengerjakan bagian apa, dan dalam urutan apa.
@@ -39,13 +39,13 @@ Yang dimaksud "selesai" untuk satu slice:
 | Domain | Owner | Cakupan | Kedalaman backend |
 |---|---|---|---|
 | Backend core dan integrasi | Firdaus | Schema, migration, model, auth, service bersama, payment, shipping, scheduler, security, deploy | Penuh |
-| Buyer storefront | Anggota A | Layout pembeli, design system, katalog publik, cart, checkout UI, pesanan pembeli, PO pembeli, review pembeli | Menengah, bisa naik ke `CartService` |
-| Admin operations dan reporting | Anggota B | Layout admin, dashboard, produk, stok, pesanan admin, PO admin, review admin, Shopee CSV, laporan | Menengah ke backend, cocok untuk `StockService` dan import |
+| Buyer storefront | Anand | Layout pembeli, design system, katalog publik, cart, checkout UI, pesanan pembeli, PO pembeli, review pembeli | Menengah, bisa naik ke `CartService` |
+| Admin operations dan reporting | Hafiez | Layout admin, dashboard, produk, stok, pesanan admin, PO admin, review admin, Shopee CSV, laporan | Menengah ke backend, cocok untuk `StockService` dan import |
 
 Kalau ada yang ingin memperdalam backend:
 
-- Anggota A bisa mengambil `CartService`.
-- Anggota B bisa mengambil `StockService`, `ShopeeImportService`, dan query laporan.
+- Anand bisa mengambil `CartService`.
+- Hafiez bisa mengambil `StockService`, `ShopeeImportService`, dan query laporan.
 - Firdaus tetap memegang schema dan review transaksi.
 
 Detail arsitektur backend ada di [`../docs/backend-overview.md`](../docs/backend-overview.md).
@@ -56,7 +56,7 @@ Detail arsitektur backend ada di [`../docs/backend-overview.md`](../docs/backend
 
 Kolom di bawah menunjukkan bagian masing-masing, bukan pemilik tunggal slice.
 
-| Urutan | Slice | Firdaus | Anggota A | Anggota B | Prasyarat |
+| Urutan | Slice | Firdaus | Anand | Hafiez | Prasyarat |
 |---|---|---|---|---|---|
 | 0 | Setup project | Laravel, PostgreSQL, Git, Vite, layout dasar | Review | Review | - |
 | 1 | Auth dan role | Enum role, migration, middleware, auth, reset password, kelola admin | Review UI login/register | Review akses admin | 0 |
@@ -95,24 +95,24 @@ Fokus: Slice 2.
 Urutan:
 
 1. Firdaus membuat migration, model, relasi, seeder, dan route contract.
-2. Setelah schema di-merge, A dan B mulai paralel.
-3. A mengerjakan katalog publik.
-4. B mengerjakan CRUD admin dan upload foto.
+2. Setelah schema di-merge, Anand dan Hafiez mulai paralel.
+3. Anand mengerjakan katalog publik.
+4. Hafiez mengerjakan CRUD admin dan upload foto.
 5. Integrasi: produk yang dibuat admin harus muncul di katalog publik.
 6. Demo: 10 produk demo, filter kategori, pencarian, detail varian.
 
 ### Batch 2 - Cart dan checkout
 
-**Status 11 November 2026:** backend Slice 3 dan 4 selesai. Menunggu UI cart/checkout dari Anggota A dan admin order read-only dari Anggota B.
+**Status 11 November 2026:** backend Slice 3 dan 4 selesai. Menunggu UI cart/checkout dari Anand dan admin order read-only dari Hafiez.
 
 Fokus: Slice 3 lalu Slice 4.
 
 Urutan:
 
 1. Firdaus menyiapkan `CartService` dan test validasi stok.
-2. A mengerjakan halaman cart dan checkout.
+2. Anand mengerjakan halaman cart dan checkout.
 3. Firdaus menyiapkan `CheckoutService`, transaction, dan reservasi.
-4. B menyiapkan daftar order admin sederhana untuk melihat order yang masuk.
+4. Hafiez menyiapkan daftar order admin sederhana untuk melihat order yang masuk.
 5. Integrasi: cart tidak mengunci stok, checkout membuat reservasi.
 6. Demo: tambah ke cart, checkout, stok berubah hanya setelah checkout.
 
@@ -123,8 +123,8 @@ Fokus: Slice 5 dan Slice 6.
 Urutan:
 
 1. Firdaus membuat fake payment dan fake shipping adapter.
-2. A membuat halaman pembayaran dan pilihan kurir.
-3. B membuat verifikasi transfer manual dan input resi.
+2. Anand membuat halaman pembayaran dan pilihan kurir.
+3. Hafiez membuat verifikasi transfer manual dan input resi.
 4. Integrasi: order bisa dibayar dan dikirim dengan data fake.
 5. Demo: QRIS fake, transfer manual, ongkir, resi.
 
@@ -135,8 +135,8 @@ Fokus: Slice 7.
 Urutan:
 
 1. Firdaus membuat state machine dan log status.
-2. A membuat daftar/detail pesanan pembeli.
-3. B membuat daftar/detail pesanan admin.
+2. Anand membuat daftar/detail pesanan pembeli.
+3. Hafiez membuat daftar/detail pesanan admin.
 4. Integrasi: status berubah konsisten di sisi pembeli dan admin.
 5. Demo: alur dari dibayar sampai selesai.
 
@@ -147,8 +147,8 @@ Fokus: Slice 8 dan Slice 9.
 Urutan:
 
 1. Firdaus menyiapkan service PO, status log, dan policy review.
-2. A mengerjakan form PO dan review pembeli.
-3. B mengerjakan quote PO, produksi, balasan review, dan moderasi.
+2. Anand mengerjakan form PO dan review pembeli.
+3. Hafiez mengerjakan quote PO, produksi, balasan review, dan moderasi.
 4. Integrasi: PO hanya masuk produksi setelah DP, review hanya setelah selesai.
 5. Demo: PO end-to-end dan review dengan balasan toko.
 
@@ -159,7 +159,7 @@ Fokus: Slice 10, 11, dan 12.
 Urutan:
 
 1. Firdaus menyiapkan `StockService` dan `ShopeeImportService`.
-2. B mengerjakan halaman stok, kartu stok, import CSV, dan laporan.
+2. Hafiez mengerjakan halaman stok, kartu stok, import CSV, dan laporan.
 3. Integrasi: setiap perubahan stok punya mutasi, import tidak menggandakan data.
 4. Demo: kartu stok, import CSV, laporan dan export.
 
@@ -170,7 +170,7 @@ Fokus: Slice 13.
 Urutan:
 
 1. Firdaus menyiapkan settings dan status integrasi.
-2. B mengerjakan UI settings.
+2. Hafiez mengerjakan UI settings.
 3. Demo: pengaturan toko dan status provider tanpa menampilkan secret.
 
 ### Batch 8 - QA dan deploy
@@ -180,8 +180,8 @@ Fokus: Slice 14.
 Urutan:
 
 1. Semua regression test.
-2. A audit UI dan responsive.
-3. B audit operasional dan data.
+2. Anand audit UI dan responsive.
+3. Hafiez audit operasional dan data.
 4. Firdaus security review, staging, production, backup.
 5. Demo: UAT dengan client.
 
@@ -214,14 +214,14 @@ Sebelum satu slice dimulai:
    - service method;
    - format data yang dikirim ke Blade.
 2. Firdaus merge schema dan model ke `main`.
-3. A dan B pull `main`, lalu merge ke branch masing-masing.
-4. Bagian A dan B dikerjakan di branch sendiri.
+3. Anand dan Hafiez pull `main`, lalu merge ke branch masing-masing.
+4. Bagian Anand dan Hafiez dikerjakan di branch sendiri.
 5. PR dibuat per subtile.
 6. Setelah semua bagian merge, lakukan demo dan test integrasi.
 
 Yang tidak boleh:
 
-- A atau B membuat migration untuk tabel yang sama tanpa koordinasi.
+- Anand atau Hafiez membuat migration untuk tabel yang sama tanpa koordinasi.
 - Mengubah schema di tengah slice tanpa memberi tahu tim.
 - Menunggu semua fitur selesai baru merge.
 - Dua orang mengedit file layout yang sama dalam waktu lama.
@@ -247,8 +247,10 @@ Yang tidak boleh:
 ## 8. Ringkasan
 
 - Firdaus: schema, core service, integrasi, security, deploy.
-- Anggota A: semua yang dilihat dan dialami pembeli.
-- Anggota B: semua operasional admin dan laporan.
+- Anand: semua yang dilihat dan dialami pembeli.
+- Hafiez: semua operasional admin dan laporan.
 - Slice adalah urutan kerja, bukan pemilik.
 - Setiap slice punya checkpoint integrasi.
 - Backend learner mulai dari stok dan import, bukan payment.
+
+
