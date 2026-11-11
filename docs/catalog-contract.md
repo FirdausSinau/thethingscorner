@@ -217,7 +217,7 @@ php artisan test
 npm run build
 ```
 
-Status terakhir: 37 test lulus, 89 assertions.
+Status terakhir: 38 test lulus, 90 assertions.
 
 ---
 

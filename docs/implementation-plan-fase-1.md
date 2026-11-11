@@ -82,6 +82,7 @@ feat: add review reply and moderation
 | 2026-11-09 | 2 | Schema categories/products/product_variants/product_images, model, enum ProductStatus, seeder 10 produk/30 varian, kontrak Slice 2. 35 test lulus. Migration dan seeder dijalankan ke Neon. | `f49b615` |
 | 2026-11-10 | 2 | Schema freeze. Migration tim produk mengubah tabel katalog di Neon dan menambah product_colors/product_color_images. Backup Neon dibuat, kontrak ditandai tertahan sampai migration dan kode di-push lalu direkonsiliasi. | `0461cfc` |
 | 2026-11-11 | 2 | Rekonsiliasi selesai: adopsi schema produk -> warna -> varian, hapus migration/model duplikat, storage gambar ke disk public, route katalog publik dan detail, admin produk/warna/varian/foto, 37 test lulus. | `51ee81e` |
+| 2026-11-11 | 2 | Brand resmi `thethingscorner`; tambah `weight_grams`, `rating_avg`, `rating_count`, `stock_reserved`; migration ke Neon; 38 test lulus. | `352ccaf` |
 
 ---
 
