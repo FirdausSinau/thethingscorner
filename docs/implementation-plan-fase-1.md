@@ -88,6 +88,7 @@ feat: add review reply and moderation
 | 2026-11-11 | 3-4 | UI cart, checkout, dan order show dari Anand (PR #2). | `5f7211b` |
 | 2026-11-11 | 3-4 | Review UI, 5 test cart/checkout/order, guard cart kosong, tombol ukuran habis, 58 test lulus. | `51d34bf` |
 | 2026-11-11 | 1 | Media produk configurable `PRODUCT_IMAGES_DISK=public/s3`, test upload public dan s3, 60 test lulus. | `87e0643` |
+| 2026-11-11 | 3-4 | Review: hapus status `BARU`, tambah `MENUNGGU_KONFIRMASI`, route clear cart, transaksi alamat, eager load checkout, produk dinonaktifkan bukan dihapus, 63 test lulus. | `7caaa22` |
 
 ---
 
