@@ -1,6 +1,6 @@
 # ERD Fase 1 — The Things Corner
 
-**Versi:** 0.4  
+**Versi:** 0.5  
 **Tanggal:** 11 November 2026  
 **Status:** Draft, schema katalog mengikuti implementasi warna dan varian  
 **Referensi:** PRD Fase 1 v0.2, RFP v0.3

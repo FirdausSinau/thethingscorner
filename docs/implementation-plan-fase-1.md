@@ -83,6 +83,8 @@ feat: add review reply and moderation
 | 2026-11-10 | 2 | Schema freeze. Migration tim produk mengubah tabel katalog di Neon dan menambah product_colors/product_color_images. Backup Neon dibuat, kontrak ditandai tertahan sampai migration dan kode di-push lalu direkonsiliasi. | `0461cfc` |
 | 2026-11-11 | 2 | Rekonsiliasi selesai: adopsi schema produk -> warna -> varian, hapus migration/model duplikat, storage gambar ke disk public, route katalog publik dan detail, admin produk/warna/varian/foto, 37 test lulus. | `51ee81e` |
 | 2026-11-11 | 2 | Brand resmi `thethingscorner`; tambah `weight_grams`, `rating_avg`, `rating_count`, `stock_reserved`; migration ke Neon; 38 test lulus. | `352ccaf` |
+| 2026-11-11 | 3 | `cart_items`, `CartItem`, `CartService`, validasi stok tanpa mengunci stok, 9 test lulus. | `e656a18` |
+| 2026-11-11 | 4 | `addresses`, `orders`, `order_items`, `stock_reservations`, `CheckoutService`, expiry command, 6 test lulus. Migration ke Neon. | `e656a18` |
 
 ---
 
