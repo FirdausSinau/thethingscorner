@@ -170,9 +170,10 @@ erDiagram
         bigint user_id FK
         string channel
         string status
-        decimal subtotal
-        decimal shipping_cost
-        decimal total
+        string payment_method
+        bigint subtotal
+        bigint shipping_cost
+        bigint total
         string recipient
         string phone
         text address
@@ -188,9 +189,11 @@ erDiagram
         bigint variant_id FK
         string product_name
         string sku
+        string color
+        string size
         int qty
-        decimal price
-        decimal subtotal
+        bigint price
+        bigint subtotal
     }
 
     PAYMENTS {

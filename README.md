@@ -2,7 +2,7 @@
 
 Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk thethingscorner.
 
-**Status:** Slice 2 selesai - katalog dan admin produk  
+**Status:** Batch 2 backend selesai - cart dan checkout  
 **Stack:** Laravel 13, PHP 8.4, PostgreSQL 16+, Blade, Tailwind CSS 4, Vite, Alpine.js  
 **Repository:** https://github.com/FirdausSinau/thethingscorner.git
 
@@ -19,7 +19,9 @@ Semua dokumen yang berkaitan dengan kode dan produk ada di `docs/`:
 | `docs/erd.md` | ERD dan data dictionary |
 | `docs/technical-design-fase-1.md` | Arsitektur, route, integrasi, deployment |
 | `docs/backend-overview.md` | Alur backend, service, transaksi, dan jalur belajar backend |
-| `docs/catalog-contract.md` | Kontrak schema, model, route, dan data Blade Slice 2 |
+| `docs/sprint-1-catalog-contract.md` | Kontrak schema, model, route, dan data Blade Sprint 1 |
+| `docs/sprint-2-cart-contract.md` | Kontrak cart dan aturan stok Sprint 2 |
+| `docs/sprint-2-checkout-contract.md` | Kontrak checkout, order, dan reservasi Sprint 2 |
 | `docs/decisions.md` | Decision log dan asumsi |
 | `docs/design-system.md` | Token warna, tipografi, komponen |
 | `docs/wireframes.md` | Wireframe pembeli dan admin |

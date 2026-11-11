@@ -14,7 +14,9 @@ Folder ini hanya berisi dokumentasi yang berkaitan dengan kode dan produk. Dokum
 | [`erd.md`](erd.md) | 0.4 | ERD, relasi, constraint, index, enum status |
 | [`technical-design-fase-1.md`](technical-design-fase-1.md) | 0.1 | Arsitektur, state machine, route, authorization, integrasi, deployment |
 | [`backend-overview.md`](backend-overview.md) | 0.1 | Alur backend, folder, service, transaksi, keamanan, jalur belajar backend |
-| [`catalog-contract.md`](catalog-contract.md) | 2.1 | Kontrak schema produk, warna, varian, route, storage, dan status Slice 2 |
+| [`sprint-1-catalog-contract.md`](sprint-1-catalog-contract.md) | 2.1 | Kontrak schema produk, warna, varian, route, storage, dan status Sprint 1 |
+| [`sprint-2-cart-contract.md`](sprint-2-cart-contract.md) | 1.0 | Kontrak cart_items, CartService, route cart, dan aturan stok Sprint 2 |
+| [`sprint-2-checkout-contract.md`](sprint-2-checkout-contract.md) | 1.0 | Kontrak alamat, order, reservasi, CheckoutService, dan expiry Sprint 2 |
 | [`decisions.md`](decisions.md) | 0.4 | Decision log dan asumsi sementara |
 | [`design-system.md`](design-system.md) | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
 | [`wireframes.md`](wireframes.md) | 0.1 | Wireframe pembeli dan admin |
@@ -52,4 +54,4 @@ Dokumen kerja tim:
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
-- Implementasi: setup Laravel + Git selesai (`35545cc`). Slice 1 auth/role selesai (`990ea92`, `91280d5`). Slice 2 katalog, detail produk, dan admin produk/warna/varian selesai; 38 test lulus.
+- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 dan 4 backend selesai; UI cart/checkout dan admin order masih dikerjakan A/B. Total 53 test lulus.

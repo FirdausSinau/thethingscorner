@@ -1,4 +1,4 @@
-# Catalog Contract - Slice 2
+# Sprint 1 - Catalog Contract
 
 **Versi:** 2.1  
 **Tanggal:** 11 November 2026  
