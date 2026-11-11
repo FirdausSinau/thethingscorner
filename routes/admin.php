@@ -16,7 +16,8 @@ Route::middleware(['auth', 'role:admin,admin_master'])
     ->group(function (): void {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-        Route::resource('products', ProductController::class)->except('show');
+        Route::resource('products', ProductController::class)->except(['show', 'destroy']);
+        Route::patch('products/{product}/deactivate', [ProductController::class, 'deactivate'])->name('products.deactivate');
 
         Route::post('products/{product}/colors', [ProductColorController::class, 'store'])->name('products.colors.store');
         Route::delete('colors/{color}', [ProductColorController::class, 'destroy'])->name('colors.destroy');

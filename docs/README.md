@@ -17,7 +17,7 @@ Folder ini hanya berisi dokumentasi yang berkaitan dengan kode dan produk. Dokum
 | [`sprint-1-catalog-contract.md`](sprint-1-catalog-contract.md) | 2.2 | Kontrak schema produk, warna, varian, route, storage, dan status Sprint 1 |
 | [`sprint-2-cart-contract.md`](sprint-2-cart-contract.md) | 1.0 | Kontrak cart_items, CartService, route cart, dan aturan stok Sprint 2 |
 | [`sprint-2-checkout-contract.md`](sprint-2-checkout-contract.md) | 1.0 | Kontrak alamat, order, reservasi, CheckoutService, dan expiry Sprint 2 |
-| [`decisions.md`](decisions.md) | 0.5 | Decision log dan asumsi sementara |
+| [`decisions.md`](decisions.md) | 0.6 | Decision log dan asumsi sementara |
 | [`design-system.md`](design-system.md) | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
 | [`wireframes.md`](wireframes.md) | 0.1 | Wireframe pembeli dan admin |
 | [`implementation-plan-fase-1.md`](implementation-plan-fase-1.md) | 0.1 | Rencana per slice, test, commit, deployment |
@@ -54,5 +54,5 @@ Dokumen kerja tim:
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
-- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 cart dan Slice 4 checkout selesai; admin order Hafiez belum. Total 60 test lulus.
+- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 cart dan Slice 4 checkout selesai; admin order Hafiez belum. Total 63 test lulus.
 

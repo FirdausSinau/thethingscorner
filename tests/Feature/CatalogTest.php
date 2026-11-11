@@ -93,6 +93,21 @@ class CatalogTest extends TestCase
         $this->assertSame(1, Product::where('slug', 'produk-baru')->count());
     }
 
+    public function test_admin_can_deactivate_product_without_deleting_it(): void
+    {
+        $admin = User::factory()->create();
+        $admin->forceFill(['role' => UserRole::Admin, 'is_active' => true])->save();
+
+        $product = Product::query()->firstOrFail();
+
+        $this->actingAs($admin)
+            ->patch(route('admin.products.deactivate', $product))
+            ->assertRedirect(route('admin.products.index'));
+
+        $this->assertFalse($product->fresh()->is_active);
+        $this->assertDatabaseHas('products', ['id' => $product->id]);
+    }
+
     public function test_variant_stock_available_subtracts_reserved_stock(): void
     {
         $variant = ProductVariant::query()->firstOrFail();

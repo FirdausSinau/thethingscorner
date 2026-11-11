@@ -183,20 +183,24 @@ Buyer isi form PO
 ### 4.1 Order
 
 ```text
-BARU
-→ MENUNGGU_PEMBAYARAN
+MENUNGGU_PEMBAYARAN
 → DIBAYAR
+→ MENUNGGU_KONFIRMASI
 → DIKEMAS
 → DIKIRIM
 → SELESAI
 
-Dari BARU / MENUNGGU_PEMBAYARAN:
+Dari MENUNGGU_PEMBAYARAN:
 → DIBATALKAN
 → KEDALUWARSA
+
+Dari MENUNGGU_KONFIRMASI:
+→ DIBATALKAN
 ```
 
 Aturan:
 
+- `MENUNGGU_KONFIRMASI` berarti pembayaran sudah diterima dan pesanan menunggu konfirmasi admin sebelum dikemas.
 - `SELESAI` hanya dari `DIKIRIM`, oleh buyer atau auto-selesai 7 hari.
 - `DIBATALKAN` hanya sebelum `DIKEMAS`.
 - `KEDALUWARSA` hanya jika pembayaran tidak selesai.
@@ -322,7 +326,7 @@ Webhook tidak memakai CSRF, tetapi wajib verifikasi signature/token.
 | POST | `/admin/products` | Admin\ProductController@store |
 | GET | `/admin/products/{product}/edit` | Admin\ProductController@edit |
 | PATCH | `/admin/products/{product}` | Admin\ProductController@update |
-| DELETE | `/admin/products/{product}` | Admin\ProductController@destroy |
+| PATCH | `/admin/products/{product}/deactivate` | Admin\ProductController@deactivate |
 | GET | `/admin/stock` | Admin\StockController@index |
 | GET | `/admin/stock/{variant}` | Admin\StockController@show |
 | POST | `/admin/stock/{variant}/movements` | Admin\StockController@storeMovement |
@@ -393,7 +397,7 @@ Webhook tidak memakai CSRF, tetapi wajib verifikasi signature/token.
 | Policy | Aturan |
 |---|---|
 | `OrderPolicy@view` | Pemilik atau admin |
-| `OrderPolicy@cancel` | Pemilik dan status `BARU`/`MENUNGGU_PEMBAYARAN` |
+| `OrderPolicy@cancel` | Pemilik dan status `MENUNGGU_PEMBAYARAN`/`MENUNGGU_KONFIRMASI` |
 | `OrderPolicy@confirm` | Pemilik dan status `DIKIRIM` |
 | `CustomPoPolicy@view` | Pemilik atau admin |
 | `CustomPoPolicy@update` | Pemilik saat `DIAJUKAN`; admin sesuai status |

@@ -1,6 +1,6 @@
 # Decision Log — The Things Corner
 
-**Versi:** 0.5  
+**Versi:** 0.6  
 **Tanggal:** 11 November 2026  
 **Status:** Draft  
 **Referensi:** RFP v0.3, PRD Fase 1 v0.2
@@ -60,6 +60,7 @@ Aturan:
 | D-29 | Struktur katalog | Produk -> warna -> varian ukuran; foto bisa per produk dan per warna | Confirmed | Model, admin, katalog | Tim produk |
 | D-30 | Brand | Nama resmi `thethingscorner`, huruf kecil satu kata | Confirmed | UI, email, dokumen | Client |
 | D-31 | Media produk | `PRODUCT_IMAGES_DISK=public` untuk lokal, `s3` untuk Neon Object Storage | Confirmed | Upload, URL, hapus gambar | Tim |
+| D-32 | Status pesanan | `MENUNGGU_PEMBAYARAN` → `DIBAYAR` → `MENUNGGU_KONFIRMASI` → `DIKEMAS` → `DIKIRIM` → `SELESAI` | Confirmed | State machine, UI, laporan | Tim |
 
 ---
 
@@ -253,6 +254,38 @@ Aturan:
 - Setelah mengubah `.env`, jalankan `php artisan config:clear`.
 - Accessor `$image->url` mengikuti disk yang aktif.
 
+### D-32 - Status pesanan
+
+Status `BARU` dihapus karena checkout web langsung membuat order dengan `MENUNGGU_PEMBAYARAN`.
+
+Alur:
+
+```text
+MENUNGGU_PEMBAYARAN
+→ DIBAYAR
+→ MENUNGGU_KONFIRMASI
+→ DIKEMAS
+→ DIKIRIM
+→ SELESAI
+```
+
+Status lain:
+
+```text
+DIBATALKAN
+KEDALUWARSA
+```
+
+Arti:
+
+- `MENUNGGU_PEMBAYARAN`: order sudah dibuat, pembayaran belum diterima.
+- `DIBAYAR`: pembayaran sudah diterima.
+- `MENUNGGU_KONFIRMASI`: pembayaran diterima, pesanan menunggu konfirmasi admin sebelum dikemas.
+- `DIBATALKAN`: dibatalkan sebelum dikemas.
+- `KEDALUWARSA`: pembayaran tidak selesai sampai batas reservasi.
+
+`PENDING` bukan status pesanan. `PENDING` adalah status pembayaran dan akan dipisahkan di `PaymentStatus` pada Slice 5.
+
 ---
 
 ## 4. Fitur yang ditunda
@@ -303,3 +336,4 @@ Aturan:
 | 0.3 | 11 Nov 2026 | Tambah D-27 diskon, D-28 produk reject, D-29 struktur katalog warna/varian |
 | 0.4 | 11 Nov 2026 | Brand resmi `thethingscorner`; field ongkir, reservasi, dan rating ditambahkan |
 | 0.5 | 11 Nov 2026 | Media produk memakai disk configurable public/s3 |
+| 0.6 | 11 Nov 2026 | Status `BARU` dihapus; tambah `MENUNGGU_KONFIRMASI`; `PENDING` dipisahkan sebagai status pembayaran |

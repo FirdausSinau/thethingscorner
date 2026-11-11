@@ -91,9 +91,9 @@ Index `(expires_at, status)`, `order_id`, `variant_id`.
 ### OrderStatus
 
 ```text
-BARU
 MENUNGGU_PEMBAYARAN
 DIBAYAR
+MENUNGGU_KONFIRMASI
 DIKEMAS
 DIKIRIM
 SELESAI
@@ -288,7 +288,7 @@ Yang dilakukan:
 - reservasi kedaluwarsa melepas stok dan mengubah order menjadi kedaluwarsa.
 
 Status service: 6 test lulus, 32 assertions.  
-Test UI cart/checkout/order: 5 test lulus, 22 assertions.
+Test UI cart/checkout/order: 7 test lulus, 32 assertions.
 
 ---
 

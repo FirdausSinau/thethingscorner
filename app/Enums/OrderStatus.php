@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum OrderStatus: string
 {
-    case Baru = 'BARU';
     case MenungguPembayaran = 'MENUNGGU_PEMBAYARAN';
     case Dibayar = 'DIBAYAR';
+    case MenungguKonfirmasi = 'MENUNGGU_KONFIRMASI';
     case Dikemas = 'DIKEMAS';
     case Dikirim = 'DIKIRIM';
     case Selesai = 'SELESAI';
@@ -16,9 +16,9 @@ enum OrderStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Baru => 'Baru',
             self::MenungguPembayaran => 'Menunggu pembayaran',
             self::Dibayar => 'Dibayar',
+            self::MenungguKonfirmasi => 'Menunggu konfirmasi admin',
             self::Dikemas => 'Dikemas',
             self::Dikirim => 'Dikirim',
             self::Selesai => 'Selesai',

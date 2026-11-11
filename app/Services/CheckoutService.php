@@ -52,6 +52,8 @@ class CheckoutService
                 ->get()
                 ->keyBy('id');
 
+            $variants->load('color.product');
+
             $subtotal = 0;
             $lines = [];
 
@@ -63,8 +65,6 @@ class CheckoutService
                         'cart' => 'Ada varian yang sudah tidak tersedia.',
                     ]);
                 }
-
-                $variant->loadMissing('color.product');
 
                 if (! $variant->color?->product?->is_active) {
                     throw ValidationException::withMessages([

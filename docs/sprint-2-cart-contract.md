@@ -177,7 +177,7 @@ Anand perlu:
 - user tidak bisa mengubah cart user lain.
 
 Status service: 9 test lulus, 16 assertions.  
-Test UI cart/checkout: 5 test lulus, 22 assertions.
+Test UI cart/checkout: 7 test lulus, 32 assertions.
 
 ---
 

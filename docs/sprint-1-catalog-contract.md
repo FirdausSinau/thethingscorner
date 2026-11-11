@@ -139,7 +139,7 @@ Detail produk juga publik. Login baru diperlukan saat cart, checkout, PO, dan re
 | POST | `/admin/products` | `admin.products.store` |
 | GET | `/admin/products/{product}/edit` | `admin.products.edit` |
 | PUT/PATCH | `/admin/products/{product}` | `admin.products.update` |
-| DELETE | `/admin/products/{product}` | `admin.products.destroy` |
+| PATCH | `/admin/products/{product}/deactivate` | `admin.products.deactivate` |
 | POST | `/admin/products/{product}/colors` | `admin.products.colors.store` |
 | DELETE | `/admin/colors/{color}` | `admin.colors.destroy` |
 | POST | `/admin/colors/{color}/images` | `admin.colors.images.store` |
@@ -238,7 +238,7 @@ php artisan test
 npm run build
 ```
 
-Status terakhir: total suite 60 test lulus, 165 assertions, termasuk test upload gambar ke disk `public` dan `s3`.
+Status terakhir: total suite 63 test lulus, 179 assertions, termasuk test upload gambar ke disk `public` dan `s3`.
 
 ---
 

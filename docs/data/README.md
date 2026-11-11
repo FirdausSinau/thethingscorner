@@ -81,7 +81,7 @@ Untuk data asli client, urutan yang sama berlaku. Jangan import pesanan sebelum 
 - Model stok sementara: satu pool fisik. Jika client memilih stok terpisah per kanal, kolom dan aturan bisa berubah.
 - Satu custom PO mewakili satu pasang sepatu. Jika client butuh banyak pasang per PO, tambahkan `custom_po_items`.
 - `channel` pesanan: `web` atau `shopee`.
-- Status pesanan: `BARU`, `MENUNGGU_PEMBAYARAN`, `DIBAYAR`, `DIKEMAS`, `DIKIRIM`, `SELESAI`, `DIBATALKAN`, `KEDALUWARSA`.
+- Status pesanan: `MENUNGGU_PEMBAYARAN`, `DIBAYAR`, `MENUNGGU_KONFIRMASI`, `DIKEMAS`, `DIKIRIM`, `SELESAI`, `DIBATALKAN`, `KEDALUWARSA`.
 - Status pembayaran: `PENDING`, `PAID`, `EXPIRED`, `FAILED`, `REFUNDED`.
 - Status pengiriman: `PENDING`, `PICKUP`, `IN_TRANSIT`, `DELIVERED`.
 - Status PO: `DIAJUKAN`, `DITINJAU`, `MENUNGGU_DP`, `PRODUKSI`, `SELESAI_PRODUKSI`, `MENUNGGU_PELUNASAN`, `DIKIRIM`, `SELESAI`, `DIBATALKAN`.

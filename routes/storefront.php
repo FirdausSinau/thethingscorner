@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/keranjang', [CartController::class, 'store'])->name('cart.store');
     Route::patch('/keranjang/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/keranjang/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::delete('/keranjang', [CartController::class, 'clear'])->name('cart.clear');
 
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');

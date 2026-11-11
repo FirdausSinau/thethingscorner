@@ -70,6 +70,17 @@ class CartCheckoutUiTest extends TestCase
         $this->assertDatabaseMissing('cart_items', ['id' => $item->id]);
     }
 
+    public function test_cart_can_be_cleared_via_route(): void
+    {
+        app(CartService::class)->add($this->buyer, $this->variant, 2);
+
+        $this->actingAs($this->buyer)
+            ->delete(route('cart.clear'))
+            ->assertRedirect(route('cart.index'));
+
+        $this->assertDatabaseCount('cart_items', 0);
+    }
+
     public function test_checkout_page_renders_default_address_and_payment_methods(): void
     {
         app(CartService::class)->add($this->buyer, $this->variant, 1);
@@ -119,6 +130,33 @@ class CartCheckoutUiTest extends TestCase
             ->assertOk()
             ->assertSee($order->order_code)
             ->assertSee('Menunggu pembayaran');
+    }
+
+    public function test_failed_checkout_does_not_leave_address_behind(): void
+    {
+        app(CartService::class)->add($this->buyer, $this->variant, 1);
+
+        $this->variant->forceFill(['stock_reserved' => $this->variant->stock])->save();
+
+        $response = $this->actingAs($this->buyer)
+            ->from(route('checkout.index'))
+            ->post(route('checkout.store'), [
+                'recipient' => 'Budi Santoso',
+                'phone' => '081234567890',
+                'province' => 'Jawa Barat',
+                'city' => 'Bandung',
+                'district' => 'Coblong',
+                'postal_code' => '40132',
+                'detail' => 'Jl. Contoh No. 1',
+                'payment_method' => 'manual_transfer',
+            ]);
+
+        $response->assertRedirect(route('checkout.index'));
+        $response->assertSessionHasErrors('cart');
+
+        $this->assertDatabaseCount('orders', 0);
+        $this->assertDatabaseCount('addresses', 0);
+        $this->assertDatabaseCount('cart_items', 1);
     }
 
     public function test_guest_cannot_open_cart_or_checkout(): void

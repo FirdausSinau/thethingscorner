@@ -7,10 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductRequest;
 use App\Models\Product\Category;
 use App\Models\Product\Product;
-use App\Models\Product\ProductColorImage;
-use App\Support\ProductImageDisk;
 use Illuminate\Support\Str;
-
 
 class ProductController extends Controller
 {
@@ -60,16 +57,13 @@ class ProductController extends Controller
         return back()->with('status', 'Info produk disimpan.');
     }
 
-    public function destroy(Product $product)
+    public function deactivate(Product $product)
     {
-        $colorImagePaths = ProductColorImage::whereIn('product_color_id', $product->colors()->pluck('id'))
-            ->pluck('path')->all();
-        $productImagePaths = $product->images()->pluck('path')->all();
+        $product->update(['is_active' => false]);
 
-        ProductImageDisk::disk()->delete(array_merge($colorImagePaths, $productImagePaths));
-        $product->delete();
-
-        return redirect()->route('admin.products.index')->with('status', 'Produk dihapus.');
+        return redirect()
+            ->route('admin.products.index')
+            ->with('status', 'Produk dinonaktifkan. Riwayat pesanan tetap aman.');
     }
 
     private function payload(ProductRequest $request): array
