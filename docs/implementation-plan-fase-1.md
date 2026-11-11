@@ -85,6 +85,8 @@ feat: add review reply and moderation
 | 2026-11-11 | 2 | Brand resmi `thethingscorner`; tambah `weight_grams`, `rating_avg`, `rating_count`, `stock_reserved`; migration ke Neon; 38 test lulus. | `352ccaf` |
 | 2026-11-11 | 3 | `cart_items`, `CartItem`, `CartService`, validasi stok tanpa mengunci stok, 9 test lulus. | `e656a18` |
 | 2026-11-11 | 4 | `addresses`, `orders`, `order_items`, `stock_reservations`, `CheckoutService`, expiry command, 6 test lulus. Migration ke Neon. | `e656a18` |
+| 2026-11-11 | 3-4 | UI cart, checkout, dan order show dari Anand (PR #2). | `5f7211b` |
+| 2026-11-11 | 3-4 | Review UI, 5 test cart/checkout/order, guard cart kosong, tombol ukuran habis, 58 test lulus. | `51d34bf` |
 
 ---
 
