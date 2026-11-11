@@ -44,6 +44,11 @@
                 Dashboard
             </a>
 
+            <a href="{{ route('admin.products.index') }}"
+               class="shrink-0 rounded-full px-3 py-2 font-medium transition {{ request()->routeIs('admin.products.*') ? 'bg-primary/10 text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
+                Produk
+            </a>
+
             @if (auth()->user()->isAdminMaster())
                 <a href="{{ route('admin.admins.index') }}"
                    class="shrink-0 rounded-full px-3 py-2 font-medium transition {{ request()->routeIs('admin.admins.*') ? 'bg-primary/10 text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
@@ -71,7 +76,7 @@
                 @endif
 
                 <a href="{{ route('admin.products.index') }}"
-                    class="flex items-center justify-between rounded-xl px-3 py-2.5 transition {{ request()->routeIs('admin.admins.*') ? 'bg-primary/5 font-medium text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
+                    class="flex items-center justify-between rounded-xl px-3 py-2.5 transition {{ request()->routeIs('admin.products.*') ? 'bg-primary/5 font-medium text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
                     Produk &amp; stok
                 </a>
                 
