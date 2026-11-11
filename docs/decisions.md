@@ -1,6 +1,6 @@
 # Decision Log — The Things Corner
 
-**Versi:** 0.4  
+**Versi:** 0.5  
 **Tanggal:** 11 November 2026  
 **Status:** Draft  
 **Referensi:** RFP v0.3, PRD Fase 1 v0.2
@@ -59,6 +59,7 @@ Aturan:
 | D-28 | Produk reject | Sumbernya biasanya kesalahan produksi PO; aturan belum dikunci | TBD | Stok, PO, katalog, harga | Client + tim |
 | D-29 | Struktur katalog | Produk -> warna -> varian ukuran; foto bisa per produk dan per warna | Confirmed | Model, admin, katalog | Tim produk |
 | D-30 | Brand | Nama resmi `thethingscorner`, huruf kecil satu kata | Confirmed | UI, email, dokumen | Client |
+| D-31 | Media produk | `PRODUCT_IMAGES_DISK=public` untuk lokal, `s3` untuk Neon Object Storage | Confirmed | Upload, URL, hapus gambar | Tim |
 
 ---
 
@@ -227,6 +228,31 @@ Aturan:
 - `APP_NAME` di `.env` memakai `thethingscorner`;
 - dokumen formal boleh tetap memakai nama panjang sebagai judul dokumen.
 
+### D-31 - Media produk
+
+Status: **Confirmed**.
+
+Foto produk memakai disk yang bisa diatur lewat `.env`:
+
+```dotenv
+PRODUCT_IMAGES_DISK=public
+```
+
+atau
+
+```dotenv
+PRODUCT_IMAGES_DISK=s3
+```
+
+Aturan:
+
+- Default lokal: `public`, file di `storage/app/public`.
+- Untuk kerja tim dengan database Neon: `s3`, memakai Neon Object Storage yang kompatibel S3.
+- Credential S3/Neon hanya di `.env`, tidak di Git.
+- `AWS_USE_PATH_STYLE_ENDPOINT=true` untuk endpoint Neon.
+- Setelah mengubah `.env`, jalankan `php artisan config:clear`.
+- Accessor `$image->url` mengikuti disk yang aktif.
+
 ---
 
 ## 4. Fitur yang ditunda
@@ -276,3 +302,4 @@ Aturan:
 | 0.2 | 9 Nov 2026 | Tambah D-26: database default PostgreSQL |
 | 0.3 | 11 Nov 2026 | Tambah D-27 diskon, D-28 produk reject, D-29 struktur katalog warna/varian |
 | 0.4 | 11 Nov 2026 | Brand resmi `thethingscorner`; field ongkir, reservasi, dan rating ditambahkan |
+| 0.5 | 11 Nov 2026 | Media produk memakai disk configurable public/s3 |

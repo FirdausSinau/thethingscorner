@@ -121,6 +121,14 @@ Kalau semua migration berstatus `Ran`, **jangan jalankan migrate**. Database sud
 
 Aturan lengkap ada di [`database-rules.md`](database-rules.md).
 
+Foto produk default disimpan di disk `public`. Kalau tim memakai Neon Object Storage untuk foto bersama, isi `AWS_*` dan set:
+
+```dotenv
+PRODUCT_IMAGES_DISK=s3
+```
+
+Detail konfigurasi ada di [`../docs/sprint-1-catalog-contract.md`](../docs/sprint-1-catalog-contract.md).
+
 ### 2.6 Build asset dan jalankan
 
 ```powershell

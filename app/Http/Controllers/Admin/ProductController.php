@@ -8,7 +8,7 @@ use App\Http\Requests\Admin\ProductRequest;
 use App\Models\Product\Category;
 use App\Models\Product\Product;
 use App\Models\Product\ProductColorImage;
-use Illuminate\Support\Facades\Storage;
+use App\Support\ProductImageDisk;
 use Illuminate\Support\Str;
 
 
@@ -66,7 +66,7 @@ class ProductController extends Controller
             ->pluck('path')->all();
         $productImagePaths = $product->images()->pluck('path')->all();
 
-        Storage::disk('public')->delete(array_merge($colorImagePaths, $productImagePaths));
+        ProductImageDisk::disk()->delete(array_merge($colorImagePaths, $productImagePaths));
         $product->delete();
 
         return redirect()->route('admin.products.index')->with('status', 'Produk dihapus.');

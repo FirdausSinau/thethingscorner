@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product\ProductColor;
 use App\Models\Product\ProductColorImage;
+use App\Support\ProductImageDisk;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductColorImageController extends Controller
 {
@@ -21,7 +21,7 @@ class ProductColorImageController extends Controller
         $next = (int) ProductColorImage::where('product_color_id', $color->id)->max('sort_order') + 1;
 
         foreach ($request->file('images') as $file) {
-            $path = $file->store("products/{$color->product_id}", 'public');
+            $path = $file->store("products/{$color->product_id}", ProductImageDisk::name());
 
             $color->images()->create([
                 'path'       => $path,
@@ -34,7 +34,7 @@ class ProductColorImageController extends Controller
 
     public function destroy(ProductColorImage $image)
     {
-        Storage::disk('public')->delete($image->path);
+        ProductImageDisk::disk()->delete($image->path);
         $image->delete();
 
         return back()->with('status', 'Foto dihapus.');
