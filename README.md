@@ -1,30 +1,46 @@
-# The Things Corner
+# thethingscorner
 
-Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk The Things Corner.
+Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk thethingscorner.
 
-**Status:** Slice 1 selesai - auth dan role  
+**Status:** Batch 2 backend selesai - cart dan checkout  
 **Stack:** Laravel 13, PHP 8.4, PostgreSQL 16+, Blade, Tailwind CSS 4, Vite, Alpine.js  
 **Repository:** https://github.com/FirdausSinau/thethingscorner.git
 
 ---
 
-## Dokumentasi
+## Dokumentasi teknis
 
-Semua dokumen perencanaan ada di `docs/`:
+Semua dokumen yang berkaitan dengan kode dan produk ada di `docs/`:
 
 | Dokumen | Isi |
 |---|---|
-| `docs/README.md` | Index dokumentasi |
+| `docs/README.md` | Index dokumentasi teknis |
 | `docs/PRD Fase 1 - The Things Corner.md` | Kebutuhan produk dan acceptance criteria |
 | `docs/erd.md` | ERD dan data dictionary |
 | `docs/technical-design-fase-1.md` | Arsitektur, route, integrasi, deployment |
+| `docs/backend-overview.md` | Alur backend, service, transaksi, dan jalur belajar backend |
+| `docs/sprint-1-catalog-contract.md` | Kontrak schema, model, route, dan data Blade Sprint 1 |
+| `docs/sprint-2-cart-contract.md` | Kontrak cart dan aturan stok Sprint 2 |
+| `docs/sprint-2-checkout-contract.md` | Kontrak checkout, order, dan reservasi Sprint 2 |
 | `docs/decisions.md` | Decision log dan asumsi |
 | `docs/design-system.md` | Token warna, tipografi, komponen |
 | `docs/wireframes.md` | Wireframe pembeli dan admin |
 | `docs/implementation-plan-fase-1.md` | Rencana per slice |
-| `docs/setup-local.md` | Setup laptop tim dan troubleshooting |
-| `docs/team-workflow.md` | Pembagian peran, branch, dan alur PR |
 | `docs/data/` | Sample dataset dan template CSV |
+
+## Dokumentasi kerja tim
+
+Dokumen operasional, setup laptop, data request, dan file client ada di `project-management/`:
+
+| Dokumen | Isi |
+|---|---|
+| `project-management/README.md` | Index dokumen kerja tim |
+| `project-management/work-plan.md` | Domain, pembagian slice, urutan kerja |
+| `project-management/database-rules.md` | Aturan Neon, migrasi, branch database, backup |
+| `project-management/team-workflow.md` | Branch, PR, aturan konflik |
+| `project-management/setup-local.md` | Setup laptop dan troubleshooting |
+| `project-management/data-request.md` | Checklist data untuk client |
+| `project-management/client-docs/` | Dokumen client `.docx` (tidak masuk Git) |
 
 ---
 
@@ -37,7 +53,7 @@ Semua dokumen perencanaan ada di `docs/`:
 - Git
 
 Panduan lengkap per langkah, termasuk troubleshooting error 505, ada di
-[`docs/setup-local.md`](docs/setup-local.md).
+[`project-management/setup-local.md`](project-management/setup-local.md).
 
 ---
 
@@ -69,7 +85,7 @@ php artisan serve --host=127.0.0.1 --port=8000
 
 Buka `http://127.0.0.1:8000`, bukan `https://` dan bukan folder `public/`.
 
-Kalau muncul **505**, cek terminal `php artisan serve`, pastikan port yang dibuka sama, dan ikuti bagian 5 di `docs/setup-local.md`.
+Kalau memakai database Neon bersama, ikuti bagian 2.5 di `project-management/setup-local.md` dan aturan di `project-management/database-rules.md`. Kalau muncul **505**, cek terminal `php artisan serve`, pastikan port yang dibuka sama, dan ikuti bagian 5 di `project-management/setup-local.md`.
 
 ---
 
@@ -129,7 +145,7 @@ php artisan serve --host=127.0.0.1 --port=8080
 
 5. Coba incognito dan matikan VPN/proxy yang memaksa HTTPS.
 
-Panduan lengkap ada di [`docs/setup-local.md`](docs/setup-local.md) bagian 5.
+Panduan lengkap ada di [`project-management/setup-local.md`](project-management/setup-local.md) bagian 5.
 
 ### Windows / OneDrive
 

@@ -1,10 +1,10 @@
 @extends('layouts.auth')
 
-@section('title', 'Masuk · The Things Corner')
+@section('title', 'Masuk · thethingscorner')
 
 @section('content')
     <div class="w-full max-w-md rounded-3xl border border-border bg-surface p-7 shadow-sm md:p-9">
-        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-accent">The Things Corner</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-accent">thethingscorner</p>
         <h1 class="mt-3 font-display text-3xl text-primary-dark">Masuk ke akun</h1>
         <p class="mt-2 text-sm leading-6 text-muted">
             Kelola pesanan dan custom PO dari satu dashboard.
@@ -61,3 +61,4 @@
         </p>
     </div>
 @endsection
+

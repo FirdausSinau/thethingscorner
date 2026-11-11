@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'Dashboard · The Things Corner')
+@section('title', 'Dashboard · thethingscorner')
 
 @section('content')
     <section class="mx-auto w-full max-w-6xl px-5 py-12 md:px-8">
@@ -15,11 +15,6 @@
                     Pantau pesanan, custom PO, dan alamat pengiriman dari satu tempat.
                 </p>
             </div>
-
-            <a href="{{ route('home') }}"
-               class="text-sm font-medium text-primary transition hover:text-primary-dark">
-                Kembali ke toko
-            </a>
         </div>
 
         <div class="mt-8 grid gap-4 md:grid-cols-3">
@@ -48,11 +43,29 @@
             </div>
         </div>
 
-        <div class="mt-8 rounded-2xl border border-dashed border-border bg-surface px-6 py-10 text-center">
-            <p class="font-display text-xl text-primary-dark">Fitur pembeli sedang disiapkan.</p>
-            <p class="mt-2 text-sm text-muted">
-                Katalog, keranjang, dan custom PO akan tersedia bertahap.
-            </p>
+        <div class="border-t border-border" style="margin-top: 4rem; padding-top: 3rem;">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Katalog</p>
+                <h2 class="mt-3 font-display text-2xl text-primary-dark md:text-3xl">
+                    Temukan sepatu favoritmu
+                </h2>
+                <p class="mt-2 max-w-xl text-sm leading-6 text-muted">
+                    Pilih model, warna, dan ukuran yang paling pas untuk langkahmu.
+                </p>
+            </div>
+
+            <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+                @forelse ($products as $product)
+                    @include('product.partials.product-card', ['product' => $product])
+                @empty
+                    <p class="col-span-full rounded-2xl border border-dashed border-border bg-surface px-6 py-10 text-center text-sm text-muted">
+                        Belum ada produk.
+                    </p>
+                @endforelse
+            </div>
+
+            <div class="mt-10">{{ $products->links() }}</div>
         </div>
     </section>
 @endsection
+

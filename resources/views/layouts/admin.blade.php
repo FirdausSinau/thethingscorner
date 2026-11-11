@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin · The Things Corner')</title>
+    <title>@yield('title', 'Admin · thethingscorner')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -14,7 +14,7 @@
         <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
             <div class="flex items-center gap-3">
                 <a href="{{ route('admin.dashboard') }}" class="font-display text-lg font-semibold text-primary-dark">
-                    The Things Corner
+                    thethingscorner
                 </a>
                 <span class="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
                     Admin
@@ -44,6 +44,11 @@
                 Dashboard
             </a>
 
+            <a href="{{ route('admin.products.index') }}"
+               class="shrink-0 rounded-full px-3 py-2 font-medium transition {{ request()->routeIs('admin.products.*') ? 'bg-primary/10 text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
+                Produk
+            </a>
+
             @if (auth()->user()->isAdminMaster())
                 <a href="{{ route('admin.admins.index') }}"
                    class="shrink-0 rounded-full px-3 py-2 font-medium transition {{ request()->routeIs('admin.admins.*') ? 'bg-primary/10 text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
@@ -70,23 +75,18 @@
                     </a>
                 @endif
 
-                <p class="px-3 pb-1 pt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted/70">
-                    Segera
-                </p>
+                <a href="{{ route('admin.products.index') }}"
+                    class="flex items-center justify-between rounded-xl px-3 py-2.5 transition {{ request()->routeIs('admin.products.*') ? 'bg-primary/5 font-medium text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
+                    Produk &amp; stok
+                </a>
+                
 
-                @foreach ([
-                    'Produk',
-                    'Stok',
-                    'Pesanan',
-                    'Custom PO',
-                    'Review',
-                    'Laporan',
-                ] as $item)
-                    <span class="flex items-center justify-between rounded-xl px-3 py-2.5 text-muted">
-                        {{ $item }}
-                        <span class="text-[10px] uppercase tracking-wide text-muted/70">segera</span>
-                    </span>
-                @endforeach
+                    @foreach (['Pesanan', 'Custom PO', 'Review', 'Laporan'] as $item)
+                        <span class="flex items-center justify-between rounded-xl px-3 py-2.5 text-muted">
+                            {{ $item }}
+                            <span class="text-[10px] uppercase tracking-wide text-muted/70">segera</span>
+                        </span>
+                    @endforeach
             </nav>
         </aside>
 
@@ -102,3 +102,4 @@
     </div>
 </body>
 </html>
+

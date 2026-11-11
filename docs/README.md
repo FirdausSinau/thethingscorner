@@ -1,42 +1,58 @@
-# Dokumentasi Proyek — The Things Corner
+# Dokumentasi Teknis - thethingscorner
 
 **Update terakhir:** 9 November 2026
 
+Folder ini hanya berisi dokumentasi yang berkaitan dengan kode dan produk. Dokumen kerja tim, setup laptop, data request, dan file client ada di [`../project-management/`](../project-management/README.md).
+
+---
+
+## 1. Dokumen teknis
+
 | Dokumen | Versi | Isi |
 |---|---|---|
-| `docs/PRD Fase 1 - The Things Corner.md` | 0.2 | Kebutuhan produk, role, fitur, aturan bisnis, acceptance criteria |
-| `docs/erd.md` | 0.1 | ERD, relasi, constraint, index, enum status |
-| `docs/technical-design-fase-1.md` | 0.1 | Arsitektur, state machine, route, authorization, integrasi, deployment |
-| `docs/decisions.md` | 0.2 | Decision log dan asumsi sementara |
-| `docs/design-system.md` | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
-| `docs/wireframes.md` | 0.1 | Wireframe pembeli dan admin |
-| `docs/implementation-plan-fase-1.md` | 0.1 | Rencana per slice, test, commit, deployment |
-| `docs/team-workflow.md` | 0.1 | Pembagian tugas, branch, PR, kepemilikan folder |
-| `docs/setup-local.md` | 1.1 | Setup laptop tim, PostgreSQL, akun demo, update harian, troubleshooting 505 |
-| `docs/data-request.md` | 0.1 | Daftar data yang perlu diminta ke client |
-| `docs/data/README.md` | 0.1 | Penjelasan sample dataset dan urutan import |
-| `docs/data/*.csv` | 0.1 | Data dummy dan template CSV |
-| `Dokumen Kebutuhan Awal dan Opsi Solusi - The Things Corner (RFP) v0.3.docx` | 0.3 | Dokumen client: kebutuhan, opsi provider, biaya, fase |
-| `Panduan Persiapan Client dan Developer - The Things Corner.docx` | 0.2 | Panduan persiapan client/developer dan keputusan fase |
-| `Format Deskripsi Topik dan Kebutuhan Awal Proyek - The Things Corner.docx` | — | Form tugas yang sudah diisi |
+| [`PRD Fase 1 - The Things Corner.md`](PRD%20Fase%201%20-%20The%20Things%20Corner.md) | 0.2 | Kebutuhan produk, role, fitur, aturan bisnis, acceptance criteria |
+| [`erd.md`](erd.md) | 0.5 | ERD, relasi, constraint, index, enum status |
+| [`technical-design-fase-1.md`](technical-design-fase-1.md) | 0.1 | Arsitektur, state machine, route, authorization, integrasi, deployment |
+| [`backend-overview.md`](backend-overview.md) | 0.1 | Alur backend, folder, service, transaksi, keamanan, jalur belajar backend |
+| [`sprint-1-catalog-contract.md`](sprint-1-catalog-contract.md) | 2.1 | Kontrak schema produk, warna, varian, route, storage, dan status Sprint 1 |
+| [`sprint-2-cart-contract.md`](sprint-2-cart-contract.md) | 1.0 | Kontrak cart_items, CartService, route cart, dan aturan stok Sprint 2 |
+| [`sprint-2-checkout-contract.md`](sprint-2-checkout-contract.md) | 1.0 | Kontrak alamat, order, reservasi, CheckoutService, dan expiry Sprint 2 |
+| [`decisions.md`](decisions.md) | 0.4 | Decision log dan asumsi sementara |
+| [`design-system.md`](design-system.md) | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
+| [`wireframes.md`](wireframes.md) | 0.1 | Wireframe pembeli dan admin |
+| [`implementation-plan-fase-1.md`](implementation-plan-fase-1.md) | 0.1 | Rencana per slice, test, commit, deployment |
+| [`data/README.md`](data/README.md) | 0.1 | Penjelasan sample dataset dan urutan import |
+| [`data/*.csv`](data/) | 0.1 | Data dummy dan template CSV |
 
-## Urutan membaca
+---
 
-1. RFP v0.3 — konteks client dan pilihan solusi.
-2. PRD Fase 1 — apa yang dibangun.
-3. ERD — data dan relasi.
-4. Technical design — bagaimana membangun.
-5. Decision log — asumsi dan keputusan yang belum dikunci.
-6. Design system + wireframes — arah UI.
-7. Implementation plan — urutan pengerjaan.
-8. Sample data — contoh untuk pengujian.
-9. Panduan persiapan — apa yang perlu disiapkan client/developer.
+## 2. Urutan membaca
 
-## Status
+1. PRD Fase 1 - apa yang dibangun.
+2. ERD - data dan relasi.
+3. Technical design - bagaimana membangun.
+4. Backend overview - cara kerja backend dan jalur belajar.
+5. Decision log - asumsi dan keputusan yang belum dikunci.
+6. Design system + wireframes - arah UI.
+7. Implementation plan - urutan pengerjaan per slice.
+8. Sample data - contoh untuk pengujian.
+
+Dokumen kerja tim:
+
+1. [`../project-management/setup-local.md`](../project-management/setup-local.md) - menyiapkan laptop.
+2. [`../project-management/team-workflow.md`](../project-management/team-workflow.md) - branch dan PR.
+3. [`../project-management/work-plan.md`](../project-management/work-plan.md) - domain, slice, dan urutan kerja.
+4. [`../project-management/database-rules.md`](../project-management/database-rules.md) - aturan Neon dan migrasi.
+5. [`../project-management/data-request.md`](../project-management/data-request.md) - data yang perlu diminta ke client.
+
+---
+
+## 3. Status
 
 - Fase 1 sudah disepakati secara lingkup.
-- Database: PostgreSQL 16+.
+- Database: PostgreSQL 16+ untuk lokal, Neon untuk database bersama.
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
-- Implementasi: setup Laravel + Git selesai (`35545cc`). Slice 1 auth/role selesai (`990ea92`, `91280d5`). Slice 2 katalog belum.
+- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 dan 4 backend selesai; UI cart/checkout dan admin order masih dikerjakan Anand/Hafiez. Total 53 test lulus.
+

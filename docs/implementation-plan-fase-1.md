@@ -57,9 +57,9 @@ feat: add review reply and moderation
 |---|---|---|
 | 0 | Setup project | Selesai (commit `35545cc`) |
 | 1 | Auth dan role | Selesai: register/login/logout, reset password, role middleware, dashboard per role, kelola Admin Biasa (commit `990ea92`, `91280d5`) |
-| 2 | Katalog dan varian | Belum |
-| 3 | Keranjang persisten | Belum |
-| 4 | Checkout dan reservasi | Belum |
+| 2 | Katalog dan varian | Selesai: katalog publik, detail, admin produk/warna/varian/foto, storage lokal; schema warna/varian dari tim produk; 37 test lulus (commit `51ee81e`) |
+| 3 | Keranjang persisten | Backend selesai: `cart_items`, `CartItem`, `CartService`, 9 test; UI cart belum |
+| 4 | Checkout dan reservasi | Backend selesai: `addresses`, `orders`, `order_items`, `stock_reservations`, `CheckoutService`, expiry command, 6 test; UI checkout dan admin order belum |
 | 5 | Pembayaran | Belum |
 | 6 | Pengiriman | Belum |
 | 7 | Pesanan dan tracking | Belum |
@@ -79,6 +79,12 @@ feat: add review reply and moderation
 | 2026-11-09 | 1 | Register/login/logout, enum role + `is_active`, middleware `role`, dashboard pembeli/admin, seeder demo. 15 test lulus. Responsif dicek di 484px dan 1280px. | `990ea92` |
 | 2026-11-09 | 1 | Reset password lewat email (notifikasi Indonesia), kelola Admin Biasa oleh Admin Master (buat, nonaktifkan, aktifkan), proteksi akun Admin Master dan eskalasi role. 31 test lulus. UI dicek di mobile dan desktop. | `91280d5` |
 | 2026-11-09 | 0 | Database default pindah ke PostgreSQL 16+. Migrasi dan 31 test diuji di PostgreSQL 18.6. Setup tim dan decision log diperbarui. | `7783ba2` |
+| 2026-11-09 | 2 | Schema categories/products/product_variants/product_images, model, enum ProductStatus, seeder 10 produk/30 varian, kontrak Slice 2. 35 test lulus. Migration dan seeder dijalankan ke Neon. | `f49b615` |
+| 2026-11-10 | 2 | Schema freeze. Migration tim produk mengubah tabel katalog di Neon dan menambah product_colors/product_color_images. Backup Neon dibuat, kontrak ditandai tertahan sampai migration dan kode di-push lalu direkonsiliasi. | `0461cfc` |
+| 2026-11-11 | 2 | Rekonsiliasi selesai: adopsi schema produk -> warna -> varian, hapus migration/model duplikat, storage gambar ke disk public, route katalog publik dan detail, admin produk/warna/varian/foto, 37 test lulus. | `51ee81e` |
+| 2026-11-11 | 2 | Brand resmi `thethingscorner`; tambah `weight_grams`, `rating_avg`, `rating_count`, `stock_reserved`; migration ke Neon; 38 test lulus. | `352ccaf` |
+| 2026-11-11 | 3 | `cart_items`, `CartItem`, `CartService`, validasi stok tanpa mengunci stok, 9 test lulus. | `e656a18` |
+| 2026-11-11 | 4 | `addresses`, `orders`, `order_items`, `stock_reservations`, `CheckoutService`, expiry command, 6 test lulus. Migration ke Neon. | `e656a18` |
 
 ---
 

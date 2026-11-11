@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'The Things Corner · Sepatu handmade custom Bandung')
+@section('title', 'thethingscorner · Sepatu handmade custom Bandung')
 
 @section('content')
     <section class="mx-auto grid w-full max-w-6xl gap-12 px-5 py-16 md:grid-cols-[1.15fr_0.85fr] md:px-8 md:py-24">
@@ -14,8 +14,8 @@
             </h1>
 
             <p class="mt-6 max-w-xl text-base leading-7 text-muted md:text-lg">
-                Katalog dan custom pre-order The Things Corner sedang disiapkan.
-                Masuk untuk melihat dashboard, atau daftar untuk mulai memesan.
+                Lihat model, warna, dan ukuran yang tersedia. Masuk untuk memesan,
+                menyimpan alamat, dan memantau pesanan.
             </p>
 
             <div class="mt-8 flex flex-wrap items-center gap-3">
@@ -36,6 +36,13 @@
                 @endauth
             </div>
 
+            <p class="mt-4">
+                <a href="{{ route('catalog.index') }}"
+                   class="text-sm font-semibold text-primary transition hover:text-primary-dark">
+                    Lihat katalog sepatu &rarr;
+                </a>
+            </p>
+
             <p class="mt-8 text-xs text-muted">
                 Pesanan web dan Shopee akan tercatat dalam satu alur stok.
             </p>
@@ -48,7 +55,7 @@
 
                 <div class="relative flex h-full flex-col justify-between">
                     <div class="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-muted">
-                        <span>The Things Corner</span>
+                        <span>thethingscorner</span>
                         <span>Since 2015</span>
                     </div>
 
@@ -70,3 +77,4 @@
         </div>
     </section>
 @endsection
+

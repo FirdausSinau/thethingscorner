@@ -1,8 +1,8 @@
 *.log
 .DS_Store
 .env
-.env.backup
-.env.production
+.env.*
+!.env.example
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -24,5 +24,5 @@ Homestead.yaml
 Thumbs.db
 
 # Client-facing binary documents stay out of the app repository
-/*.docx
-/*.pdf
+*.docx
+*.pdf

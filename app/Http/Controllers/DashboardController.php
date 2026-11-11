@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -14,6 +15,10 @@ class DashboardController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return view('storefront.dashboard');
+        $products = Product::listed()
+            ->latest()
+            ->paginate(12);
+
+        return view('storefront.dashboard', compact('products'));
     }
 }

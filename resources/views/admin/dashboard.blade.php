@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard Admin · The Things Corner')
+@section('title', 'Dashboard Admin · thethingscorner')
 
 @section('content')
     <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
@@ -53,7 +53,7 @@
                 </li>
                 <li class="flex items-center justify-between gap-4">
                     <span>Katalog</span>
-                    <span class="font-medium text-warning">Segera</span>
+                    <span class="font-medium text-success">Aktif</span>
                 </li>
                 <li class="flex items-center justify-between gap-4">
                     <span>Pembayaran</span>
@@ -73,3 +73,4 @@
         </div>
     @endif
 @endsection
+

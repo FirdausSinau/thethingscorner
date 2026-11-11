@@ -1,7 +1,7 @@
 # Decision Log — The Things Corner
 
-**Versi:** 0.2  
-**Tanggal:** 9 November 2026  
+**Versi:** 0.4  
+**Tanggal:** 11 November 2026  
 **Status:** Draft  
 **Referensi:** RFP v0.3, PRD Fase 1 v0.2
 
@@ -55,6 +55,10 @@ Aturan:
 | D-24 | Fitur ditunda | WA API, Google Maps, analytics, kupon, COD, loyalty, Sentry, PDF, CAPTCHA, Cloudinary, chat, Q&A, wishlist | Deferred | Scope | Client |
 | D-25 | Perubahan scope | Lewat change request; fitur baru masuk daftar fase 2 | Confirmed | Timeline | Tim + client |
 | D-26 | Database | PostgreSQL 16+ untuk local, staging, dan production | Confirmed | Config `.env`, backup, deployment | Tim |
+| D-27 | Diskon | Ditunda sampai aturan bisnis dan perhitungan jelas | Deferred | Order, checkout, laporan | Client + tim |
+| D-28 | Produk reject | Sumbernya biasanya kesalahan produksi PO; aturan belum dikunci | TBD | Stok, PO, katalog, harga | Client + tim |
+| D-29 | Struktur katalog | Produk -> warna -> varian ukuran; foto bisa per produk dan per warna | Confirmed | Model, admin, katalog | Tim produk |
+| D-30 | Brand | Nama resmi `thethingscorner`, huruf kecil satu kata | Confirmed | UI, email, dokumen | Client |
 
 ---
 
@@ -155,6 +159,74 @@ Jika berubah:
 - jalankan ulang migrasi di database baru;
 - tidak perlu ubah controller/Blade.
 
+### D-27 - Diskon
+
+Status: **Deferred**.
+
+Diskon belum diimplementasikan karena aturan bisnis belum jelas:
+
+- diskon per produk, per varian, per pesanan, atau kode kupon;
+- persentase atau nominal;
+- boleh digabung atau tidak;
+- batas waktu dan kuota;
+- perlakuan di laporan dan rekonsiliasi Shopee;
+- apakah harga diskon disimpan sebagai snapshot.
+
+Sampai aturan ini dikunci, jangan tambah kolom diskon ke order atau checkout.
+
+### D-28 - Produk reject
+
+Status: **TBD**.
+
+Produk reject biasanya berasal dari kesalahan produksi custom PO. Pertanyaan yang perlu dijawab client:
+
+- reject dijual sebagai produk diskon, disimpan sebagai stok internal, atau write-off;
+- apakah reject terikat ke PO asal;
+- apakah butuh grade/condition dan catatan cacat;
+- apakah tampil di katalog publik atau hanya dijual via CS/Shopee;
+- bagaimana dampaknya ke stok dan laporan.
+
+Jangan tambah kolom atau tabel reject sebelum aturan ini disepakati.
+
+### D-29 - Struktur katalog
+
+Status: **Confirmed**.
+
+Struktur yang dipakai:
+
+```text
+products -> product_colors -> product_variants
+products -> product_images
+product_colors -> product_color_images
+```
+
+Alasan:
+
+- warna punya foto sendiri;
+- ukuran dan stok terikat ke warna;
+- harga varian bisa override harga dasar;
+- preorder bisa disimpan di level produk.
+
+Field lanjutan yang ditambahkan 11 November 2026:
+
+- `products.weight_grams`;
+- `products.rating_avg`;
+- `products.rating_count`;
+- `product_variants.stock_reserved`.
+
+### D-30 - Brand
+
+Status: **Confirmed**.
+
+Nama brand yang dipakai di aplikasi dan komunikasi: **`thethingscorner`**.
+
+Aturan:
+
+- tulis huruf kecil, satu kata;
+- gunakan di title halaman, header, footer, dan email;
+- `APP_NAME` di `.env` memakai `thethingscorner`;
+- dokumen formal boleh tetap memakai nama panjang sebagai judul dokumen.
+
 ---
 
 ## 4. Fitur yang ditunda
@@ -164,7 +236,7 @@ Jika berubah:
 | WA API | Deferred | `wa.me` cukup |
 | Google Maps | Deferred | Tracking teks cukup |
 | Analytics | Deferred | Laporan internal cukup |
-| Kupon/diskon | Deferred | Belum dibutuhkan |
+| Kupon/diskon | Deferred | Menunggu aturan bisnis dan perhitungan |
 | COD | Deferred | Menambah rekonsiliasi |
 | Loyalty/poin | Deferred | Belum dibutuhkan |
 | Sentry | Deferred | Laravel log cukup |
@@ -202,3 +274,5 @@ Jika berubah:
 |---|---|---|
 | 0.1 | 6 Nov 2026 | Decision log awal |
 | 0.2 | 9 Nov 2026 | Tambah D-26: database default PostgreSQL |
+| 0.3 | 11 Nov 2026 | Tambah D-27 diskon, D-28 produk reject, D-29 struktur katalog warna/varian |
+| 0.4 | 11 Nov 2026 | Brand resmi `thethingscorner`; field ongkir, reservasi, dan rating ditambahkan |
