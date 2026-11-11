@@ -58,8 +58,8 @@ feat: add review reply and moderation
 | 0 | Setup project | Selesai (commit `35545cc`) |
 | 1 | Auth dan role | Selesai: register/login/logout, reset password, role middleware, dashboard per role, kelola Admin Biasa (commit `990ea92`, `91280d5`) |
 | 2 | Katalog dan varian | Selesai: katalog publik, detail, admin produk/warna/varian/foto, storage lokal; schema warna/varian dari tim produk; 37 test lulus (commit `51ee81e`) |
-| 3 | Keranjang persisten | Backend selesai: `cart_items`, `CartItem`, `CartService`, 9 test; UI cart belum |
-| 4 | Checkout dan reservasi | Backend selesai: `addresses`, `orders`, `order_items`, `stock_reservations`, `CheckoutService`, expiry command, 6 test; UI checkout dan admin order belum |
+| 3 | Keranjang persisten | Selesai: `cart_items`, `CartItem`, `CartService`, UI cart, add-to-cart; test service dan UI |
+| 4 | Checkout dan reservasi | Sebagian: `addresses`, `orders`, `order_items`, `stock_reservations`, `CheckoutService`, expiry command, UI checkout, order show; admin order Hafiez belum |
 | 5 | Pembayaran | Belum |
 | 6 | Pengiriman | Belum |
 | 7 | Pesanan dan tracking | Belum |

@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 11 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Backend selesai, UI cart belum
+**Status:** Backend dan UI cart selesai
 
 Dokumen ini adalah kontrak Slice 3: keranjang persisten tanpa mengunci stok.
 
@@ -176,15 +176,13 @@ Anand perlu:
 - stok yang direservasi mengurangi stok tersedia;
 - user tidak bisa mengubah cart user lain.
 
-Status: 9 test lulus, 16 assertions.
+Status service: 9 test lulus, 16 assertions.  
+Test UI cart/checkout: 5 test lulus, 22 assertions.
 
 ---
 
 ## 8. Yang belum
 
-- route dan controller cart;
-- halaman cart;
-- tombol tambah ke cart di detail produk;
-- checkout (Slice 4);
+- checkout dan order sudah masuk Slice 4;
 - merge cart setelah login tidak diperlukan karena cart hanya untuk user login.
 

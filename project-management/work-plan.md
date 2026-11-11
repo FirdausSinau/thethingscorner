@@ -103,7 +103,7 @@ Urutan:
 
 ### Batch 2 - Cart dan checkout
 
-**Status 11 November 2026:** backend Slice 3 dan 4 selesai. Menunggu UI cart/checkout dari Anand dan admin order read-only dari Hafiez.
+**Status 11 November 2026:** cart dan checkout selesai. Menunggu admin order read-only dari Hafiez.
 
 Fokus: Slice 3 lalu Slice 4.
 

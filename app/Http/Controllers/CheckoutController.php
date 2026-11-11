@@ -28,9 +28,13 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(Request $request, CheckoutService $checkout)
+    public function store(Request $request, CheckoutService $checkout, CartService $cart)
     {
         $user = $request->user();
+
+        if ($cart->summary($user)['items']->isEmpty()) {
+            return redirect()->route('cart.index')->with('status', 'Keranjang masih kosong.');
+        }
 
         $data = $request->validate([
             'recipient' => ['required', 'string', 'max:100'],
