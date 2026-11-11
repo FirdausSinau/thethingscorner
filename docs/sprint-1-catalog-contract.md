@@ -179,6 +179,14 @@ Aturan:
 
 Data lama di Neon berisi path gambar yang sebelumnya disimpan di S3/Neon. Saat `PRODUCT_IMAGES_DISK=s3` dan credential benar, path lama bisa langsung dipakai. Jika memakai `public`, file harus disalin ke `storage/app/public`.
 
+### Troubleshooting S3/Neon
+
+- `InvalidAccessKeyId`: access key salah, tidak cocok, atau ada spasi/quote saat menyalin. Perbaiki `AWS_ACCESS_KEY_ID` dan `AWS_SECRET_ACCESS_KEY`.
+- `NoSuchKey`: koneksi dan bucket benar, tetapi object tidak ada di path tersebut. Upload ulang lewat admin atau cek key di bucket.
+- `HTTP 000`: endpoint tidak bisa dihubungi. Cek `AWS_ENDPOINT` dan koneksi internet.
+- `url()` hanya membuat URL. Selalu cek `exists()` atau buka URL di browser untuk memastikan file benar-benar ada.
+- Setelah mengubah `.env`, jalankan `php artisan config:clear`.
+
 ---
 
 ## 5. Seeder
