@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'Thethingscorner · Sepatu handmade custom Bandung')
+@section('title', 'thethingscorner · Sepatu handmade custom Bandung')
 
 @section('content')
     <section class="mx-auto grid w-full max-w-6xl gap-12 px-5 py-16 md:grid-cols-[1.15fr_0.85fr] md:px-8 md:py-24">
@@ -55,7 +55,7 @@
 
                 <div class="relative flex h-full flex-col justify-between">
                     <div class="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-muted">
-                        <span>Thethingscorner</span>
+                        <span>thethingscorner</span>
                         <span>Since 2015</span>
                     </div>
 
@@ -77,3 +77,4 @@
         </div>
     </section>
 @endsection
+

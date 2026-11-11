@@ -1,10 +1,10 @@
 @extends('layouts.auth')
 
-@section('title', 'Lupa Password · Thethingscorner')
+@section('title', 'Lupa Password · thethingscorner')
 
 @section('content')
     <div class="w-full rounded-3xl border border-border bg-surface p-7 shadow-sm md:p-9">
-        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-accent">The Things Corner</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-accent">thethingscorner</p>
         <h1 class="mt-3 font-display text-3xl text-primary-dark">Lupa password</h1>
         <p class="mt-2 text-sm leading-6 text-muted">
             Masukkan email akun kamu. Kami akan mengirim link untuk membuat password baru.
@@ -38,3 +38,4 @@
         </p>
     </div>
 @endsection
+

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard Admin · Thethingscorner')
+@section('title', 'Dashboard Admin · thethingscorner')
 
 @section('content')
     <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
@@ -73,3 +73,4 @@
         </div>
     @endif
 @endsection
+

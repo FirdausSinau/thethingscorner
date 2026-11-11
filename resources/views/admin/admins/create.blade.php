@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Tambah Admin · The Things Corner')
+@section('title', 'Tambah Admin · thethingscorner')
 
 @section('content')
     <div class="max-w-2xl">
@@ -84,3 +84,4 @@
         </form>
     </div>
 @endsection
+

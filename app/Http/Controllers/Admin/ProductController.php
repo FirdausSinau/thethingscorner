@@ -75,8 +75,9 @@ class ProductController extends Controller
     private function payload(ProductRequest $request): array
     {
         $data = $request->validated();
-        $data['is_active']   = $request->boolean('is_active');
-        $data['is_preorder'] = $request->boolean('is_preorder');
+        $data['weight_grams'] = (int) ($data['weight_grams'] ?? 0);
+        $data['is_active']    = $request->boolean('is_active');
+        $data['is_preorder']  = $request->boolean('is_preorder');
 
         if (! $data['is_preorder']) {
             $data['preorder_close_date'] = null;

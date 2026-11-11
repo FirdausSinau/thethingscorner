@@ -30,6 +30,12 @@
         </label>
     </div>
 
+    <div>
+        <label class="{{ $label }}">Berat (gram)
+            <input type="number" name="weight_grams" min="0" value="{{ old('weight_grams', $p?->weight_grams ?? 0) }}" class="{{ $input }}">
+        </label>
+    </div>
+
     <div class="md:col-span-2">
         <label class="{{ $label }}">Deskripsi
             <textarea name="description" rows="4" maxlength="2000" class="{{ $input }}">{{ old('description', $p?->description) }}</textarea>

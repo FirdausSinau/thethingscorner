@@ -1,6 +1,6 @@
-# The Things Corner
+# thethingscorner
 
-Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk The Things Corner.
+Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk thethingscorner.
 
 **Status:** Slice 2 selesai - katalog dan admin produk  
 **Stack:** Laravel 13, PHP 8.4, PostgreSQL 16+, Blade, Tailwind CSS 4, Vite, Alpine.js  

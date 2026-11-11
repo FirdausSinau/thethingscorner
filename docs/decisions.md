@@ -1,6 +1,6 @@
 # Decision Log — The Things Corner
 
-**Versi:** 0.3  
+**Versi:** 0.4  
 **Tanggal:** 11 November 2026  
 **Status:** Draft  
 **Referensi:** RFP v0.3, PRD Fase 1 v0.2
@@ -58,6 +58,7 @@ Aturan:
 | D-27 | Diskon | Ditunda sampai aturan bisnis dan perhitungan jelas | Deferred | Order, checkout, laporan | Client + tim |
 | D-28 | Produk reject | Sumbernya biasanya kesalahan produksi PO; aturan belum dikunci | TBD | Stok, PO, katalog, harga | Client + tim |
 | D-29 | Struktur katalog | Produk -> warna -> varian ukuran; foto bisa per produk dan per warna | Confirmed | Model, admin, katalog | Tim produk |
+| D-30 | Brand | Nama resmi `thethingscorner`, huruf kecil satu kata | Confirmed | UI, email, dokumen | Client |
 
 ---
 
@@ -206,6 +207,26 @@ Alasan:
 - harga varian bisa override harga dasar;
 - preorder bisa disimpan di level produk.
 
+Field lanjutan yang ditambahkan 11 November 2026:
+
+- `products.weight_grams`;
+- `products.rating_avg`;
+- `products.rating_count`;
+- `product_variants.stock_reserved`.
+
+### D-30 - Brand
+
+Status: **Confirmed**.
+
+Nama brand yang dipakai di aplikasi dan komunikasi: **`thethingscorner`**.
+
+Aturan:
+
+- tulis huruf kecil, satu kata;
+- gunakan di title halaman, header, footer, dan email;
+- `APP_NAME` di `.env` memakai `thethingscorner`;
+- dokumen formal boleh tetap memakai nama panjang sebagai judul dokumen.
+
 ---
 
 ## 4. Fitur yang ditunda
@@ -254,3 +275,4 @@ Alasan:
 | 0.1 | 6 Nov 2026 | Decision log awal |
 | 0.2 | 9 Nov 2026 | Tambah D-26: database default PostgreSQL |
 | 0.3 | 11 Nov 2026 | Tambah D-27 diskon, D-28 produk reject, D-29 struktur katalog warna/varian |
+| 0.4 | 11 Nov 2026 | Brand resmi `thethingscorner`; field ongkir, reservasi, dan rating ditambahkan |

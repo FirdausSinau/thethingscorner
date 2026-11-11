@@ -1,6 +1,6 @@
 # ERD Fase 1 — The Things Corner
 
-**Versi:** 0.3  
+**Versi:** 0.4  
 **Tanggal:** 11 November 2026  
 **Status:** Draft, schema katalog mengikuti implementasi warna dan varian  
 **Referensi:** PRD Fase 1 v0.2, RFP v0.3
@@ -94,10 +94,13 @@ erDiagram
         string slug
         text description
         bigint base_price
+        int weight_grams
         boolean is_active
         boolean is_preorder
         date preorder_close_date
         date estimated_ready_date
+        decimal rating_avg
+        int rating_count
     }
 
     PRODUCT_COLORS {
@@ -120,6 +123,7 @@ erDiagram
         string size
         string sku
         int stock
+        int stock_reserved
         bigint price
     }
 
@@ -465,9 +469,6 @@ HIDDEN
 | Multi-alamat UI | Fase 1 satu default / langsung banyak | Struktur `addresses` sudah mendukung |
 | Retur | Manual / otomatis | Fase 1 manual; tidak ada tabel retur |
 | Shopee API | Fase 2 | Tidak mengubah tabel inti |
-| Berat produk | Belum ada kolom | Perlu `products.weight_grams` sebelum integrasi ongkir |
-| Reservasi stok | Belum ada kolom | Perlu `product_variants.stock_reserved` sebelum checkout |
-| Rating produk | Belum ada kolom | Perlu `rating_avg` dan `rating_count` sebelum review |
 | Foto produk | Local public / S3 | Kode sekarang local public; path lama di Neon masih menunjuk S3 dan perlu disalin |
 | Brand | The Things Corner / Thethingscorner | Perlu konfirmasi kapitalisasi resmi |
 
@@ -486,3 +487,10 @@ Contoh data ada di `docs/data/`:
 - mutasi stok, pembayaran, dan pengiriman.
 
 Gunakan data ini untuk menguji ERD dan UI sebelum data client tersedia.
+
+Field lanjutan yang sudah ditambahkan 11 November 2026:
+
+- `products.weight_grams`
+- `products.rating_avg`
+- `products.rating_count`
+- `product_variants.stock_reserved`

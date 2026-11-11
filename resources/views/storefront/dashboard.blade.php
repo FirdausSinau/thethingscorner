@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'Dashboard · Thethingscorner')
+@section('title', 'Dashboard · thethingscorner')
 
 @section('content')
     <section class="mx-auto w-full max-w-6xl px-5 py-12 md:px-8">
@@ -68,3 +68,4 @@
         </div>
     </section>
 @endsection
+

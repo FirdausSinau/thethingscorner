@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', $product->name . ' · Thethingscorner')
+@section('title', $product->name . ' · thethingscorner')
 
 @section('content')
     @php
@@ -82,3 +82,4 @@
         </div>
     </section>
 @endsection
+

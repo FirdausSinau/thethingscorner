@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'Katalog · Thethingscorner')
+@section('title', 'Katalog · thethingscorner')
 
 @section('content')
     <section class="mx-auto w-full max-w-6xl px-5 py-10 md:px-8 md:py-14">
@@ -54,3 +54,4 @@
         <div class="mt-10">{{ $products->links() }}</div>
     </section>
 @endsection
+

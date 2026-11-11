@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Thethingscorner')</title>
+    <title>@yield('title', 'thethingscorner')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -64,8 +64,9 @@
     <footer class="border-t border-border bg-surface">
         <div class="mx-auto flex w-full max-w-6xl flex-col gap-2 px-5 py-8 text-xs text-muted md:flex-row md:items-center md:justify-between md:px-8">
             <p>Handmade custom shoes · Bandung</p>
-            <p>&copy; {{ date('Y') }} Thethingscorner</p>
+            <p>&copy; {{ date('Y') }} thethingscorner</p>
         </div>
     </footer>
 </body>
 </html>
+

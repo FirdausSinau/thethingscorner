@@ -1,6 +1,6 @@
 # Catalog Contract - Slice 2
 
-**Versi:** 2.0  
+**Versi:** 2.1  
 **Tanggal:** 11 November 2026  
 **Untuk:** Firdaus, Anggota A, Anggota B  
 **Status:** Diimplementasikan dan direkonsiliasi
@@ -30,10 +30,13 @@ Dokumen ini menggantikan kontrak versi 1.0. Schema katalog sekarang mengikuti im
 | slug | string | unik |
 | description | text | nullable |
 | base_price | bigint | Rupiah |
+| weight_grams | integer | default 0, untuk ongkir |
 | is_active | boolean | default true |
 | is_preorder | boolean | default false |
 | preorder_close_date | date | nullable |
 | estimated_ready_date | date | nullable |
+| rating_avg | decimal(3,2) | default 0 |
+| rating_count | integer | default 0 |
 | created_at, updated_at | timestamp | |
 
 ### product_colors
@@ -65,6 +68,7 @@ Dokumen ini menggantikan kontrak versi 1.0. Schema katalog sekarang mengikuti im
 | size | string(10) | unik per warna |
 | sku | string | unik |
 | stock | integer | default 0 |
+| stock_reserved | integer | default 0, untuk reservasi checkout |
 | price | bigint | nullable, null berarti pakai `base_price` |
 | created_at, updated_at | timestamp | |
 
@@ -174,17 +178,24 @@ Penting: data lama di Neon masih berisi path gambar yang sebelumnya disimpan di 
 - Membuat 7 varian ukuran.
 - Mencoba menyalin foto dari `storage/app/private/Theon Dockmart.png` ke disk public. Jika file tidak ada, dilewati.
 
-Data `Cassie Docmart` dan foto lainnya dibuat lewat admin/manual, bukan seeder. Untuk reproduksi penuh, seeder perlu diperluas.
+Keputusan tim:
+
+- `Theon Docmart` dibuat lewat seeder sebagai data demo.
+- `Cassie Docmart` dibuat manual lewat admin.
+- Produk berikutnya dibuat lewat admin, bukan seeder.
+
+Seeder tidak perlu diperluas untuk seluruh katalog. Seeder hanya untuk data demo awal.
 
 ---
 
 ## 6. Aturan stok dan harga
 
 - Harga tampil memakai `base_price`; harga varian dipakai jika tidak null.
-- Stok per varian ada di `product_variants.stock`.
-- Total stok produk = jumlah stok semua varian.
+- Stok fisik per varian ada di `product_variants.stock`.
+- Stok tersedia = `stock - stock_reserved`.
+- Total stok produk = jumlah stok tersedia semua varian.
 - Varian stok 0 tetap tampil di detail, tetapi ditandai habis.
-- Cart dan reservasi belum diimplementasikan. Jangan menambah `stock_reserved` sebelum Slice 4 disetujui.
+- Berat produk untuk ongkir memakai `products.weight_grams`.
 
 ---
 
@@ -212,13 +223,16 @@ Status terakhir: 37 test lulus, 89 assertions.
 
 ## 8. Yang belum
 
-- `weight_grams` untuk ongkir.
-- `stock_reserved` untuk reservasi checkout.
-- `rating_avg` dan `rating_count` untuk review.
-- 10 produk demo lengkap.
-- Form preorder di admin (kolom sudah ada, UI belum).
 - Sinkronisasi file gambar lama dari S3 ke storage lokal.
-- Konfirmasi kapitalisasi brand: `The Things Corner`, `Thethingscorner`, atau `thethingscorner`.
+- Form preorder di admin (kolom sudah ada, UI belum).
+- Halaman cart, checkout, dan reservasi.
+- Integrasi ongkir memakai `weight_grams`.
+
+Sudah diputuskan:
+
+- Brand resmi: `thethingscorner` (huruf kecil, satu kata).
+- Field `weight_grams`, `rating_avg`, `rating_count`, dan `stock_reserved` sudah ditambahkan.
+- Produk baru ke depan dibuat lewat admin, bukan seeder.
 
 ---
 

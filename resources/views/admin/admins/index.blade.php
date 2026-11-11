@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Akun Admin · The Things Corner')
+@section('title', 'Akun Admin · thethingscorner')
 
 @section('content')
     <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -131,3 +131,4 @@
         </div>
     @endif
 @endsection
+

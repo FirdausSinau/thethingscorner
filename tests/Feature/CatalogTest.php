@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\UserRole;
 use App\Models\Product\Category;
 use App\Models\Product\Product;
+use App\Models\Product\ProductVariant;
 use App\Models\User;
 use Database\Seeders\CatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -78,6 +79,7 @@ class CatalogTest extends TestCase
             'category_id' => Category::firstOrFail()->id,
             'description' => 'Produk untuk test.',
             'base_price' => 150000,
+            'weight_grams' => 700,
             'is_active' => 1,
             'is_preorder' => 0,
         ]);
@@ -86,7 +88,19 @@ class CatalogTest extends TestCase
         $this->assertDatabaseHas('products', [
             'name' => 'Produk Baru',
             'base_price' => 150000,
+            'weight_grams' => 700,
         ]);
         $this->assertSame(1, Product::where('slug', 'produk-baru')->count());
+    }
+
+    public function test_variant_stock_available_subtracts_reserved_stock(): void
+    {
+        $variant = ProductVariant::query()->firstOrFail();
+        $variant->forceFill(['stock_reserved' => 2])->save();
+
+        $this->assertSame(
+            $variant->stock - 2,
+            $variant->fresh()->stock_available
+        );
     }
 }

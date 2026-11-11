@@ -18,6 +18,7 @@ class ProductRequest extends FormRequest
             'category_id'          => ['required', 'exists:categories,id'],
             'description'          => ['nullable', 'string', 'max:2000'],
             'base_price'           => ['required', 'integer', 'min:0'],
+            'weight_grams'         => ['nullable', 'integer', 'min:0'],
             'is_active'            => ['nullable', 'boolean'],
             'is_preorder'          => ['nullable', 'boolean'],
             'preorder_close_date'  => ['nullable', 'date'],

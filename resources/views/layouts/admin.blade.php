@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin · Thethingscorner')</title>
+    <title>@yield('title', 'Admin · thethingscorner')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -14,7 +14,7 @@
         <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
             <div class="flex items-center gap-3">
                 <a href="{{ route('admin.dashboard') }}" class="font-display text-lg font-semibold text-primary-dark">
-                    Thethingscorner
+                    thethingscorner
                 </a>
                 <span class="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
                     Admin
@@ -102,3 +102,4 @@
     </div>
 </body>
 </html>
+
