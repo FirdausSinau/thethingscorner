@@ -244,6 +244,15 @@ Aturan selama rekonsiliasi:
 - Setelah schema kanonik dipilih, update model, seeder, contract, dan test, lalu jalankan satu migration rekonsiliasi.
 - Jangan menambah tabel/kolom baru untuk diskon atau produk reject selama schema freeze.
 
+Penyelesaian 11 November 2026:
+
+- schema produk dari tim produk dipakai sebagai schema kanonik;
+- migration dan model katalog lama dihapus dari repo;
+- storage gambar dipindah ke disk `public`;
+- route katalog publik dan detail produk ditambahkan;
+- test katalog ditambahkan, total 37 test lulus;
+- file gambar lama yang masih menunjuk S3 perlu disalin ke storage lokal.
+
 ---
 
 ## 13. Ringkasan

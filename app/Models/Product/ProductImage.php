@@ -14,8 +14,12 @@ class ProductImage extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function getUrlAttribute(): string
+    public function getUrlAttribute(): ?string
     {
-        return Storage::disk('s3')->url($this->path);
+        if (! $this->path || ! Storage::disk('public')->exists($this->path)) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($this->path);
     }
 }

@@ -17,7 +17,12 @@
                 <span class="hidden text-[10px] uppercase tracking-[0.25em] text-muted sm:inline">Bandung</span>
             </a>
 
-            <div class="flex items-center gap-3 text-sm">
+            <div class="flex items-center gap-2 text-sm sm:gap-3">
+                <a href="{{ route('catalog.index') }}"
+                   class="rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5">
+                    Katalog
+                </a>
+
                 @auth
                     <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}"
                        class="hidden rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5 sm:inline-flex">

@@ -11,5 +11,4 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 Route::get('/produk', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/produk/{product:slug}', [ProductController::class, 'show'])
-    ->middleware('auth')
     ->name('products.show');

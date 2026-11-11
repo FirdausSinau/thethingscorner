@@ -62,11 +62,11 @@ class CatalogSeeder extends Seeder
         $local = Storage::disk('local');
 
         if (! $local->exists($fileName)) {
-            $this->command->warn("Foto '{$fileName}' tidak ditemukan di storage/app/private, dilewati.");
+            $this->command?->warn("Foto '{$fileName}' tidak ditemukan di storage/app/private, dilewati.");
             return;
         }
 
-        $path = Storage::disk('s3')->putFileAs(
+        $path = Storage::disk('public')->putFileAs(
             'products',
             new File($local->path($fileName)),
             'theon-dockmart.png'

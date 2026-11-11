@@ -21,7 +21,7 @@ class ProductColorImageController extends Controller
         $next = (int) ProductColorImage::where('product_color_id', $color->id)->max('sort_order') + 1;
 
         foreach ($request->file('images') as $file) {
-            $path = $file->store("products/{$color->product_id}", 's3');
+            $path = $file->store("products/{$color->product_id}", 'public');
 
             $color->images()->create([
                 'path'       => $path,
@@ -34,9 +34,10 @@ class ProductColorImageController extends Controller
 
     public function destroy(ProductColorImage $image)
     {
-        Storage::disk('s3')->delete($image->path);
+        Storage::disk('public')->delete($image->path);
         $image->delete();
 
         return back()->with('status', 'Foto dihapus.');
     }
 }
+

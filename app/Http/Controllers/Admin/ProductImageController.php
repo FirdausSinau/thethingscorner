@@ -20,7 +20,7 @@ class ProductImageController extends Controller
 
         foreach ($request->file('images') as $file) {
             $product->images()->create([
-                'path'       => $file->store("products/{$product->id}/gallery", 's3'),
+                'path'       => $file->store("products/{$product->id}/gallery", 'public'),
                 'sort_order' => $next++,
             ]);
         }
@@ -30,9 +30,10 @@ class ProductImageController extends Controller
 
     public function destroy(ProductImage $productImage)
     {
-        Storage::disk('s3')->delete($productImage->path);
+        Storage::disk('public')->delete($productImage->path);
         $productImage->delete();
 
         return back()->with('status', 'Foto produk dihapus.');
     }
 }
+

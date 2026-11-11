@@ -1,74 +1,23 @@
 # Catalog Contract - Slice 2
 
-**Versi:** 1.1  
-**Tanggal:** 10 November 2026  
+**Versi:** 2.0  
+**Tanggal:** 11 November 2026  
 **Untuk:** Firdaus, Anggota A, Anggota B  
-**Status:** TERTAHAN, menunggu rekonsiliasi schema
+**Status:** Diimplementasikan dan direkonsiliasi
 
-> **PENTING, 10 November 2026:** Neon sudah memakai schema katalog yang berbeda dari kontrak ini. Migration dari tim produk menambahkan `product_colors`, `product_color_images`, dan mengubah kolom `products` serta `product_variants`.
->
-> Jangan mulai implementasi katalog publik atau admin berdasarkan kontrak versi ini sampai rekonsiliasi selesai. Firdaus akan memperbarui kontrak setelah migration dan kode tim produk di-push.
-
-Dokumen ini adalah kontrak kerja Slice 2. A dan B tidak perlu menebak nama tabel, kolom, relasi, route, atau bentuk data.
+Dokumen ini menggantikan kontrak versi 1.0. Schema katalog sekarang mengikuti implementasi dari Hafiez, dengan penyesuaian storage lokal dan route publik oleh Firdaus.
 
 ---
 
-## 0. Status integrasi schema
-
-Per 10 November 2026, schema di Neon berbeda dari schema awal Slice 2:
-
-| Bagian | Schema awal | Schema Neon sekarang |
-|---|---|---|
-| Produk | `status`, `weight_grams`, `rating_avg`, `rating_count` | `base_price`, `is_active`, `is_preorder`, tanggal preorder |
-| Warna | kolom `color` di varian | tabel `product_colors` |
-| Foto | `product_images` | `product_images` dan `product_color_images` |
-| Varian | `product_id`, `color`, `stock_on_hand`, `stock_reserved` | `product_color_id`, `stock`, tanpa `stock_reserved` |
-
-Konsekuensi:
-
-- `Product::active()` gagal karena kolom `status` sudah tidak ada.
-- Seeder `DemoCatalogSeeder` tidak cocok dengan schema baru.
-- Test SQLite masih memakai migration lama, jadi belum mencerminkan Neon.
-- Kontrak route dan data Blade di bawah belum final.
-
-Yang dibutuhkan sebelum lanjut:
-
-1. Migration dan kode tim produk di-push ke GitHub.
-2. Firdaus membandingkan migration, model, relasi, dan seeder.
-3. Schema kanonik dipilih.
-4. Kontrak ini diperbarui.
-5. Baru A dan B mulai implementasi.
-
----
-
-## 1. Yang sudah selesai
-
-- Migration `categories`, `products`, `product_variants`, `product_images`.
-- Model `Category`, `Product`, `ProductVariant`, `ProductImage`.
-- Enum `ProductStatus`.
-- Seeder `DemoCatalogSeeder`.
-- 10 produk, 7 kategori, 30 varian dari `docs/data`.
-- Test seeder, scope, dan stok tersedia.
-
-Yang belum:
-
-- route katalog publik;
-- controller katalog publik;
-- CRUD admin produk dan varian;
-- upload dan optimasi foto;
-- halaman detail produk.
-
----
-
-## 2. Schema
+## 1. Schema aktual
 
 ### categories
 
 | Kolom | Tipe | Catatan |
 |---|---|---|
 | id | bigint | primary key |
-| name | string | contoh: Mules |
-| slug | string | unik, contoh: mules |
+| name | string | |
+| slug | string | belum unik di database, validasi di aplikasi |
 | created_at, updated_at | timestamp | |
 
 ### products
@@ -76,14 +25,35 @@ Yang belum:
 | Kolom | Tipe | Catatan |
 |---|---|---|
 | id | bigint | primary key |
-| category_id | bigint | FK ke categories, restrict delete |
+| category_id | bigint | FK categories, restrict delete |
 | name | string | |
 | slug | string | unik |
 | description | text | nullable |
-| status | string(20) | `active` atau `inactive` |
-| weight_grams | integer | berat untuk ongkir |
-| rating_avg | decimal(3,2) | default 0 |
-| rating_count | integer | default 0 |
+| base_price | bigint | Rupiah |
+| is_active | boolean | default true |
+| is_preorder | boolean | default false |
+| preorder_close_date | date | nullable |
+| estimated_ready_date | date | nullable |
+| created_at, updated_at | timestamp | |
+
+### product_colors
+
+| Kolom | Tipe | Catatan |
+|---|---|---|
+| id | bigint | primary key |
+| product_id | bigint | FK products, cascade delete |
+| name | string | unik per produk |
+| hex_code | string(7) | nullable |
+| created_at, updated_at | timestamp | |
+
+### product_color_images
+
+| Kolom | Tipe | Catatan |
+|---|---|---|
+| id | bigint | primary key |
+| product_color_id | bigint | FK product_colors, cascade delete |
+| path | string | path di disk `public` |
+| sort_order | smallint | default 0 |
 | created_at, updated_at | timestamp | |
 
 ### product_variants
@@ -91,137 +61,72 @@ Yang belum:
 | Kolom | Tipe | Catatan |
 |---|---|---|
 | id | bigint | primary key |
-| product_id | bigint | FK ke products, restrict delete |
+| product_color_id | bigint | FK product_colors, cascade delete |
+| size | string(10) | unik per warna |
 | sku | string | unik |
-| size | string(20) | contoh: 38 |
-| color | string(50) | contoh: Black |
-| price | decimal(12,2) | Rupiah |
-| stock_on_hand | integer | stok fisik |
-| stock_reserved | integer | ditahan saat checkout |
+| stock | integer | default 0 |
+| price | bigint | nullable, null berarti pakai `base_price` |
 | created_at, updated_at | timestamp | |
-
-Constraint:
-
-- unik `(product_id, size, color)`;
-- `stock_on_hand >= 0`;
-- `stock_reserved >= 0`.
 
 ### product_images
 
 | Kolom | Tipe | Catatan |
 |---|---|---|
 | id | bigint | primary key |
-| product_id | bigint | FK ke products, cascade delete |
-| path | string | path relatif di disk `public` |
-| alt_text | string | nullable |
-| sort_order | integer | urutan foto |
+| product_id | bigint | FK products, cascade delete |
+| path | string | path di disk `public` |
+| sort_order | integer | default 0 |
 | created_at, updated_at | timestamp | |
 
-Catatan: tabel ini adalah tambahan implementasi untuk galeri produk. Belum ada di ERD v0.1, akan dimasukkan ke revisi ERD.
+---
+
+## 2. Model
+
+Namespace: `App\Models\Product`
+
+```php
+Product::listed()->paginate(12);
+$product->category;
+$product->colors;
+$product->colors->images;
+$product->colors->variants;
+$product->images;
+$product->variants;      // hasManyThrough ProductColor
+$product->thumbnail_url; // product image atau color image pertama
+```
+
+```php
+$color->product;
+$color->images;
+$color->variants;
+```
+
+```php
+$variant->color; // ProductColor
+```
+
+Hanya produk `is_active = true` yang tampil di katalog publik.
 
 ---
 
-## 3. Model dan enum
+## 3. Route
 
-### Category
-
-```php
-$category->products; // HasMany Product
-```
-
-### Product
-
-```php
-$product->category;      // BelongsTo Category
-$product->variants;      // HasMany ProductVariant
-$product->images;        // HasMany ProductImage, urut sort_order
-$product->primaryImage;  // HasOne ProductImage pertama
-$product->status;        // ProductStatus enum
-$product->price_from;    // harga varian termurah, butuh variants
-$product->total_stock;   // total stok tersedia, butuh variants
-```
-
-Scope:
-
-```php
-Product::active()->get();
-Product::inCategory('mules')->get();
-Product::search('mules')->get();
-```
-
-### ProductVariant
-
-```php
-$variant->product;         // BelongsTo Product
-$variant->stock_available; // stock_on_hand - stock_reserved
-$variant->is_in_stock;     // stock_available > 0
-ProductVariant::available()->get();
-```
-
-### ProductImage
-
-```php
-$image->product; // BelongsTo Product
-$image->url;     // URL public disk
-```
-
-### ProductStatus
-
-```php
-ProductStatus::Active;   // 'active'
-ProductStatus::Inactive; // 'inactive'
-```
-
-Hanya produk `active` yang boleh tampil di katalog publik.
-
----
-
-## 4. Data demo
-
-Seeder: `Database\Seeders\DemoCatalogSeeder`
-
-Sumber:
-
-- `docs/data/products.csv`
-- `docs/data/product_variants.csv`
-
-Jumlah:
-
-- 7 kategori: Mules, Heels, Boots, Flatshoes, Sneakers, Docmart, Flatform
-- 10 produk
-- 30 varian
-
-Seeder idempotent. Boleh dijalankan ulang tanpa menggandakan data.
-
-Perintah:
-
-```powershell
-php artisan db:seed --class=DemoCatalogSeeder
-```
-
-Di Neon, hanya migration owner yang menjalankan seeder.
-
----
-
-## 5. Route contract
-
-### Publik, milik Anggota A
+### Publik
 
 | Method | URL | Name | Handler |
 |---|---|---|---|
-| GET | `/katalog` | `catalog.index` | `Storefront\CatalogController@index` |
-| GET | `/katalog/{product:slug}` | `catalog.show` | `Storefront\CatalogController@show` |
+| GET | `/produk` | `catalog.index` | `CatalogController@index` |
+| GET | `/produk/{product:slug}` | `products.show` | `ProductController@show` |
 
-Filter query yang disarankan:
+Katalog publik mendukung:
 
-| Query | Fungsi |
-|---|---|
-| `q` | pencarian nama/deskripsi |
-| `category` | slug kategori |
-| `sort` | `newest`, `price_asc`, `price_desc` |
-| `page` | pagination |
+- `q` untuk pencarian nama/deskripsi;
+- `category` untuk filter slug kategori;
+- pagination 12 produk.
 
-### Admin, milik Anggota B
+Detail produk juga publik. Login baru diperlukan saat cart, checkout, PO, dan review.
+
+### Admin
 
 | Method | URL | Name |
 |---|---|---|
@@ -229,161 +134,97 @@ Filter query yang disarankan:
 | GET | `/admin/products/create` | `admin.products.create` |
 | POST | `/admin/products` | `admin.products.store` |
 | GET | `/admin/products/{product}/edit` | `admin.products.edit` |
-| PATCH | `/admin/products/{product}` | `admin.products.update` |
-| PATCH | `/admin/products/{product}/status` | `admin.products.status` |
+| PUT/PATCH | `/admin/products/{product}` | `admin.products.update` |
+| DELETE | `/admin/products/{product}` | `admin.products.destroy` |
+| POST | `/admin/products/{product}/colors` | `admin.products.colors.store` |
+| DELETE | `/admin/colors/{color}` | `admin.colors.destroy` |
+| POST | `/admin/colors/{color}/images` | `admin.colors.images.store` |
+| DELETE | `/admin/images/{image}` | `admin.images.destroy` |
+| POST | `/admin/colors/{color}/variants` | `admin.colors.variants.store` |
+| PUT | `/admin/colors/{color}/variants` | `admin.colors.variants.update` |
+| DELETE | `/admin/variants/{variant}` | `admin.variants.destroy` |
 | POST | `/admin/products/{product}/images` | `admin.products.images.store` |
-| DELETE | `/admin/products/{product}/images/{image}` | `admin.products.images.destroy` |
+| DELETE | `/admin/product-images/{productImage}` | `admin.product-images.destroy` |
 
-Semua route admin memakai middleware:
+Semua route admin memakai `auth` dan `role:admin,admin_master`.
 
-```php
-['auth', 'role:admin,admin_master']
+---
+
+## 4. Storage gambar
+
+Kode sekarang memakai disk `public`, bukan S3.
+
+- Path contoh: `products/6/gallery/xxxx.png`.
+- URL diakses lewat accessor `$image->url`.
+- Jika file tidak ada di `storage/app/public`, accessor mengembalikan `null` dan UI menampilkan "Foto belum ada".
+- Upload admin menyimpan ke disk `public`.
+- Hapus produk/warna juga menghapus file di disk `public`.
+
+Penting: data lama di Neon masih berisi path gambar yang sebelumnya disimpan di S3. File tersebut belum ada di storage lokal. Selama file belum disalin, katalog akan menampilkan fallback "Foto belum ada". Minta file asli ke Hafiez atau upload ulang lewat admin.
+
+---
+
+## 5. Seeder
+
+`Database\Seeders\CatalogSeeder`
+
+- Membuat kategori Boots.
+- Membuat produk `Theon Docmart`.
+- Membuat warna Hitam dan Putih.
+- Membuat 7 varian ukuran.
+- Mencoba menyalin foto dari `storage/app/private/Theon Dockmart.png` ke disk public. Jika file tidak ada, dilewati.
+
+Data `Cassie Docmart` dan foto lainnya dibuat lewat admin/manual, bukan seeder. Untuk reproduksi penuh, seeder perlu diperluas.
+
+---
+
+## 6. Aturan stok dan harga
+
+- Harga tampil memakai `base_price`; harga varian dipakai jika tidak null.
+- Stok per varian ada di `product_variants.stock`.
+- Total stok produk = jumlah stok semua varian.
+- Varian stok 0 tetap tampil di detail, tetapi ditandai habis.
+- Cart dan reservasi belum diimplementasikan. Jangan menambah `stock_reserved` sebelum Slice 4 disetujui.
+
+---
+
+## 7. Test
+
+Sudah ada:
+
+- katalog publik tampil;
+- pencarian produk;
+- detail produk publik;
+- buyer tidak bisa membuka admin produk;
+- admin bisa membuka admin produk;
+- admin bisa membuat produk.
+
+Perintah:
+
+```powershell
+php artisan test
+npm run build
 ```
 
-Varian boleh dikelola sebagai array di form produk:
-
-```text
-variants[0][id]
-variants[0][sku]
-variants[0][size]
-variants[0][color]
-variants[0][price]
-variants[0][stock_on_hand]
-```
-
-`stock_reserved` tidak boleh diedit dari form admin. Nilai itu hanya berubah lewat checkout dan reservasi.
+Status terakhir: 37 test lulus, 89 assertions.
 
 ---
 
-## 6. Data untuk Blade
+## 8. Yang belum
 
-### Katalog index
-
-Controller mengirim:
-
-```php
-[
-    'products' => $products,   // paginator, eager load category, variants, primaryImage
-    'categories' => $categories, // semua kategori
-    'filters' => $filters,     // q, category, sort
-]
-```
-
-Setiap produk minimal menyediakan:
-
-- name
-- slug
-- category.name
-- price_from
-- total_stock
-- primaryImage?->url
-- status
-
-### Detail produk
-
-Controller mengirim:
-
-```php
-[
-    'product' => $product, // eager load category, variants, images
-]
-```
-
-Varian minimal menampilkan:
-
-- size
-- color
-- price
-- stock_available
-- is_in_stock
-
-Stok habis:
-
-- tampilkan label "Stok habis";
-- tombol tambah ke cart nanti dinonaktifkan;
-- jangan menyembunyikan varian yang habis, supaya pembeli tahu ukuran mana yang kosong.
+- `weight_grams` untuk ongkir.
+- `stock_reserved` untuk reservasi checkout.
+- `rating_avg` dan `rating_count` untuk review.
+- 10 produk demo lengkap.
+- Form preorder di admin (kolom sudah ada, UI belum).
+- Sinkronisasi file gambar lama dari S3 ke storage lokal.
+- Konfirmasi kapitalisasi brand: `The Things Corner`, `Thethingscorner`, atau `thethingscorner`.
 
 ---
 
-## 7. Aturan harga dan stok
+## 9. Pembagian kerja setelah rekonsiliasi
 
-- Harga selalu berasal dari `product_variants.price`, bukan dari request.
-- Harga produk di kartu katalog memakai `price_from`.
-- Stok tersedia = `stock_on_hand - stock_reserved`.
-- Katalog publik hanya menampilkan produk `active`.
-- Varian dengan stok tersedia 0 tetap tampil di detail, tetapi tidak bisa dipilih.
-- Jangan mengubah `stock_reserved` dari form admin.
-- Perubahan `stock_on_hand` nanti lewat `StockService` dan kartu stok. Untuk Slice 2, admin boleh mengisi stok awal.
-
----
-
-## 8. Foto produk
-
-- Disimpan di disk `public`.
-- Contoh path: `products/mules-ayu/01.webp`.
-- Akses URL lewat accessor `$image->url`.
-- Validasi upload: `image`, `mimes:jpg,jpeg,png,webp`, maksimal 2 MB.
-- Optimasi: resize maksimal 1200px, konversi WebP, quality 80.
-- Urutan foto memakai `sort_order`.
-- Foto pertama adalah foto utama.
-
-Penting untuk database Neon bersama:
-
-- Database Neon dipakai bersama, tetapi file upload tersimpan di laptop masing-masing.
-- Foto yang diupload B tidak otomatis terlihat oleh A.
-- Untuk demo Slice 2, UI wajib punya fallback bila foto tidak ada.
-- Jangan mengandalkan file upload lokal sebagai data demo bersama.
-- Setelah Slice 2, kita putuskan apakah perlu shared storage.
-
----
-
-## 9. Authorization
-
-- Pembeli boleh melihat katalog publik.
-- Admin Biasa dan Admin Master boleh mengelola produk.
-- Admin Master dan Admin Biasa tidak boleh menghapus produk yang sudah dipakai transaksi. Gunakan status `inactive`.
-- Validasi dan otorisasi tetap dicek di server.
-
----
-
-## 10. Definition of done Slice 2
-
-- [ ] 10 produk demo tampil di katalog publik.
-- [ ] Pencarian nama/deskripsi bekerja.
-- [ ] Filter kategori bekerja.
-- [ ] Pagination bekerja.
-- [ ] Detail produk menampilkan varian ukuran/warna.
-- [ ] Stok habis terlihat dan tidak bisa dipilih.
-- [ ] Admin bisa membuat dan mengedit produk.
-- [ ] Admin bisa mengelola varian.
-- [ ] Admin bisa upload foto dan foto tampil.
-- [ ] Authorization diuji.
-- [ ] Feature test katalog dan admin lulus.
-- [ ] UI responsif di mobile dan desktop.
-- [ ] Demo singkat bersama tim.
-
----
-
-## 11. Batas pekerjaan
-
-Firdaus:
-
-- migration, model, relasi, seeder, enum;
-- review schema dan query;
-- migration ke Neon.
-
-Anggota A:
-
-- route publik;
-- controller katalog publik;
-- Blade katalog dan detail;
-- filter, search, pagination.
-
-Anggota B:
-
-- route admin;
-- controller dan FormRequest admin;
-- Blade admin produk dan varian;
-- upload foto dan optimasi.
-
-Jangan membuat migration baru untuk tabel yang sama. Ajukan perubahan schema ke Firdaus.
+- Firdaus: review schema, storage, test, dan integrasi.
+- Anggota A: review UI katalog dan detail, tambah filter/sort jika perlu.
+- Anggota B: review admin produk, varian, warna, dan upload foto.
+- Perubahan schema produk harus dikoordinasikan dengan Hafiez sebagai pemilik domain produk.

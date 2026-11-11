@@ -1,8 +1,8 @@
 # ERD Fase 1 — The Things Corner
 
-**Versi:** 0.2  
-**Tanggal:** 9 November 2026  
-**Status:** Draft, `product_images` ditambahkan untuk Slice 2  
+**Versi:** 0.3  
+**Tanggal:** 11 November 2026  
+**Status:** Draft, schema katalog mengikuti implementasi warna dan varian  
 **Referensi:** PRD Fase 1 v0.2, RFP v0.3
 
 ---
@@ -34,9 +34,12 @@ erDiagram
     USERS ||--o{ PO_STATUS_LOGS : acts
 
     CATEGORIES ||--o{ PRODUCTS : contains
-    PRODUCTS ||--o{ PRODUCT_VARIANTS : has
+    PRODUCTS ||--o{ PRODUCT_COLORS : has
     PRODUCTS ||--o{ PRODUCT_IMAGES : has
     PRODUCTS ||--o{ REVIEWS : receives
+
+    PRODUCT_COLORS ||--o{ PRODUCT_COLOR_IMAGES : has
+    PRODUCT_COLORS ||--o{ PRODUCT_VARIANTS : has
 
     PRODUCT_VARIANTS ||--o{ STOCK_MOVEMENTS : logs
     PRODUCT_VARIANTS ||--o{ CART_ITEMS : added
@@ -90,28 +93,40 @@ erDiagram
         string name
         string slug
         text description
-        string status
-        int weight_grams
-        decimal rating_avg
-        int rating_count
+        bigint base_price
+        boolean is_active
+        boolean is_preorder
+        date preorder_close_date
+        date estimated_ready_date
+    }
+
+    PRODUCT_COLORS {
+        bigint id PK
+        bigint product_id FK
+        string name
+        string hex_code
+    }
+
+    PRODUCT_COLOR_IMAGES {
+        bigint id PK
+        bigint product_color_id FK
+        string path
+        int sort_order
     }
 
     PRODUCT_VARIANTS {
         bigint id PK
-        bigint product_id FK
-        string sku
+        bigint product_color_id FK
         string size
-        string color
-        decimal price
-        int stock_on_hand
-        int stock_reserved
+        string sku
+        int stock
+        bigint price
     }
 
     PRODUCT_IMAGES {
         bigint id PK
         bigint product_id FK
         string path
-        string alt_text
         int sort_order
     }
 
@@ -303,9 +318,11 @@ erDiagram
 | `users` | Akun pembeli, Admin Biasa, Admin Master | `email` unik; `role` enum |
 | `addresses` | Alamat pembeli | `user_id` FK; satu alamat default per user |
 | `categories` | Kategori produk | `slug` unik |
-| `products` | Produk | `slug` unik; `category_id` FK |
-| `product_variants` | Varian ukuran/warna/SKU | `sku` unik; `product_id` FK; `stock_on_hand >= 0` |
-| `product_images` | Foto produk | `product_id` FK; `path` di disk public; urut `sort_order` |
+| `products` | Produk | `slug` unik; `category_id` FK; `base_price`, `is_active`, preorder |
+| `product_colors` | Warna per produk | unik `(product_id, name)`; `hex_code` opsional |
+| `product_color_images` | Foto per warna | `product_color_id` FK; path di disk public |
+| `product_variants` | Varian ukuran per warna | `sku` unik; unik `(product_color_id, size)`; `stock >= 0` |
+| `product_images` | Foto umum produk | `product_id` FK; path di disk public; urut `sort_order` |
 | `stock_movements` | Riwayat mutasi stok | append-only; `variant_id` FK; `actor_id` FK |
 | `cart_items` | Keranjang persisten | unik `(user_id, variant_id)` |
 | `stock_reservations` | Stok ditahan saat checkout | `order_id`, `variant_id` FK; index `(expires_at, status)` |
@@ -335,7 +352,9 @@ erDiagram
 | `users → reviews` | 1:N | restrict |
 | `users → notifications` | 1:N | cascade |
 | `categories → products` | 1:N | restrict |
-| `products → product_variants` | 1:N | restrict |
+| `products → product_colors` | 1:N | cascade |
+| `product_colors → product_variants` | 1:N | cascade |
+| `product_colors → product_color_images` | 1:N | cascade |
 | `products → product_images` | 1:N | cascade |
 | `product_variants → stock_movements` | 1:N | restrict |
 | `product_variants → cart_items` | 1:N | cascade |
@@ -446,6 +465,11 @@ HIDDEN
 | Multi-alamat UI | Fase 1 satu default / langsung banyak | Struktur `addresses` sudah mendukung |
 | Retur | Manual / otomatis | Fase 1 manual; tidak ada tabel retur |
 | Shopee API | Fase 2 | Tidak mengubah tabel inti |
+| Berat produk | Belum ada kolom | Perlu `products.weight_grams` sebelum integrasi ongkir |
+| Reservasi stok | Belum ada kolom | Perlu `product_variants.stock_reserved` sebelum checkout |
+| Rating produk | Belum ada kolom | Perlu `rating_avg` dan `rating_count` sebelum review |
+| Foto produk | Local public / S3 | Kode sekarang local public; path lama di Neon masih menunjuk S3 dan perlu disalin |
+| Brand | The Things Corner / Thethingscorner | Perlu konfirmasi kapitalisasi resmi |
 
 ---
 

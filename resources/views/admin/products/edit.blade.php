@@ -48,9 +48,15 @@
         <div class="mt-4 flex flex-wrap gap-3">
             @forelse ($product->images as $image)
             <div class="relative">  
-                <img src="{{ $image->url }}" alt="" loading="lazy"
-                    class="h-64 w-64 rounded-xl border border-border object-cover">
-                <form method="POST" action="{{ route('admin.images.destroy', $image) }}"
+                @if ($image->url)
+                    <img src="{{ $image->url }}" alt="" loading="lazy"
+                        class="h-64 w-64 rounded-xl border border-border object-cover">
+                @else
+                    <div class="flex h-64 w-64 items-center justify-center rounded-xl border border-dashed border-border text-xs text-muted">
+                        File foto tidak ditemukan
+                    </div>
+                @endif
+                <form method="POST" action="{{ route('admin.product-images.destroy', $image) }}"
                     class="absolute -right-2 -top-2" onsubmit="return confirm('Hapus foto ini?')">
                     @csrf
                     @method('DELETE')
@@ -98,8 +104,14 @@
                 <div class="mt-2 flex flex-wrap gap-3">
                     @forelse ($color->images as $image)
                         <div class="relative">
-                            <img src="{{ $image->url }}" alt="" loading="lazy"
-                                 class="h-64 w-64 rounded-xl border border-border object-cover">
+                            @if ($image->url)
+                                <img src="{{ $image->url }}" alt="" loading="lazy"
+                                     class="h-64 w-64 rounded-xl border border-border object-cover">
+                            @else
+                                <div class="flex h-64 w-64 items-center justify-center rounded-xl border border-dashed border-border text-xs text-muted">
+                                    File foto tidak ditemukan
+                                </div>
+                            @endif
                             <form method="POST" action="{{ route('admin.images.destroy', $image) }}"
                                   class="absolute -right-2 -top-2" onsubmit="return confirm('Hapus foto ini?')">
                                 @csrf

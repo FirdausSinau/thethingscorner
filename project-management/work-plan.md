@@ -88,7 +88,7 @@ Sudah selesai:
 
 ### Batch 1 - Katalog
 
-**Status 10 November 2026:** tertahan sampai schema katalog direkonsiliasi dengan migration tim produk.
+**Status 11 November 2026:** selesai direkonsiliasi. Schema mengikuti struktur produk -> warna -> varian dari tim produk. Katalog publik, detail, admin produk, warna, varian, dan foto sudah ada.
 
 Fokus: Slice 2.
 

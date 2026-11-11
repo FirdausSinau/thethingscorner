@@ -62,11 +62,12 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        $paths = ProductColorImage::whereIn('product_color_id', $product->colors()->pluck('id'))
+        $colorImagePaths = ProductColorImage::whereIn('product_color_id', $product->colors()->pluck('id'))
             ->pluck('path')->all();
+        $productImagePaths = $product->images()->pluck('path')->all();
 
-        Storage::disk('s3')->delete($paths);   // hapus file di bucket, bukan hanya barisnya
-        $product->delete();                    // warna, foto, dan varian ikut terhapus (cascade)
+        Storage::disk('public')->delete(array_merge($colorImagePaths, $productImagePaths));
+        $product->delete();
 
         return redirect()->route('admin.products.index')->with('status', 'Produk dihapus.');
     }

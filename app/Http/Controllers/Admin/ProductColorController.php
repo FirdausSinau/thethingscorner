@@ -26,7 +26,7 @@ class ProductColorController extends Controller
 
     public function destroy(ProductColor $color)
     {
-        Storage::disk('s3')->delete($color->images()->pluck('path')->all());
+        Storage::disk('public')->delete($color->images()->pluck('path')->all());
         $color->delete();
 
         return back()->with('status', 'Warna dihapus.');
