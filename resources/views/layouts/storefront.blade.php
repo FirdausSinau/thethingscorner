@@ -24,6 +24,10 @@
                 </a>
 
                 @auth
+                     <a href="{{ route('cart.index') }}"
+                       class="rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5">
+                        Keranjang
+                    </a>
                     <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}"
                        class="hidden rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5 sm:inline-flex">
                         Dashboard
