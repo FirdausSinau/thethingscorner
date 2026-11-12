@@ -13,12 +13,13 @@ class ProductColorImageController extends Controller
     {
         $request->validate([
             'images'   => ['required', 'array', 'max:6'],
-            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],   // maks 2 MB per foto
+            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        // Query langsung ke model (bukan lewat relasi yang sudah di-orderBy):
-        // di PostgreSQL, max() dengan ORDER BY menimbulkan error GROUP BY.
-        $next = (int) ProductColorImage::where('product_color_id', $color->id)->max('sort_order') + 1;
+        $next = (int) ProductColorImage::where(
+            'product_color_id',
+            $color->id
+        )->max('sort_order') + 1;
 
         foreach ($request->file('images') as $file) {
             $path = $file->store("products/{$color->product_id}", ProductImageDisk::name());
@@ -29,15 +30,16 @@ class ProductColorImageController extends Controller
             ]);
         }
 
-        return back()->with('status', 'Foto diunggah. Foto pertama jadi sampul.');
+        return back()->with('status', 'Foto berhasil diunggah ke Neon.');
     }
+
 
     public function destroy(ProductColorImage $image)
     {
         ProductImageDisk::disk()->delete($image->path);
         $image->delete();
 
-        return back()->with('status', 'Foto dihapus.');
+        return back()->with('status', 'Foto berhasil dihapus.');
     }
 }
 

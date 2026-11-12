@@ -40,40 +40,71 @@ return [
     |
     */
 
-    'disks' => [
+    
+'disks' => [
 
-        'local' => [
-            'driver' => 'local',
-            'root' => storage_path('app/private'),
-            'serve' => true,
-            'throw' => false,
-            'report' => false,
-        ],
-
-        'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-            'report' => false,
-        ],
-
-        's3' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => true,
-            'report' => false,
-            
-        ],
-
+    // Penyimpanan lokal/private
+    'local' => [
+        'driver' => 'local',
+        'root' => storage_path('app/private'),
+        'serve' => true,
+        'throw' => false,
+        'report' => false,
     ],
+
+    // Penyimpanan lokal/public
+    // Tetap dipertahankan untuk file lain yang mungkin masih digunakan
+    'public' => [
+        'driver' => 'local',
+        'root' => storage_path('app/public'),
+        'url' => rtrim(env('APP_URL', 'http://localhost'), '/') . '/storage',
+        'visibility' => 'public',
+        'throw' => false,
+        'report' => false,
+    ],
+
+        // Neon Object Storage
+'neon' => [
+    'driver' => 's3',
+
+    'key' => env('NEON_STORAGE_ACCESS_KEY_ID'),
+    'secret' => env('NEON_STORAGE_SECRET_ACCESS_KEY'),
+
+    'region' => env('NEON_STORAGE_REGION'),
+    'bucket' => env('NEON_STORAGE_BUCKET'),
+
+    'endpoint' => env('NEON_STORAGE_ENDPOINT'),
+
+    'use_path_style_endpoint' => true,
+
+    'throw' => true,
+    'report' => true,
+],
+        's3' => [
+        'driver' => 's3',
+
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+
+        'region' => env('AWS_REGION', 'ap-southeast-1'),
+
+        'bucket' => env('AWS_BUCKET'),
+
+        'url' => env('AWS_URL'),
+
+        'endpoint' => env(
+            'AWS_ENDPOINT_URL_S3',
+            env('AWS_ENDPOINT')
+        ),
+
+        'use_path_style_endpoint' => true,
+
+        'throw' => true,
+        'report' => true,
+    ],
+
+],
+
 
     /*
     |--------------------------------------------------------------------------
