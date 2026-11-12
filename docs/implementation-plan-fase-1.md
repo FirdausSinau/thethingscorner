@@ -90,7 +90,7 @@ feat: add review reply and moderation
 | 2026-11-11 | 1 | Media produk configurable `PRODUCT_IMAGES_DISK=public/s3`, test upload public dan s3, 60 test lulus. | `87e0643` |
 | 2026-11-11 | 3-4 | Review: hapus status `BARU`, tambah `MENUNGGU_KONFIRMASI`, route clear cart, transaksi alamat, eager load checkout, produk dinonaktifkan bukan dihapus, 63 test lulus. | `7caaa22` |
 | 2026-11-12 | 3-4 | Integrasi PR #3/#4: admin order index/detail/aksi status, audit log `order_status_logs`, guard stok/varian/warna, brand `Thethingscorner`, Blade dipecah menjadi partial, upload gambar Neon, QRIS 30 detik sementara, 104 test lulus. | `cfcdb4c` |
-| 2026-11-13 | 3-4 | Label `MENUNGGU_KONFIRMASI` menjadi Dipending; tabel admin order memakai lebar kolom tetap agar tidak perlu scroll horizontal; 104 test lulus. | belum di-commit |
+| 2026-11-13 | 3-4 | Label `MENUNGGU_KONFIRMASI` menjadi Dipending; tabel admin order memakai lebar kolom tetap agar tidak perlu scroll horizontal; 104 test lulus. | `aad008e` |
 
 ---
 
