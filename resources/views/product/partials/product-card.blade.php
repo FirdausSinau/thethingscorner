@@ -1,5 +1,7 @@
 @php
-    $totalStock = $product->colors->flatMap->variants->sum('stock');
+    $totalStock = $product->colors->flatMap->variants->sum(
+        fn ($variant) => $variant->stock_available
+    );
 @endphp
 
 <article class="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm transition hover:shadow-md">

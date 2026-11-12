@@ -16,7 +16,7 @@ class AuthTest extends TestCase
         $this->get(route('login'))->assertOk();
     }
 
-    public function test_buyer_can_login_and_is_redirected_to_buyer_dashboard(): void
+    public function test_buyer_can_login_and_is_redirected_to_catalog(): void
     {
         $user = User::factory()->create([
             'email' => 'buyer@example.com',
@@ -28,7 +28,7 @@ class AuthTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response->assertRedirect(route('dashboard'));
+        $response->assertRedirect(route('catalog.index'));
         $this->assertAuthenticatedAs($user);
     }
 
@@ -74,7 +74,7 @@ class AuthTest extends TestCase
             'password_confirmation' => 'rahasia123',
         ]);
 
-        $response->assertRedirect(route('dashboard'));
+        $response->assertRedirect(route('catalog.index'));
         $this->assertAuthenticated();
         $this->assertDatabaseHas('users', [
             'email' => 'pembeli@example.com',

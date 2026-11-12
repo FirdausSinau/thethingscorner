@@ -64,11 +64,22 @@ class Order extends Model
         return $this->hasMany(StockReservation::class);
     }
 
+    public function statusLogs(): HasMany
+    {
+        return $this->hasMany(OrderStatusLog::class);
+    }
+
     /**
-     * Waktu kedaluwarsa reservasi paling awal pada order ini.
+     * Waktu kedaluwarsa reservasi paling awal. Hanya berlaku saat menunggu pembayaran.
      */
     protected function reservationExpiresAt(): Attribute
     {
-        return Attribute::get(fn () => $this->reservations->min('expires_at'));
+        return Attribute::get(function () {
+            if ($this->status !== OrderStatus::MenungguPembayaran) {
+                return null;
+            }
+
+            return $this->reservations->min('expires_at');
+        });
     }
 }

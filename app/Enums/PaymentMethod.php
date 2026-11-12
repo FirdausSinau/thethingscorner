@@ -19,11 +19,24 @@ enum PaymentMethod: string
         };
     }
 
-    public function reservationMinutes(): int
+    public function reservationSeconds(): int
     {
         return match ($this) {
-            self::Qris, self::Va, self::Ewallet => 30,
-            self::ManualTransfer => 60,
+            self::Qris => (int) config('payment.reservations.qris_seconds', 1800),
+            self::Va => (int) config('payment.reservations.va_seconds', 1800),
+            self::Ewallet => (int) config('payment.reservations.ewallet_seconds', 1800),
+            self::ManualTransfer => (int) config('payment.reservations.manual_transfer_seconds', 3600),
         };
+    }
+
+    public function reservationLabel(): string
+    {
+        $seconds = $this->reservationSeconds();
+
+        if ($seconds < 60) {
+            return "{$seconds} detik";
+        }
+
+        return intdiv($seconds, 60).' menit';
     }
 }

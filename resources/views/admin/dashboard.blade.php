@@ -52,11 +52,11 @@
                 </li>
                 <li class="flex items-center justify-between gap-4">
                     <span>Pembayaran</span>
-                    <span class="font-medium text-warning">Fake adapter</span>
+                    <span class="font-medium text-muted">Belum aktif</span>
                 </li>
                 <li class="flex items-center justify-between gap-4">
                     <span>Pengiriman</span>
-                    <span class="font-medium text-warning">Fake adapter</span>
+                    <span class="font-medium text-muted">Belum aktif</span>
                 </li>
             </ul>
         </div>

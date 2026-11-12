@@ -14,6 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->isProduction()) {
+            $this->command?->warn('Seeder demo dilewati di production.');
+
+            return;
+        }
+
         $this->call([
             DemoUserSeeder::class,
             CatalogSeeder::class,

@@ -49,6 +49,11 @@
                 Produk
             </a>
 
+            <a href="{{ route('admin.orders.index') }}"
+               class="shrink-0 rounded-full px-3 py-2 font-medium transition {{ request()->routeIs('admin.orders.*') ? 'bg-primary/10 text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
+                Pesanan
+            </a>
+
             @if (auth()->user()->isAdminMaster())
                 <a href="{{ route('admin.admins.index') }}"
                    class="shrink-0 rounded-full px-3 py-2 font-medium transition {{ request()->routeIs('admin.admins.*') ? 'bg-primary/10 text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
@@ -81,18 +86,17 @@
                 </a>
 
                 <a href="{{ route('admin.orders.index') }}"
-                class="flex items-center justify-between rounded-xl px-3 py-2.5 transition {{ request()->routeIs('admin.orders.*') ? 'bg-primary/5 font-medium text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}"
-                @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif>
+                   class="flex items-center justify-between rounded-xl px-3 py-2.5 transition {{ request()->routeIs('admin.orders.*') ? 'bg-primary/5 font-medium text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}"
+                   @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif>
                     Pesanan
                 </a>
-                
 
-                    @foreach (['Custom PO', 'Review', 'Laporan'] as $item)
-                        <span class="flex items-center justify-between rounded-xl px-3 py-2.5 text-muted">
-                            {{ $item }}
-                            <span class="text-[10px] uppercase tracking-wide text-muted/70">segera</span>
-                        </span>
-                    @endforeach
+                @foreach (['Custom PO', 'Review', 'Laporan'] as $item)
+                    <span class="flex items-center justify-between rounded-xl px-3 py-2.5 text-muted">
+                        {{ $item }}
+                        <span class="text-[10px] uppercase tracking-wide text-muted/70">segera</span>
+                    </span>
+                @endforeach
             </nav>
         </aside>
 

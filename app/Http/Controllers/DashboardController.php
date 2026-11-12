@@ -2,23 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request): RedirectResponse|View
+    public function index(Request $request): RedirectResponse
     {
-        if ($request->user()->isAdmin()) {
-            return redirect()->route('admin.dashboard');
-        }
-
-        $products = Product::listed()
-            ->latest()
-            ->paginate(12);
-
-        return view('layouts.storefront', compact('products'));
+        return $request->user()->isAdmin()
+            ? redirect()->route('admin.dashboard')
+            : redirect()->route('catalog.index');
     }
 }

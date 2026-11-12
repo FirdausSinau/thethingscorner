@@ -473,7 +473,7 @@ HIDDEN
 | Retur | Manual / otomatis | Fase 1 manual; tidak ada tabel retur |
 | Shopee API | Fase 2 | Tidak mengubah tabel inti |
 | Foto produk | Local public / S3 | Kode sekarang local public; path lama di Neon masih menunjuk S3 dan perlu disalin |
-| Brand | The Things Corner / Thethingscorner | Perlu konfirmasi kapitalisasi resmi |
+| Brand | `Thethingscorner` | Sudah dikonfirmasi 12 November 2026 |
 
 ---
 

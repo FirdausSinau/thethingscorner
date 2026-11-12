@@ -8,7 +8,6 @@ enum OrderStatus: string
     case Dibayar = 'DIBAYAR';
     case MenungguKonfirmasi = 'MENUNGGU_KONFIRMASI';
     case Dikemas = 'DIKEMAS';
-    case Dipending = 'PENDING';
     case Dikirim = 'DIKIRIM';
     case Selesai = 'SELESAI';
     case Dibatalkan = 'DIBATALKAN';
@@ -21,7 +20,6 @@ enum OrderStatus: string
             self::Dibayar => 'Dibayar',
             self::MenungguKonfirmasi => 'Menunggu konfirmasi admin',
             self::Dikemas => 'Dikemas',
-            self::Dipending => 'Dipending',
             self::Dikirim => 'Dikirim',
             self::Selesai => 'Selesai',
             self::Dibatalkan => 'Dibatalkan',
@@ -39,18 +37,20 @@ enum OrderStatus: string
         return in_array($this, [self::Dibatalkan, self::Kedaluwarsa], true);
     }
 
-    /** Status yang boleh dituju langsung dari status ini. */
+    /**
+     * Status yang boleh dituju langsung dari status ini.
+     *
+     * @return array<int, self>
+     */
     public function allowedNext(): array
     {
         return match ($this) {
             self::MenungguPembayaran => [self::Dibayar, self::Dibatalkan, self::Kedaluwarsa],
-            self::Dibayar            => [self::Dikemas, self::Dipending, self::Dibatalkan],
-            self::Dikemas            => [self::Dikirim, self::Dipending, self::Dibatalkan],
-            self::Dipending          => [self::Dikemas, self::Dibatalkan],
-            self::Dikirim            => [self::Selesai],
-            self::Selesai,
-            self::Dibatalkan,
-            self::Kedaluwarsa        => [],
+            self::Dibayar => [self::MenungguKonfirmasi],
+            self::MenungguKonfirmasi => [self::Dikemas, self::Dibatalkan],
+            self::Dikemas => [self::Dikirim],
+            self::Dikirim => [self::Selesai],
+            self::Selesai, self::Dibatalkan, self::Kedaluwarsa => [],
         };
     }
 
@@ -64,12 +64,16 @@ enum OrderStatus: string
         return $this->allowedNext() === [];
     }
 
-    /** Pilihan untuk dropdown admin: Kedaluwarsa hanya boleh oleh sistem. */
+    /**
+     * Pilihan untuk dropdown admin. Kedaluwarsa hanya boleh diatur sistem.
+     *
+     * @return array<int, self>
+     */
     public function manualNext(): array
     {
         return array_values(array_filter(
             $this->allowedNext(),
-            fn (self $s) => $s !== self::Kedaluwarsa
+            fn (self $status): bool => $status !== self::Kedaluwarsa
         ));
     }
 }

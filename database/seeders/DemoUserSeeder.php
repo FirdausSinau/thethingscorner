@@ -20,15 +20,15 @@ class DemoUserSeeder extends Seeder
         ];
 
         foreach ($accounts as $account) {
-            $user = User::updateOrCreate(
-                ['email' => $account['email']],
-                [
-                    'name' => $account['name'],
-                    'password' => 'rahasia123',
-                ]
-            );
+            $user = User::firstOrNew(['email' => $account['email']]);
+
+            if ($user->exists) {
+                continue;
+            }
 
             $user->forceFill([
+                'name' => $account['name'],
+                'password' => 'rahasia123',
                 'role' => $account['role'],
                 'is_active' => true,
             ])->save();

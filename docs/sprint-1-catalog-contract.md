@@ -238,20 +238,18 @@ php artisan test
 npm run build
 ```
 
-Status terakhir: total suite 63 test lulus, 179 assertions, termasuk test upload gambar ke disk `public` dan `s3`.
+Status terakhir: total suite 104 test lulus, 296 assertions, termasuk test upload gambar ke disk `public` dan `s3`.
 
 ---
 
 ## 8. Yang belum
 
-- Sinkronisasi file gambar lama dari S3 ke storage lokal.
-- Form preorder di admin (kolom sudah ada, UI belum).
-- Halaman cart, checkout, dan reservasi.
-- Integrasi ongkir memakai `weight_grams`.
+- Integrasi ongkir memakai `weight_grams` (Slice 6).
+- Alur PO untuk produk preorder (Slice 8).
 
 Sudah diputuskan:
 
-- Brand resmi: `thethingscorner` (huruf kecil, satu kata).
+- Brand resmi: `Thethingscorner` (huruf T besar, satu kata).
 - Field `weight_grams`, `rating_avg`, `rating_count`, dan `stock_reserved` sudah ditambahkan.
 - Produk baru ke depan dibuat lewat admin, bukan seeder.
 

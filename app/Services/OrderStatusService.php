@@ -5,25 +5,42 @@ namespace App\Services;
 use App\Enums\OrderStatus;
 use App\Enums\ReservationStatus;
 use App\Models\Order;
+use App\Models\OrderStatusLog;
 use App\Models\Product\ProductVariant;
+use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class OrderStatusService
 {
-    public function change(Order $order, OrderStatus $to, bool $bySystem = false): Order
-    {
-        return DB::transaction(function () use ($order, $to, $bySystem): Order {
-            $order = Order::whereKey($order->id)->lockForUpdate()->firstOrFail();
-            $from  = $order->status;
+    /**
+     * Ubah status order dan sesuaikan stok dalam satu transaksi.
+     *
+     * Urutan lock: order, reservasi, lalu varian. Urutan ini sama dengan
+     * ReservationService supaya tidak terjadi deadlock.
+     */
+    public function change(
+        Order $order,
+        OrderStatus $to,
+        ?User $actor = null,
+        ?string $note = null,
+        bool $bySystem = false
+    ): Order {
+        return DB::transaction(function () use ($order, $to, $actor, $note, $bySystem): Order {
+            $order = Order::query()
+                ->whereKey($order->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $from = $order->status;
 
             if ($from === $to) {
                 return $order;
             }
 
             if ($to === OrderStatus::Kedaluwarsa && ! $bySystem) {
-                $this->fail("Status Kedaluwarsa hanya bisa diatur otomatis oleh sistem.");
+                $this->fail('Status Kedaluwarsa hanya bisa diatur otomatis oleh sistem.');
             }
 
             if (! $from->canTransitionTo($to)) {
@@ -34,7 +51,6 @@ class OrderStatusService
 
             $order->status = $to;
 
-            // Keluar dari "menunggu pembayaran" tanpa dibatalkan = pembayaran terkonfirmasi
             if ($from->isAwaitingPayment() && ! $to->isCancelled() && ! $order->paid_at) {
                 $order->paid_at = now();
             }
@@ -44,6 +60,14 @@ class OrderStatusService
             }
 
             $order->save();
+
+            OrderStatusLog::create([
+                'order_id' => $order->id,
+                'from_status' => $from->value,
+                'to_status' => $to->value,
+                'actor_id' => $actor?->id,
+                'note' => $note,
+            ]);
 
             return $order;
         }, 3);
@@ -64,7 +88,6 @@ class OrderStatusService
     {
         $cancelling = $to->isCancelled();
 
-        // Dari menunggu pembayaran: reservasi dilepas (batal) atau dikonfirmasi (stok fisik berkurang)
         if ($from->isAwaitingPayment()) {
             $reservations = $order->reservations()->active()->lockForUpdate()->get();
 
@@ -75,7 +98,15 @@ class OrderStatusService
             $variants = $this->lockVariants($reservations->pluck('variant_id'));
 
             foreach ($reservations as $reservation) {
-                $variant = $variants[$reservation->variant_id];
+                $variant = $variants->get($reservation->variant_id);
+
+                if (! $variant) {
+                    $this->fail("Varian untuk reservasi {$order->order_code} tidak ditemukan.");
+                }
+
+                if ($variant->stock_reserved < $reservation->qty) {
+                    $this->fail("Data reservasi {$variant->sku} tidak konsisten. Periksa stok fisik dan stok yang ditahan.");
+                }
 
                 if (! $cancelling && $variant->stock < $reservation->qty) {
                     $this->fail("Stok fisik {$variant->sku} ({$variant->stock}) kurang dari pesanan ({$reservation->qty}). Perbarui stok dulu.");
@@ -89,9 +120,9 @@ class OrderStatusService
 
                 $reservation->update([
                     'status' => match (true) {
-                        ! $cancelling                    => ReservationStatus::Consumed,
+                        ! $cancelling => ReservationStatus::Consumed,
                         $to === OrderStatus::Kedaluwarsa => ReservationStatus::Expired,
-                        default                          => ReservationStatus::Released,
+                        default => ReservationStatus::Released,
                     },
                 ]);
             }
@@ -99,20 +130,20 @@ class OrderStatusService
             return;
         }
 
-        // Sudah dibayar lalu dibatalkan (belum dikirim): stok fisik dikembalikan
         if ($cancelling) {
-            $items    = $order->items;
+            $items = $order->items;
             $variants = $this->lockVariants($items->pluck('variant_id'));
 
             foreach ($items as $item) {
-                $variants[$item->variant_id]->increment('stock', $item->qty);
+                $variants->get($item->variant_id)?->increment('stock', $item->qty);
             }
         }
     }
 
     private function lockVariants(Collection $ids): Collection
     {
-        return ProductVariant::whereIn('id', $ids->unique())
+        return ProductVariant::query()
+            ->whereIn('id', $ids->unique())
             ->orderBy('id')
             ->lockForUpdate()
             ->get()
