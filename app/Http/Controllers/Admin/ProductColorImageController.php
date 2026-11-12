@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -16,13 +17,13 @@ class ProductColorImageController extends Controller
             'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        $next = (int) ProductColorImage::where(
-            'product_color_id',
-            $color->id
-        )->max('sort_order') + 1;
+        $next = (int) ProductColorImage::where('product_color_id', $color->id)->max('sort_order') + 1;
 
         foreach ($request->file('images') as $file) {
-            $path = $file->store("products/{$color->product_id}", ProductImageDisk::name());
+            $path = $file->store(
+                "products/{$color->product_id}/gallery/product-color",
+                'neon'
+            );
 
             $color->images()->create([
                 'path'       => $path,
@@ -30,16 +31,17 @@ class ProductColorImageController extends Controller
             ]);
         }
 
-        return back()->with('status', 'Foto berhasil diunggah ke Neon.');
+        return back()->with('status', 'Foto berhasil diunggah.');
     }
-
 
     public function destroy(ProductColorImage $image)
     {
-        ProductImageDisk::disk()->delete($image->path);
+        if ($image->path) {
+            ProductImageDisk::disk()->delete($image->path);
+        }
+
         $image->delete();
 
         return back()->with('status', 'Foto berhasil dihapus.');
     }
 }
-
