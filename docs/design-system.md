@@ -55,6 +55,7 @@ Status badge:
 |---|---|
 | Baru / Menunggu | warning |
 | Dibayar | info |
+| Dipending | warning |
 | Dikemas | rose |
 | Dikirim | pink |
 | Selesai | success |

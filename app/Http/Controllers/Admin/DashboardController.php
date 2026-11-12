@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $cards = [
             ['label' => 'Menunggu pembayaran', 'value' => $count('MENUNGGU_PEMBAYARAN'), 'note' => 'Belum dibayar'],
             ['label' => 'Dibayar', 'value' => $count('DIBAYAR'), 'note' => 'Pembayaran diterima, perlu dikonfirmasi'],
-            ['label' => 'Menunggu konfirmasi', 'value' => $count('MENUNGGU_KONFIRMASI'), 'note' => 'Menunggu konfirmasi admin'],
+            ['label' => 'Dipending', 'value' => $count('MENUNGGU_KONFIRMASI'), 'note' => 'Menunggu konfirmasi admin'],
             ['label' => 'Dikemas', 'value' => $count('DIKEMAS'), 'note' => 'Siap dikirim'],
             ['label' => 'Dikirim', 'value' => $count('DIKIRIM'), 'note' => 'Dalam pengiriman'],
             ['label' => 'Selesai', 'value' => $count('SELESAI'), 'note' => 'Sudah diterima pembeli'],

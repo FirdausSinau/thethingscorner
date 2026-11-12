@@ -115,6 +115,8 @@ DIBATALKAN
 KEDALUWARSA
 ```
 
+Label UI untuk `MENUNGGU_KONFIRMASI`: **Dipending**. Nilai database tetap `MENUNGGU_KONFIRMASI`.
+
 ### OrderChannel
 
 ```text
@@ -316,7 +318,7 @@ Status service: 6 test lulus, 32 assertions.
 Test UI cart/checkout/order: 7 test lulus, 32 assertions.  
 Test admin order: 15 test, termasuk render semua status, otorisasi, transisi stok, pembatalan setelah bayar, pencarian, bulk status, dan audit log.  
 Test admin produk: 8 test, termasuk render halaman, nonaktifkan, guard hapus varian/warna, dan validasi stok.  
-Total suite: 104 test lulus, 296 assertions. Termasuk test QRIS yang kedaluwarsa setelah 30 detik.
+Total suite: 104 test lulus, 297 assertions. Termasuk test QRIS yang kedaluwarsa setelah 30 detik dan label Dipending.
 
 ---
 

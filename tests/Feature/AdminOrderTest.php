@@ -107,7 +107,8 @@ class AdminOrderTest extends TestCase
 
         $this->actingAs($this->admin())
             ->get(route('admin.orders.index'))
-            ->assertOk();
+            ->assertOk()
+            ->assertSee('Dipending');
     }
 
     public function test_buyer_cannot_view_admin_orders(): void

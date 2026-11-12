@@ -18,7 +18,7 @@ enum OrderStatus: string
         return match ($this) {
             self::MenungguPembayaran => 'Menunggu pembayaran',
             self::Dibayar => 'Dibayar',
-            self::MenungguKonfirmasi => 'Menunggu konfirmasi admin',
+            self::MenungguKonfirmasi => 'Dipending',
             self::Dikemas => 'Dikemas',
             self::Dikirim => 'Dikirim',
             self::Selesai => 'Selesai',

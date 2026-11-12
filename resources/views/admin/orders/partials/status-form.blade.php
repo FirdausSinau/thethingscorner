@@ -1,10 +1,10 @@
 @php
     $next = $order->status->manualNext();
-    $input = 'rounded-lg border border-border bg-white px-3 py-2 text-sm';
+    $input = 'w-full rounded-lg border border-border bg-white px-2 py-2 text-xs';
 @endphp
 
 @if ($next)
-    <form method="POST" action="{{ route('admin.orders.status', $order) }}" class="flex items-center gap-2">
+    <form method="POST" action="{{ route('admin.orders.status', $order) }}" class="flex flex-col gap-2">
         @csrf
         @method('PATCH')
 
@@ -15,7 +15,7 @@
             @endforeach
         </select>
 
-        <button type="submit" class="rounded-lg border border-border px-3 py-2 text-sm hover:border-primary-dark">
+        <button type="submit" class="w-full rounded-lg border border-border px-2 py-2 text-xs hover:border-primary-dark">
             Ubah
         </button>
     </form>

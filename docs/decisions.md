@@ -1,6 +1,6 @@
 # Decision Log — The Things Corner
 
-**Versi:** 0.8  
+**Versi:** 0.9  
 **Tanggal:** 12 November 2026  
 **Status:** Draft  
 **Referensi:** RFP v0.3, PRD Fase 1 v0.2
@@ -60,7 +60,7 @@ Aturan:
 | D-29 | Struktur katalog | Produk -> warna -> varian ukuran; foto bisa per produk dan per warna | Confirmed | Model, admin, katalog | Tim produk |
 | D-30 | Brand | Nama resmi `Thethingscorner`, huruf T besar dan satu kata | Confirmed | UI, email, dokumen | Client |
 | D-31 | Media produk | `PRODUCT_IMAGES_DISK=public` untuk lokal, `s3` untuk Neon Object Storage | Confirmed | Upload, URL, hapus gambar | Tim |
-| D-32 | Status pesanan | `MENUNGGU_PEMBAYARAN` → `DIBAYAR` → `MENUNGGU_KONFIRMASI` → `DIKEMAS` → `DIKIRIM` → `SELESAI` | Confirmed | State machine, UI, laporan | Tim |
+| D-32 | Status pesanan | `MENUNGGU_PEMBAYARAN` → `DIBAYAR` → `MENUNGGU_KONFIRMASI` (label: Dipending) → `DIKEMAS` → `DIKIRIM` → `SELESAI` | Confirmed | State machine, UI, laporan | Tim |
 | D-33 | Preorder dan Custom PO | Konsep yang sama. Produk preorder tidak lewat keranjang, pembeli mengajukan lewat form PO | Assumption | Katalog, keranjang, checkout, alur PO, pembayaran DP | Tim |
 | D-34 | Log status pesanan | Tabel `order_status_logs` append-only, mencatat status asal, status tujuan, aktor, dan catatan | Confirmed | Audit dan halaman admin | Tim |
 
@@ -294,7 +294,7 @@ Arti:
 
 - `MENUNGGU_PEMBAYARAN`: order sudah dibuat, pembayaran belum diterima.
 - `DIBAYAR`: pembayaran sudah diterima.
-- `MENUNGGU_KONFIRMASI`: pembayaran diterima, pesanan menunggu konfirmasi admin sebelum dikemas.
+- `MENUNGGU_KONFIRMASI`: pembayaran diterima, pesanan menunggu konfirmasi admin sebelum dikemas. Label UI: **Dipending**.
 - `DIBATALKAN`: dibatalkan sebelum dikemas.
 - `KEDALUWARSA`: pembayaran tidak selesai sampai batas reservasi.
 
@@ -383,3 +383,4 @@ Log append-only: tidak diubah atau dihapus. Halaman detail pesanan admin menampi
 | 0.6 | 11 Nov 2026 | Status `BARU` dihapus; tambah `MENUNGGU_KONFIRMASI`; `PENDING` dipisahkan sebagai status pembayaran |
 | 0.7 | 12 Nov 2026 | Preorder disamakan dengan Custom PO. Produk preorder lewat alur PO, bukan keranjang (D-33, Assumption) |
 | 0.8 | 12 Nov 2026 | Brand resmi `Thethingscorner`; status `PENDING` dihapus dari pesanan; log status pesanan ditambahkan (D-34) |
+| 0.9 | 13 Nov 2026 | Label `MENUNGGU_KONFIRMASI` menjadi Dipending; tabel admin order dibuat fixed tanpa scroll horizontal |
