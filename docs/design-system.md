@@ -1,8 +1,8 @@
 # Design System Sederhana — The Things Corner
 
-**Versi:** 0.1  
-**Tanggal:** 6 November 2026  
-**Status:** Draft  
+**Versi:** 0.2  
+**Tanggal:** 12 November 2026  
+**Status:** Draft, tema pink untuk perbandingan  
 **Referensi:** PRD Fase 1 v0.2, wireframes
 
 ---
@@ -34,14 +34,16 @@ Prinsip:
 
 | Token | Hex | Pemakaian |
 |---|---|---|
-| `--color-primary` | `#4B2E83` | Tombol utama, link, aksen |
-| `--color-primary-dark` | `#2E1B4F` | Hover, heading |
+| `--color-primary` | `#B03A6A` | Tombol utama, link, aksen. Rose/berry, bukan pink neon |
+| `--color-primary-dark` | `#741F45` | Hover, heading |
 | `--color-accent` | `#C08457` | Detail hangat, badge, garis |
 | `--color-bg` | `#FAF7F2` | Latar halaman |
 | `--color-surface` | `#FFFFFF` | Card, form, panel |
-| `--color-ink` | `#1F1B24` | Teks utama |
-| `--color-muted` | `#6B6475` | Teks sekunder |
-| `--color-border` | `#E7E1EA` | Garis, border |
+| `--color-ink` | `#241B20` | Teks utama |
+| `--color-muted` | `#6F636A` | Teks sekunder |
+| `--color-border` | `#EADFE3` | Garis, border |
+
+Tema pink ini dipakai untuk perbandingan. Versi ungu sebelumnya memakai `#4B2E83` dan `#2E1B4F`.
 | `--color-success` | `#15803D` | Berhasil, selesai |
 | `--color-warning` | `#B45309` | Menunggu, perhatian |
 | `--color-danger` | `#B91C1C` | Gagal, batal |
@@ -52,8 +54,9 @@ Status badge:
 | Status | Warna |
 |---|---|
 | Baru / Menunggu | warning |
-| Dibayar / Diproses | info |
-| Dikirim | primary |
+| Dibayar | info |
+| Dikemas | rose |
+| Dikirim | pink |
 | Selesai | success |
 | Dibatalkan / Kedaluwarsa | danger |
 

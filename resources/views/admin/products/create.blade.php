@@ -19,7 +19,10 @@
     <form method="POST" action="{{ route('admin.products.store') }}"
           class="mt-6 rounded-2xl border border-border bg-surface p-6">
         @csrf
-        @include('admin.products._form')
+        @include('admin.products.partials.info-fields', [
+            'product' => null,
+            'categories' => $categories,
+        ])
 
         <button type="submit"
                 class="mt-6 rounded-full bg-primary-dark px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">

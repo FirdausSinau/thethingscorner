@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\CartItem;
 use App\Models\Product\ProductVariant;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 
@@ -12,6 +13,7 @@ class CartService
 {
     public function add(User $user, ProductVariant $variant, int $qty = 1): CartItem
     {
+        $this->ensureBuyer($user);
         $this->ensurePurchasable($variant);
 
         if ($qty < 1) {
@@ -103,6 +105,12 @@ class CartService
             ]);
         }
 
+        if ($variant->color->product->is_preorder) {
+            throw ValidationException::withMessages([
+                'variant_id' => 'Produk ini dipesan lewat pengajuan PO, bukan keranjang.',
+            ]);
+        }
+
         if ($variant->stock_available < 1) {
             throw ValidationException::withMessages([
                 'variant_id' => 'Stok ukuran ini habis.',
@@ -116,6 +124,13 @@ class CartService
             throw ValidationException::withMessages([
                 'qty' => "Stok tersedia hanya {$variant->stock_available}.",
             ]);
+        }
+    }
+
+    private function ensureBuyer(User $user): void
+    {
+        if (! $user->isBuyer()) {
+            throw new AuthorizationException('Akun admin tidak bisa berbelanja.');
         }
     }
 

@@ -7,9 +7,7 @@ use Illuminate\Notifications\Notification;
 
 class ResetPasswordNotification extends Notification
 {
-    public function __construct(public readonly string $token)
-    {
-    }
+    public function __construct(public readonly string $token) {}
 
     /**
      * Get the notification's delivery channels.
@@ -32,9 +30,9 @@ class ResetPasswordNotification extends Notification
         ]);
 
         return (new MailMessage)
-            ->subject('Reset password akun The Things Corner')
+            ->subject('Reset password akun Thethingscorner')
             ->greeting('Halo '.$notifiable->name.',')
-            ->line('Kami menerima permintaan untuk mengganti password akun The Things Corner kamu.')
+            ->line('Kami menerima permintaan untuk mengganti password akun Thethingscorner kamu.')
             ->action('Buat password baru', $url)
             ->line('Link ini berlaku 60 menit. Abaikan email ini jika kamu tidak meminta reset password.');
     }

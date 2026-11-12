@@ -13,6 +13,7 @@ use App\Models\OrderItem;
 use App\Models\Product\ProductVariant;
 use App\Models\StockReservation;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -25,6 +26,10 @@ class CheckoutService
         PaymentMethod $paymentMethod,
         int $shippingCost = 0
     ): Order {
+        if (! $user->isBuyer()) {
+            throw new AuthorizationException('Akun admin tidak bisa berbelanja.');
+        }
+
         abort_unless($address->user_id === $user->id, 404);
 
         if ($shippingCost < 0) {
@@ -73,65 +78,71 @@ class CheckoutService
                     ]);
                 }
 
+                if ($variant->color->product->is_preorder) {
+                    throw ValidationException::withMessages([
+                        'cart' => "Produk {$variant->color->product->name} dipesan lewat pengajuan PO. Hapus dari keranjang untuk melanjutkan.",
+                    ]);
+                }
+
                 if ($item->qty > $variant->stock_available) {
                     throw ValidationException::withMessages([
                         'cart' => "Stok {$product->name} ukuran {$variant->size} tidak cukup.",
                     ]);
                 }
 
-                $unitPrice    = $variant->effective_price;
+                $unitPrice = $variant->effective_price;
                 $lineSubtotal = $unitPrice * $item->qty;
-                $subtotal    += $lineSubtotal;
+                $subtotal += $lineSubtotal;
 
                 $lines[] = [
-                    'variant'    => $variant,
-                    'product'    => $product,
-                    'qty'        => $item->qty,
+                    'variant' => $variant,
+                    'product' => $product,
+                    'qty' => $item->qty,
                     'unit_price' => $unitPrice,
-                    'subtotal'   => $lineSubtotal,
+                    'subtotal' => $lineSubtotal,
                 ];
             }
 
             $order = Order::create([
-                'order_code'     => $this->makeOrderCode(),
-                'user_id'        => $user->id,
-                'channel'        => OrderChannel::Web,
-                'status'         => OrderStatus::MenungguPembayaran,
+                'order_code' => $this->makeOrderCode(),
+                'user_id' => $user->id,
+                'channel' => OrderChannel::Web,
+                'status' => OrderStatus::MenungguPembayaran,
                 'payment_method' => $paymentMethod,
-                'subtotal'       => $subtotal,
-                'shipping_cost'  => $shippingCost,
-                'total'          => $subtotal + $shippingCost,
-                'recipient'      => $address->recipient,
-                'phone'          => $address->phone,
-                'address'        => $this->addressSnapshot($address),
-                'city'           => $address->city,
-                'postal_code'    => $address->postal_code,
+                'subtotal' => $subtotal,
+                'shipping_cost' => $shippingCost,
+                'total' => $subtotal + $shippingCost,
+                'recipient' => $address->recipient,
+                'phone' => $address->phone,
+                'address' => $this->addressSnapshot($address),
+                'city' => $address->city,
+                'postal_code' => $address->postal_code,
             ]);
 
-            $expiresAt = now()->addMinutes($paymentMethod->reservationMinutes());
+            $expiresAt = now()->addSeconds($paymentMethod->reservationSeconds());
 
             foreach ($lines as $line) {
                 /** @var ProductVariant $variant */
                 $variant = $line['variant'];
 
                 OrderItem::create([
-                    'order_id'     => $order->id,
-                    'variant_id'   => $variant->id,
+                    'order_id' => $order->id,
+                    'variant_id' => $variant->id,
                     'product_name' => $line['product']->name,
-                    'sku'          => $variant->sku,
-                    'color'        => $variant->color->name,
-                    'size'         => $variant->size,
-                    'price'        => $line['unit_price'],
-                    'qty'          => $line['qty'],
-                    'subtotal'     => $line['subtotal'],
+                    'sku' => $variant->sku,
+                    'color' => $variant->color->name,
+                    'size' => $variant->size,
+                    'price' => $line['unit_price'],
+                    'qty' => $line['qty'],
+                    'subtotal' => $line['subtotal'],
                 ]);
 
                 StockReservation::create([
-                    'order_id'   => $order->id,
+                    'order_id' => $order->id,
                     'variant_id' => $variant->id,
-                    'qty'        => $line['qty'],
+                    'qty' => $line['qty'],
                     'expires_at' => $expiresAt,
-                    'status'     => ReservationStatus::Active,
+                    'status' => ReservationStatus::Active,
                 ]);
 
                 $variant->increment('stock_reserved', $line['qty']);
@@ -141,7 +152,7 @@ class CheckoutService
             CartItem::query()->where('user_id', $user->id)->delete();
 
             return $order->load(['items', 'reservations']);
-        }, 3); 
+        }, 3);
     }
 
     private function makeOrderCode(): string

@@ -7,9 +7,8 @@ return [
     | Default Filesystem Disk
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the default filesystem disk that should be used
-    | by the framework. The "local" disk, as well as a variety of cloud
-    | based disks are available to your application for file storage.
+    | Disk default dipakai kalau kode tidak memilih disk secara eksplisit.
+    | Untuk kerja bersama dengan Neon, isi FILESYSTEM_DISK=neon di .env.
     |
     */
 
@@ -20,101 +19,75 @@ return [
     | Product Images Disk
     |--------------------------------------------------------------------------
     |
-    | "public" menyimpan foto di storage/app/public. Set "s3" kalau memakai
-    | Neon Object Storage atau bucket S3-compatible lain.
+    | "public" menyimpan foto di storage/app/public. "neon" menyimpan foto
+    | di Neon Object Storage. Default "neon" mengikuti database bersama.
+    | Untuk development tanpa Neon, isi PRODUCT_IMAGES_DISK=public.
     |
     */
 
-    'product_images_disk' => env('PRODUCT_IMAGES_DISK', 'public'),
+    'product_images_disk' => env('PRODUCT_IMAGES_DISK', 'neon'),
 
     /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
-    |
-    | Below you may configure as many filesystem disks as necessary, and you
-    | may even configure multiple disks for the same driver. Examples for
-    | most supported storage drivers are configured here for reference.
-    |
-    | Supported drivers: "local", "ftp", "sftp", "s3"
-    |
     */
 
-    
-'disks' => [
+    'disks' => [
 
-    // Penyimpanan lokal/private
-    'local' => [
-        'driver' => 'local',
-        'root' => storage_path('app/private'),
-        'serve' => true,
-        'throw' => false,
-        'report' => false,
-    ],
+        'local' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private'),
+            'serve' => true,
+            'throw' => false,
+            'report' => false,
+        ],
 
-    // Penyimpanan lokal/public
-    // Tetap dipertahankan untuk file lain yang mungkin masih digunakan
-    'public' => [
-        'driver' => 'local',
-        'root' => storage_path('app/public'),
-        'url' => rtrim(env('APP_URL', 'http://localhost'), '/') . '/storage',
-        'visibility' => 'public',
-        'throw' => false,
-        'report' => false,
-    ],
+        'public' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
 
-        // Neon Object Storage
-'neon' => [
-    'driver' => 's3',
+        /*
+         * Neon Object Storage.
+         * Kunci NEON_STORAGE_* dipakai lebih dulu. Kalau tidak diisi, disk ini
+         * memakai kunci AWS_* supaya kompatibel dengan konfigurasi lama.
+         */
+        'neon' => [
+            'driver' => 's3',
+            'key' => env('NEON_STORAGE_ACCESS_KEY_ID', env('AWS_ACCESS_KEY_ID')),
+            'secret' => env('NEON_STORAGE_SECRET_ACCESS_KEY', env('AWS_SECRET_ACCESS_KEY')),
+            'region' => env('NEON_STORAGE_REGION', env('AWS_DEFAULT_REGION', 'ap-southeast-1')),
+            'bucket' => env('NEON_STORAGE_BUCKET', env('AWS_BUCKET')),
+            'endpoint' => env('NEON_STORAGE_ENDPOINT', env('AWS_ENDPOINT')),
+            'use_path_style_endpoint' => true,
+            'throw' => true,
+            'report' => false,
+        ],
 
-    'key' => env('NEON_STORAGE_ACCESS_KEY_ID'),
-    'secret' => env('NEON_STORAGE_SECRET_ACCESS_KEY'),
-
-    'region' => env('NEON_STORAGE_REGION'),
-    'bucket' => env('NEON_STORAGE_BUCKET'),
-
-    'endpoint' => env('NEON_STORAGE_ENDPOINT'),
-
-    'use_path_style_endpoint' => true,
-
-    'throw' => true,
-    'report' => true,
-],
         's3' => [
-        'driver' => 's3',
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID', env('NEON_STORAGE_ACCESS_KEY_ID')),
+            'secret' => env('AWS_SECRET_ACCESS_KEY', env('NEON_STORAGE_SECRET_ACCESS_KEY')),
+            'region' => env('AWS_DEFAULT_REGION', env('NEON_STORAGE_REGION', 'ap-southeast-1')),
+            'bucket' => env('AWS_BUCKET', env('NEON_STORAGE_BUCKET')),
+            'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT_URL_S3', env('AWS_ENDPOINT', env('NEON_STORAGE_ENDPOINT'))),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', true),
+            'throw' => true,
+            'report' => false,
+        ],
 
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-
-        'region' => env('AWS_REGION', 'ap-southeast-1'),
-
-        'bucket' => env('AWS_BUCKET'),
-
-        'url' => env('AWS_URL'),
-
-        'endpoint' => env(
-            'AWS_ENDPOINT_URL_S3',
-            env('AWS_ENDPOINT')
-        ),
-
-        'use_path_style_endpoint' => true,
-
-        'throw' => true,
-        'report' => true,
     ],
-
-],
-
 
     /*
     |--------------------------------------------------------------------------
     | Symbolic Links
     |--------------------------------------------------------------------------
-    |
-    | Here you may configure the symbolic links that will be created when the
-    | `storage:link` Artisan command is executed. The array keys should be
-    | the locations of the links and the values should be their targets.
-    |
     */
 
     'links' => [

@@ -7,9 +7,7 @@ use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\ReservationStatus;
 use App\Models\Address;
-use App\Models\Order;
 use App\Models\Product\ProductVariant;
-use App\Models\StockReservation;
 use App\Models\User;
 use App\Services\CartService;
 use App\Services\CheckoutService;
@@ -108,14 +106,16 @@ class CheckoutServiceTest extends TestCase
         $this->assertDatabaseCount('cart_items', 0);
     }
 
-    public function test_qris_reservation_expires_in_30_minutes(): void
+    public function test_qris_reservation_expires_in_30_seconds(): void
     {
+        config(['payment.reservations.qris_seconds' => 30]);
+
         $this->cart->add($this->buyer, $this->variant, 1);
 
         $order = $this->checkout->placeOrder($this->buyer, $this->address, PaymentMethod::Qris);
 
         $this->assertTrue(
-            $order->reservations->first()->expires_at->equalTo(now()->addMinutes(30))
+            $order->reservations->first()->expires_at->equalTo(now()->addSeconds(30))
         );
     }
 

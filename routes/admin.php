@@ -14,34 +14,23 @@ Route::middleware(['auth', 'role:admin,admin_master'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function (): void {
-
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('products', ProductController::class)->except(['show', 'destroy']);
         Route::patch('products/{product}/deactivate', [ProductController::class, 'deactivate'])->name('products.deactivate');
 
-        Route::post('products/{product}/images', [ProductImageController::class, 'store'])
-            ->name('products.images.store');
-        Route::delete('product-images/{image}', [ProductImageController::class, 'destroy'])
-            ->name('product-images.destroy');
+        Route::post('products/{product}/images', [ProductImageController::class, 'store'])->name('products.images.store');
+        Route::delete('product-images/{image}', [ProductImageController::class, 'destroy'])->name('product-images.destroy');
 
-        Route::post('products/{product}/colors', [ProductColorController::class, 'store'])
-            ->name('products.colors.store');
-        Route::delete('colors/{color}', [ProductColorController::class, 'destroy'])
-            ->name('colors.destroy');
+        Route::post('products/{product}/colors', [ProductColorController::class, 'store'])->name('products.colors.store');
+        Route::delete('colors/{color}', [ProductColorController::class, 'destroy'])->name('colors.destroy');
 
-        Route::post('colors/{color}/images', [ProductColorImageController::class, 'store'])
-            ->name('colors.images.store');
-        Route::delete('images/{image}', [ProductColorImageController::class, 'destroy'])
-            ->name('images.destroy');
+        Route::post('colors/{color}/images', [ProductColorImageController::class, 'store'])->name('colors.images.store');
+        Route::delete('images/{image}', [ProductColorImageController::class, 'destroy'])->name('images.destroy');
 
-        Route::post('colors/{color}/variants', [ProductVariantController::class, 'store'])
-            ->name('colors.variants.store');
-        Route::put('colors/{color}/variants', [ProductVariantController::class, 'updateMany'])
-            ->name('colors.variants.update');
-        Route::delete('variants/{variant}', [ProductVariantController::class, 'destroy'])
-            ->name('variants.destroy');
-
+        Route::post('colors/{color}/variants', [ProductVariantController::class, 'store'])->name('colors.variants.store');
+        Route::put('colors/{color}/variants', [ProductVariantController::class, 'updateMany'])->name('colors.variants.update');
+        Route::delete('variants/{variant}', [ProductVariantController::class, 'destroy'])->name('variants.destroy');
 
         Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
         Route::patch('orders/bulk-status', [AdminOrderController::class, 'bulkStatus'])->name('orders.bulk-status');

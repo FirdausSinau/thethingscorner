@@ -1,7 +1,7 @@
 # Decision Log — The Things Corner
 
-**Versi:** 0.6  
-**Tanggal:** 11 November 2026  
+**Versi:** 0.8  
+**Tanggal:** 12 November 2026  
 **Status:** Draft  
 **Referensi:** RFP v0.3, PRD Fase 1 v0.2
 
@@ -58,9 +58,11 @@ Aturan:
 | D-27 | Diskon | Ditunda sampai aturan bisnis dan perhitungan jelas | Deferred | Order, checkout, laporan | Client + tim |
 | D-28 | Produk reject | Sumbernya biasanya kesalahan produksi PO; aturan belum dikunci | TBD | Stok, PO, katalog, harga | Client + tim |
 | D-29 | Struktur katalog | Produk -> warna -> varian ukuran; foto bisa per produk dan per warna | Confirmed | Model, admin, katalog | Tim produk |
-| D-30 | Brand | Nama resmi `thethingscorner`, huruf kecil satu kata | Confirmed | UI, email, dokumen | Client |
+| D-30 | Brand | Nama resmi `Thethingscorner`, huruf T besar dan satu kata | Confirmed | UI, email, dokumen | Client |
 | D-31 | Media produk | `PRODUCT_IMAGES_DISK=public` untuk lokal, `s3` untuk Neon Object Storage | Confirmed | Upload, URL, hapus gambar | Tim |
 | D-32 | Status pesanan | `MENUNGGU_PEMBAYARAN` → `DIBAYAR` → `MENUNGGU_KONFIRMASI` → `DIKEMAS` → `DIKIRIM` → `SELESAI` | Confirmed | State machine, UI, laporan | Tim |
+| D-33 | Preorder dan Custom PO | Konsep yang sama. Produk preorder tidak lewat keranjang, pembeli mengajukan lewat form PO | Assumption | Katalog, keranjang, checkout, alur PO, pembayaran DP | Tim |
+| D-34 | Log status pesanan | Tabel `order_status_logs` append-only, mencatat status asal, status tujuan, aktor, dan catatan | Confirmed | Audit dan halaman admin | Tim |
 
 ---
 
@@ -220,39 +222,51 @@ Field lanjutan yang ditambahkan 11 November 2026:
 
 Status: **Confirmed**.
 
-Nama brand yang dipakai di aplikasi dan komunikasi: **`thethingscorner`**.
+Nama brand yang dipakai di aplikasi dan komunikasi: **`Thethingscorner`**.
 
 Aturan:
 
-- tulis huruf kecil, satu kata;
+- tulis huruf T besar, satu kata;
 - gunakan di title halaman, header, footer, dan email;
-- `APP_NAME` di `.env` memakai `thethingscorner`;
+- `APP_NAME` di `.env` memakai `Thethingscorner`;
 - dokumen formal boleh tetap memakai nama panjang sebagai judul dokumen.
+
+Keputusan 12 November 2026: kapitalisasi resmi menjadi `Thethingscorner`, menggantikan penulisan huruf kecil sebelumnya.
 
 ### D-31 - Media produk
 
 Status: **Confirmed**.
 
-Foto produk memakai disk yang bisa diatur lewat `.env`:
+Foto produk memakai disk yang bisa diatur lewat `.env`.
+
+Untuk lokal:
 
 ```dotenv
+FILESYSTEM_DISK=local
 PRODUCT_IMAGES_DISK=public
 ```
 
-atau
+Untuk kerja bersama dengan Neon Object Storage:
 
 ```dotenv
-PRODUCT_IMAGES_DISK=s3
+FILESYSTEM_DISK=neon
+PRODUCT_IMAGES_DISK=neon
+NEON_STORAGE_ACCESS_KEY_ID=...
+NEON_STORAGE_SECRET_ACCESS_KEY=...
+NEON_STORAGE_REGION=ap-southeast-1
+NEON_STORAGE_BUCKET=product
+NEON_STORAGE_ENDPOINT=...
 ```
 
 Aturan:
 
 - Default lokal: `public`, file di `storage/app/public`.
-- Untuk kerja tim dengan database Neon: `s3`, memakai Neon Object Storage yang kompatibel S3.
-- Credential S3/Neon hanya di `.env`, tidak di Git.
-- `AWS_USE_PATH_STYLE_ENDPOINT=true` untuk endpoint Neon.
+- Disk `neon` memakai kredensial `NEON_STORAGE_*`. Kalau kosong, config memakai `AWS_*` sebagai fallback.
+- Credential hanya di `.env`, tidak di Git.
+- `use_path_style_endpoint=true` untuk endpoint Neon.
 - Setelah mengubah `.env`, jalankan `php artisan config:clear`.
 - Accessor `$image->url` mengikuti disk yang aktif.
+- File dihapus setelah data database berhasil dihapus.
 
 ### D-32 - Status pesanan
 
@@ -284,7 +298,37 @@ Arti:
 - `DIBATALKAN`: dibatalkan sebelum dikemas.
 - `KEDALUWARSA`: pembayaran tidak selesai sampai batas reservasi.
 
-`PENDING` bukan status pesanan. `PENDING` adalah status pembayaran dan akan dipisahkan di `PaymentStatus` pada Slice 5.
+`PENDING` bukan status pesanan. `PENDING` adalah status pembayaran dan akan dipisahkan di `PaymentStatus` pada Slice 5. Status `PENDING` sempat ditambahkan sebagai status pesanan di PR #3, lalu dihapus lagi pada 12 November 2026 karena bertentangan dengan keputusan ini.
+
+### D-33 - Preorder dan Custom PO
+
+Preorder dan Custom PO adalah konsep yang sama. Konsep ini dikonfirmasi tim pada 12 November 2026.
+
+Alur yang diasumsikan sampai client mengonfirmasi:
+
+- Produk preorder tidak masuk keranjang dan tidak bisa di-checkout biasa.
+- Pembeli mengajukan lewat form PO. Admin memberi penawaran, DP, lalu produksi dan pelunasan (Slice 8).
+
+Yang belum diputuskan:
+
+- Apakah flag `is_preorder` tetap di produk sebagai penanda "Ajukan PO", atau dipindah ke data PO.
+- Apakah `preorder_close_date` dan `estimated_ready_date` tetap di produk atau pindah ke data PO.
+- Pembayaran DP dan pelunasan perlu referensi ke PO. Tabel `payments` saat ini hanya punya `order_id`. Keputusan ini harus ada sebelum Slice 5 selesai.
+
+Guard keranjang dan checkout sudah ada di `CartService` dan `CheckoutService`. Flag `is_preorder` sekarang bisa diatur dari admin.
+
+### D-34 - Log status pesanan
+
+Setiap perubahan status pesanan dicatat di `order_status_logs`:
+
+- `order_id`;
+- `from_status`;
+- `to_status`;
+- `actor_id` (null untuk sistem);
+- `note`;
+- `created_at`.
+
+Log append-only: tidak diubah atau dihapus. Halaman detail pesanan admin menampilkan riwayat ini.
 
 ---
 
@@ -337,3 +381,5 @@ Arti:
 | 0.4 | 11 Nov 2026 | Brand resmi `thethingscorner`; field ongkir, reservasi, dan rating ditambahkan |
 | 0.5 | 11 Nov 2026 | Media produk memakai disk configurable public/s3 |
 | 0.6 | 11 Nov 2026 | Status `BARU` dihapus; tambah `MENUNGGU_KONFIRMASI`; `PENDING` dipisahkan sebagai status pembayaran |
+| 0.7 | 12 Nov 2026 | Preorder disamakan dengan Custom PO. Produk preorder lewat alur PO, bukan keranjang (D-33, Assumption) |
+| 0.8 | 12 Nov 2026 | Brand resmi `Thethingscorner`; status `PENDING` dihapus dari pesanan; log status pesanan ditambahkan (D-34) |

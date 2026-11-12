@@ -1,6 +1,6 @@
-# thethingscorner
+# Thethingscorner
 
-Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk thethingscorner.
+Website toko, manajemen stok, custom PO, dan rekonsiliasi Shopee untuk Thethingscorner.
 
 **Status:** Batch 2 cart dan checkout selesai - menunggu admin order  
 **Stack:** Laravel 13, PHP 8.4, PostgreSQL 16+, Blade, Tailwind CSS 4, Vite, Alpine.js  

@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 11 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Backend dan UI checkout selesai, admin order belum
+**Status:** Backend dan UI checkout selesai; admin order index, detail, dan aksi status selesai
 
 Dokumen ini adalah kontrak Slice 4: checkout, order, dan reservasi stok.
 
@@ -84,6 +84,20 @@ Index `(user_id, created_at)` dan `(status, created_at)`.
 
 Index `(expires_at, status)`, `order_id`, `variant_id`.
 
+### order_status_logs
+
+| Kolom | Tipe | Catatan |
+|---|---|---|
+| id | bigint | primary key |
+| order_id | bigint | FK orders, cascade delete |
+| from_status | string(30) | nullable |
+| to_status | string(30) | |
+| actor_id | bigint | FK users, nullable, null on delete |
+| note | text | nullable |
+| created_at | timestamp | append-only |
+
+Index `(order_id, created_at)`.
+
 ---
 
 ## 2. Enum
@@ -121,6 +135,8 @@ Window reservasi:
 
 - QRIS, VA, e-wallet: 30 menit.
 - Transfer manual: 60 menit.
+
+Sementara QRIS dipakai 30 detik untuk pengujian lewat `QRIS_RESERVATION_SECONDS=30`. Kembalikan ke `1800` detik (30 menit) sebelum produksi.
 
 ### ReservationStatus
 
@@ -214,8 +230,10 @@ Controller:
 |---|---|---|---|
 | GET | `/admin/orders` | `admin.orders.index` | `Admin\OrderController@index` |
 | GET | `/admin/orders/{order}` | `admin.orders.show` | `Admin\OrderController@show` |
+| PATCH | `/admin/orders/{order}/status` | `admin.orders.status` | `Admin\OrderController@updateStatus` |
+| PATCH | `/admin/orders/bulk-status` | `admin.orders.bulk-status` | `Admin\OrderController@bulkStatus` |
 
-Slice 4 cukup read-only: daftar order, status, total, metode pembayaran, dan detail item. Aksi status menyusul di Slice 7.
+Aksi status memakai `OrderStatusService`. Perubahan status dan stok berjalan dalam satu transaksi, memakai urutan lock order, reservasi, lalu varian. Setiap perubahan dicatat di `order_status_logs`. Aksi auto-selesai, refund, dan aksi pengiriman menyusul di Slice 7.
 
 ---
 
@@ -238,8 +256,13 @@ Admin order index:
 ```php
 [
     'orders' => $orders, // paginator, eager load user, items
+    'counts' => $counts, // jumlah per status
+    'statuses' => OrderStatus::cases(),
+    'sumTotal' => $sumTotal,
 ]
 ```
+
+Admin order detail memuat `user`, `items`, `reservations.variant.color.product`, dan `statusLogs.actor`.
 
 ---
 
@@ -256,9 +279,11 @@ Scheduler sudah berjalan setiap menit di `routes/console.php`.
 Yang dilakukan:
 
 - cari reservation `active` dengan `expires_at <= now()`;
+- lock order, reservasi, lalu varian (urutan yang sama dengan `OrderStatusService`);
+- baca ulang status reservasi di bawah lock supaya tidak dilepas dua kali;
 - kurangi `stock_reserved` varian;
 - ubah reservation menjadi `expired`;
-- kalau semua reservasi order sudah tidak aktif dan order masih `MENUNGGU_PEMBAYARAN`, ubah order menjadi `KEDALUWARSA`.
+- kalau semua reservasi order sudah tidak aktif dan order masih `MENUNGGU_PEMBAYARAN`, ubah order menjadi `KEDALUWARSA` dan catat di `order_status_logs`.
 
 ---
 
@@ -288,7 +313,10 @@ Yang dilakukan:
 - reservasi kedaluwarsa melepas stok dan mengubah order menjadi kedaluwarsa.
 
 Status service: 6 test lulus, 32 assertions.  
-Test UI cart/checkout/order: 7 test lulus, 32 assertions.
+Test UI cart/checkout/order: 7 test lulus, 32 assertions.  
+Test admin order: 15 test, termasuk render semua status, otorisasi, transisi stok, pembatalan setelah bayar, pencarian, bulk status, dan audit log.  
+Test admin produk: 8 test, termasuk render halaman, nonaktifkan, guard hapus varian/warna, dan validasi stok.  
+Total suite: 104 test lulus, 296 assertions. Termasuk test QRIS yang kedaluwarsa setelah 30 detik.
 
 ---
 
@@ -296,7 +324,7 @@ Test UI cart/checkout/order: 7 test lulus, 32 assertions.
 
 - halaman pembayaran;
 - integrasi Midtrans/Xendit;
-- admin order list/detail milik Hafiez;
 - shipment dan resi;
-- state machine order lengkap.
+- auto-selesai, refund, dan aksi pengiriman;
+- `stock_movements` untuk audit perubahan stok (Slice 10).
 

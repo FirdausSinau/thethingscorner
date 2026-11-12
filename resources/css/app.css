@@ -11,14 +11,15 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
     --font-display: 'Fraunces', Georgia, serif;
 
-    --color-primary: #4B2E83;
-    --color-primary-dark: #2E1B4F;
+    /* Tema pink untuk perbandingan. Versi ungu sebelumnya: primary #4B2E83, primary-dark #2E1B4F. */
+    --color-primary: #B03A6A;
+    --color-primary-dark: #741F45;
     --color-accent: #C08457;
     --color-bg: #FAF7F2;
     --color-surface: #FFFFFF;
-    --color-ink: #1F1B24;
-    --color-muted: #6B6475;
-    --color-border: #E7E1EA;
+    --color-ink: #241B20;
+    --color-muted: #6F636A;
+    --color-border: #EADFE3;
     --color-success: #15803D;
     --color-warning: #B45309;
     --color-danger: #B91C1C;

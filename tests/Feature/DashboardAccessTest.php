@@ -24,11 +24,11 @@ class DashboardAccessTest extends TestCase
         $this->get(route('dashboard'))->assertRedirect(route('login'));
     }
 
-    public function test_buyer_can_access_buyer_dashboard(): void
+    public function test_buyer_is_redirected_to_catalog_from_dashboard(): void
     {
         $buyer = $this->userWithRole(UserRole::Buyer);
 
-        $this->actingAs($buyer)->get(route('dashboard'))->assertOk();
+        $this->actingAs($buyer)->get(route('dashboard'))->assertRedirect(route('catalog.index'));
     }
 
     public function test_buyer_cannot_access_admin_dashboard(): void
