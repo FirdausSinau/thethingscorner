@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -19,21 +20,28 @@ class ProductImageController extends Controller
         $next = (int) ProductImage::where('product_id', $product->id)->max('sort_order') + 1;
 
         foreach ($request->file('images') as $file) {
+            $path = $file->store(
+                "products/{$product->id}/gallery",
+                'neon'
+            );
+            
             $product->images()->create([
-                'path'       => $file->store("products/{$product->id}/gallery", ProductImageDisk::name()),
+                'path'       => $path,
                 'sort_order' => $next++,
             ]);
         }
 
-        return back()->with('status', 'Foto produk diunggah. Foto pertama jadi sampul di katalog.');
+        return back()->with('status', 'Foto produk berhasil diunggah.');
     }
 
-    public function destroy(ProductImage $productImage)
+    public function destroy(ProductImage $image)
     {
-        ProductImageDisk::disk()->delete($productImage->path);
-        $productImage->delete();
+        if ($image->path) {
+            ProductImageDisk::disk()->delete($image->path);
+        }
 
-        return back()->with('status', 'Foto produk dihapus.');
+        $image->delete();
+
+        return back()->with('status', 'Foto berhasil dihapus.');
     }
 }
-

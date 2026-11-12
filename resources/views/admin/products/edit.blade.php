@@ -247,19 +247,21 @@
     </section>
 
     {{-- Hapus produk --}}
-    <section class="mt-8 rounded-2xl border border-red-200 bg-red-50/50 p-6">
-        <h2 class="font-display text-lg text-red-700">Hapus produk</h2>
-        <p class="mt-1 text-sm text-muted">
-            Semua warna, ukuran, dan foto produk ini ikut terhapus dan tidak bisa dibatalkan.
-            Produk yang sudah pernah dipesan tidak bisa dihapus, nonaktifkan saja lewat info produk di atas.
-        </p>
-        <form method="POST" action="{{ route('admin.products.destroy', $product) }}" class="mt-3"
-              onsubmit="return confirm(@js('Hapus produk ' . $product->name . ' secara permanen?'))">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="rounded-full border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100">
-                Hapus produk
-            </button>
-        </form>
-    </section>
+    @if ($product->is_active)
+        <section class="mt-8 rounded-2xl border border-red-200 bg-red-50/50 p-6">
+            <h2 class="font-display text-lg text-red-700">Nonaktifkan produk</h2>
+            <p class="mt-1 text-sm text-muted">
+                Produk tidak tampil lagi di katalog dan tidak bisa dibeli. Warna, ukuran, foto, dan riwayat pesanan tetap tersimpan.
+                Produk bisa diaktifkan kembali lewat info produk di atas.
+            </p>
+            <form method="POST" action="{{ route('admin.products.deactivate', $product) }}" class="mt-3"
+                onsubmit="return confirm(@js('Nonaktifkan produk ' . $product->name . '?'))">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="rounded-full border border-red-300 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100">
+                    Nonaktifkan produk
+                </button>
+            </form>
+        </section>
+    @endif
 @endsection

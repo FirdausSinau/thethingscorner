@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['product_id', 'path', 'sort_order'])]
 class ProductImage extends Model
@@ -28,18 +29,12 @@ class ProductImage extends Model
         return $this->belongsTo(Product::class);
     }
 
-    protected function url(): Attribute
+    public function getUrlAttribute(): ?string
     {
-        return Attribute::get(function (): ?string {
-            if (! $this->path) {
-                return null;
-            }
+        if (! $this->path) {
+            return null;
+        }
 
-            if (ProductImageDisk::name() === 'public' && ! ProductImageDisk::disk()->exists($this->path)) {
-                return null;
-            }
-
-            return ProductImageDisk::disk()->url($this->path);
-        });
+        return Storage::disk('neon')->url($this->path);
     }
 }

@@ -54,6 +54,7 @@ class CatalogSeeder extends Seeder
                 );
             }
         }
+<<<<<<< HEAD
 
         $this->attachCover($product, 'Theon Dockmart.png');
     }
@@ -74,5 +75,7 @@ class CatalogSeeder extends Seeder
         );
 
         $product->images()->firstOrCreate(['path' => $path], ['sort_order' => 1]);
+=======
+>>>>>>> abbe662 (fix : image upload to database Neon.tech)
     }
 }
