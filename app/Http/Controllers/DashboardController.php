@@ -19,6 +19,6 @@ class DashboardController extends Controller
             ->latest()
             ->paginate(12);
 
-        return view('storefront.dashboard', compact('products'));
+        return view('layouts.storefront', compact('products'));
     }
 }

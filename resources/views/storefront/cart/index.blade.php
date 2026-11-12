@@ -61,10 +61,10 @@
                     <span class="font-semibold">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
                 </p>
                 <p class="mt-3 text-xs text-muted">Stok belum dikunci sampai checkout.</p>
-                                <a href="{{ route('checkout.index') }}"
-                   class="mt-4 inline-flex rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary-dark">
-                    Checkout
-                </a>
+                    <a href="{{ route('checkout.index') }}"
+                    class="mt-4 inline-flex rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary-dark">
+                        Checkout
+                    </a>
             </div>
         @endif
     </section>

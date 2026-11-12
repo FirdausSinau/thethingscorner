@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'thethingscorner')</title>
+    <title>@yield('title', 'Thethingscorner')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -13,7 +13,7 @@
     <header class="sticky top-0 z-20 border-b border-border bg-surface/95 backdrop-blur">
         <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-8">
             <a href="{{ route('home') }}" class="group inline-flex items-baseline gap-2">
-                <span class="font-display text-xl font-semibold tracking-tight text-primary-dark">thethingscorner</span>
+                <span class="font-display text-xl font-semibold tracking-tight text-primary-dark">Thethingscorner</span>
                 <span class="hidden text-[10px] uppercase tracking-[0.25em] text-muted sm:inline">Bandung</span>
             </a>
 
@@ -28,10 +28,10 @@
                        class="rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5">
                         Keranjang
                     </a>
-                    <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}"
+                    <!-- <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}"
                        class="hidden rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5 sm:inline-flex">
                         Dashboard
-                    </a>
+                    </a> -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
@@ -68,7 +68,7 @@
     <footer class="border-t border-border bg-surface">
         <div class="mx-auto flex w-full max-w-6xl flex-col gap-2 px-5 py-8 text-xs text-muted md:flex-row md:items-center md:justify-between md:px-8">
             <p>Handmade custom shoes · Bandung</p>
-            <p>&copy; {{ date('Y') }} thethingscorner</p>
+            <p>&copy; {{ date('Y') }} Thethingscorner</p>
         </div>
     </footer>
 </body>

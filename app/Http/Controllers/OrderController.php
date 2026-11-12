@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
-    public function show(Request $request, Order $order)
+    public function show(Order $order)
     {
-        abort_unless($order->user_id === $request->user()->id, 404);
+        
+        Gate::authorize('view', $order);
 
         $order->load(['items', 'reservations']);
 

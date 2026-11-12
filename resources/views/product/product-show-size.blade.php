@@ -5,7 +5,9 @@
         Ukuran {{ $activeColor ? '· ' . $activeColor->name : '' }}
     </p>
 
-    @if ($variants->isEmpty())
+    @if (!$colorChosen)
+        <p class="mt-3 text-sm text-muted">Pilih warna yang tersedia terlebih dahulu.</p>
+    @elseif ($variants->isEmpty())
         <p class="mt-3 text-sm text-muted">Ukuran untuk warna ini belum tersedia.</p>
     @else
         <div class="mt-3 flex flex-wrap gap-2">

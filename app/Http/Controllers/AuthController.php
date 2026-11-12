@@ -42,7 +42,7 @@ class AuthController extends Controller
         return redirect()->intended(
             $request->user()->isAdmin()
                 ? route('admin.dashboard')
-                : route('dashboard')
+                : route('catalog.index')
         );
     }
 
@@ -58,7 +58,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard');
+        return redirect()->route('catalog.index');
     }
 
     public function logout(Request $request): RedirectResponse
