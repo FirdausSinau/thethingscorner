@@ -2,10 +2,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product\Product;          // sesuaikan namespace
-use App\Models\Product\ProductImage;     // sesuaikan namespace
+use App\Models\Product\Product;
+use App\Models\Product\ProductImage;
+use App\Support\ProductImageDisk;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductImageController extends Controller
 {
@@ -20,7 +20,7 @@ class ProductImageController extends Controller
 
         foreach ($request->file('images') as $file) {
             $product->images()->create([
-                'path'       => $file->store("products/{$product->id}/gallery", 'public'),
+                'path'       => $file->store("products/{$product->id}/gallery", ProductImageDisk::name()),
                 'sort_order' => $next++,
             ]);
         }
@@ -30,7 +30,7 @@ class ProductImageController extends Controller
 
     public function destroy(ProductImage $productImage)
     {
-        Storage::disk('public')->delete($productImage->path);
+        ProductImageDisk::disk()->delete($productImage->path);
         $productImage->delete();
 
         return back()->with('status', 'Foto produk dihapus.');

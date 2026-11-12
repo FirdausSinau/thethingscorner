@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 11 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Backend selesai, UI checkout dan admin order belum
+**Status:** Backend dan UI checkout selesai, admin order belum
 
 Dokumen ini adalah kontrak Slice 4: checkout, order, dan reservasi stok.
 
@@ -91,9 +91,9 @@ Index `(expires_at, status)`, `order_id`, `variant_id`.
 ### OrderStatus
 
 ```text
-BARU
 MENUNGGU_PEMBAYARAN
 DIBAYAR
+MENUNGGU_KONFIRMASI
 DIKEMAS
 DIKIRIM
 SELESAI
@@ -287,17 +287,16 @@ Yang dilakukan:
 - alamat user lain ditolak;
 - reservasi kedaluwarsa melepas stok dan mengubah order menjadi kedaluwarsa.
 
-Status: 6 test lulus, 32 assertions.
+Status service: 6 test lulus, 32 assertions.  
+Test UI cart/checkout/order: 7 test lulus, 32 assertions.
 
 ---
 
 ## 10. Yang belum
 
-- halaman checkout;
-- form alamat;
 - halaman pembayaran;
 - integrasi Midtrans/Xendit;
-- admin order list/detail;
+- admin order list/detail milik Hafiez;
 - shipment dan resi;
 - state machine order lengkap.
 

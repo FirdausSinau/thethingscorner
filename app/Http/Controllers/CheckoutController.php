@@ -6,6 +6,7 @@ use App\Enums\PaymentMethod;
 use App\Services\CartService;
 use App\Services\CheckoutService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class CheckoutController extends Controller
@@ -28,9 +29,13 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(Request $request, CheckoutService $checkout)
+    public function store(Request $request, CheckoutService $checkout, CartService $cart)
     {
         $user = $request->user();
+
+        if ($cart->summary($user)['items']->isEmpty()) {
+            return redirect()->route('cart.index')->with('status', 'Keranjang masih kosong.');
+        }
 
         $data = $request->validate([
             'recipient' => ['required', 'string', 'max:100'],
@@ -43,16 +48,18 @@ class CheckoutController extends Controller
             'payment_method' => ['required', Rule::enum(PaymentMethod::class)],
         ]);
 
-        $fields = collect($data)->except('payment_method')->all();
-        $address = $user->addresses()->where('is_default', true)->first();
+        $order = DB::transaction(function () use ($user, $data, $checkout) {
+            $fields = collect($data)->except('payment_method')->all();
+            $address = $user->addresses()->where('is_default', true)->first();
 
-        if ($address) {
-            $address->update($fields);
-        } else {
-            $address = $user->addresses()->create($fields + ['is_default' => true]);
-        }
+            if ($address) {
+                $address->update($fields);
+            } else {
+                $address = $user->addresses()->create($fields + ['is_default' => true]);
+            }
 
-        $order = $checkout->placeOrder($user, $address, PaymentMethod::from($data['payment_method']));
+            return $checkout->placeOrder($user, $address, PaymentMethod::from($data['payment_method']));
+        });
 
         return redirect()
             ->route('orders.show', ['order' => $order->order_code])

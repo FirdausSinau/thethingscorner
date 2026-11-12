@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product\Product;
 use App\Models\Product\ProductColor;
+use App\Support\ProductImageDisk;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class ProductColorController extends Controller
@@ -26,7 +26,7 @@ class ProductColorController extends Controller
 
     public function destroy(ProductColor $color)
     {
-        Storage::disk('public')->delete($color->images()->pluck('path')->all());
+        ProductImageDisk::disk()->delete($color->images()->pluck('path')->all());
         $color->delete();
 
         return back()->with('status', 'Warna dihapus.');

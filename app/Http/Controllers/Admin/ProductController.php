@@ -7,13 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductRequest;
 use App\Models\Product\Category;
 use App\Models\Product\Product;
-use App\Models\Product\ProductColorImage;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\OrderItem;
 use App\Models\StockReservation;
 use Illuminate\Support\Facades\DB;
-
 
 class ProductController extends Controller
 {
@@ -67,7 +64,7 @@ class ProductController extends Controller
         return back()->with('status', 'Info produk disimpan.');
     }
 
-    public function destroy(Product $product)
+    public function deactivate(Product $product)
     {
         $product->load(['images', 'colors.images', 'colors.variants']);
 
@@ -89,7 +86,9 @@ class ProductController extends Controller
         // file dihapus SETELAH data berhasil dihapus
         Storage::disk('s3')->delete($paths);
 
-        return redirect()->route('admin.products.index')->with('status', 'Produk dihapus.');
+        return redirect()
+            ->route('admin.products.index')
+            ->with('status', 'Produk dinonaktifkan. Riwayat pesanan tetap aman.');
     }
 
     private function payload(ProductRequest $request): array

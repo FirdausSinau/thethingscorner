@@ -52,6 +52,8 @@ class CheckoutService
                 ->get()
                 ->keyBy('id');
 
+            $variants->load('color.product');
+
             $subtotal = 0;
             $lines = [];
 

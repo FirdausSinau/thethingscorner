@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Product\Category;
 use App\Models\Product\Product;
+use App\Support\ProductImageDisk;
 use Illuminate\Database\Seeder;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
@@ -66,7 +67,7 @@ class CatalogSeeder extends Seeder
             return;
         }
 
-        $path = Storage::disk('public')->putFileAs(
+        $path = ProductImageDisk::disk()->putFileAs(
             'products',
             new File($local->path($fileName)),
             'theon-dockmart.png'

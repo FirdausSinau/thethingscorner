@@ -1,6 +1,6 @@
 # Sprint 1 - Catalog Contract
 
-**Versi:** 2.1  
+**Versi:** 2.2  
 **Tanggal:** 11 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
 **Status:** Diimplementasikan dan direkonsiliasi
@@ -139,7 +139,7 @@ Detail produk juga publik. Login baru diperlukan saat cart, checkout, PO, dan re
 | POST | `/admin/products` | `admin.products.store` |
 | GET | `/admin/products/{product}/edit` | `admin.products.edit` |
 | PUT/PATCH | `/admin/products/{product}` | `admin.products.update` |
-| DELETE | `/admin/products/{product}` | `admin.products.destroy` |
+| PATCH | `/admin/products/{product}/deactivate` | `admin.products.deactivate` |
 | POST | `/admin/products/{product}/colors` | `admin.products.colors.store` |
 | DELETE | `/admin/colors/{color}` | `admin.colors.destroy` |
 | POST | `/admin/colors/{color}/images` | `admin.colors.images.store` |
@@ -156,15 +156,36 @@ Semua route admin memakai `auth` dan `role:admin,admin_master`.
 
 ## 4. Storage gambar
 
-Kode sekarang memakai disk `public`, bukan S3.
+Kode memakai disk yang bisa diatur lewat `PRODUCT_IMAGES_DISK`.
+
+```dotenv
+# lokal
+PRODUCT_IMAGES_DISK=public
+
+# Neon Object Storage
+PRODUCT_IMAGES_DISK=s3
+```
+
+Aturan:
 
 - Path contoh: `products/6/gallery/xxxx.png`.
 - URL diakses lewat accessor `$image->url`.
-- Jika file tidak ada di `storage/app/public`, accessor mengembalikan `null` dan UI menampilkan "Foto belum ada".
-- Upload admin menyimpan ke disk `public`.
-- Hapus produk/warna juga menghapus file di disk `public`.
+- `public`: file dicek di `storage/app/public`; kalau tidak ada, accessor mengembalikan `null` dan UI menampilkan "Foto belum ada".
+- `s3`: accessor langsung memakai URL S3/Neon. File tidak dicek per request supaya katalog tidak lambat.
+- Upload dan hapus mengikuti disk yang sedang aktif.
+- Untuk S3/Neon, isi `AWS_ENDPOINT`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`, `AWS_BUCKET`, dan `AWS_USE_PATH_STYLE_ENDPOINT=true` di `.env`.
+- Jalankan `php artisan config:clear` setelah mengubah `.env`.
+- Jangan menaruh credential di Git.
 
-Penting: data lama di Neon masih berisi path gambar yang sebelumnya disimpan di S3. File tersebut belum ada di storage lokal. Selama file belum disalin, katalog akan menampilkan fallback "Foto belum ada". Minta file asli ke Hafiez atau upload ulang lewat admin.
+Data lama di Neon berisi path gambar yang sebelumnya disimpan di S3/Neon. Saat `PRODUCT_IMAGES_DISK=s3` dan credential benar, path lama bisa langsung dipakai. Jika memakai `public`, file harus disalin ke `storage/app/public`.
+
+### Troubleshooting S3/Neon
+
+- `InvalidAccessKeyId`: access key salah, tidak cocok, atau ada spasi/quote saat menyalin. Perbaiki `AWS_ACCESS_KEY_ID` dan `AWS_SECRET_ACCESS_KEY`.
+- `NoSuchKey`: koneksi dan bucket benar, tetapi object tidak ada di path tersebut. Upload ulang lewat admin atau cek key di bucket.
+- `HTTP 000`: endpoint tidak bisa dihubungi. Cek `AWS_ENDPOINT` dan koneksi internet.
+- `url()` hanya membuat URL. Selalu cek `exists()` atau buka URL di browser untuk memastikan file benar-benar ada.
+- Setelah mengubah `.env`, jalankan `php artisan config:clear`.
 
 ---
 
@@ -176,7 +197,7 @@ Penting: data lama di Neon masih berisi path gambar yang sebelumnya disimpan di 
 - Membuat produk `Theon Docmart`.
 - Membuat warna Hitam dan Putih.
 - Membuat 7 varian ukuran.
-- Mencoba menyalin foto dari `storage/app/private/Theon Dockmart.png` ke disk public. Jika file tidak ada, dilewati.
+- Mencoba menyalin foto dari `storage/app/private/Theon Dockmart.png` ke disk gambar yang dikonfigurasi. Jika file tidak ada, dilewati.
 
 Keputusan tim:
 
@@ -217,7 +238,7 @@ php artisan test
 npm run build
 ```
 
-Status terakhir: 38 test lulus, 90 assertions.
+Status terakhir: total suite 63 test lulus, 179 assertions, termasuk test upload gambar ke disk `public` dan `s3`.
 
 ---
 

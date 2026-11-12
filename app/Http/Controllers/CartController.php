@@ -50,4 +50,11 @@ class CartController extends Controller
 
         return back()->with('status', 'Item dihapus.');
     }
+
+    public function clear(Request $request, CartService $cart)
+    {
+        $cart->clear($request->user());
+
+        return redirect()->route('cart.index')->with('status', 'Keranjang dikosongkan.');
+    }
 }

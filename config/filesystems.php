@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Product Images Disk
+    |--------------------------------------------------------------------------
+    |
+    | "public" menyimpan foto di storage/app/public. Set "s3" kalau memakai
+    | Neon Object Storage atau bucket S3-compatible lain.
+    |
+    */
+
+    'product_images_disk' => env('PRODUCT_IMAGES_DISK', 'public'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |
