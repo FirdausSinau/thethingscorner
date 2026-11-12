@@ -1,13 +1,34 @@
 @extends('layouts.storefront')
+    @php
+        $btnGhost = 'rounded-full border border-border px-4 py-2 text-sm font-medium text-muted transition hover:border-primary/30 hover:text-primary-dark';
+    @endphp
 
-@section('title', 'Pesanan ' . $order->order_code . ' · thethingscorner')
+@section('title', 'Pesanan ' . $order->order_code . ' · Thethingscorner')
+
+
 
 @section('content')
     <section class="mx-auto w-full max-w-3xl px-5 py-10 md:px-8">
-        <h1 class="font-display text-3xl text-primary-dark">{{ $order->order_code }}</h1>
-        <p class="mt-2 text-sm text-muted">
-            {{ $order->status->label() }} · {{ $order->payment_method->label() }}
-        </p>
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="font-display text-3xl text-primary-dark">
+                    {{ $order->order_code }}
+                </h1>
+                <p class="mt-2 text-sm text-muted">
+                    {{ $order->status->label() }} · {{ $order->payment_method->label() }}
+                </p>
+            </div>
+
+            @can('manage-orders')
+                <div>
+                    <a href="{{ route('admin.orders.index') }}" class="{{ $btnGhost }} justify-between">← Kembali Ke Pesanan</a>
+                </div>
+            @else
+                <div>
+                    <a href="{{ route('catalog.index') }}" class="{{ $btnGhost }} justify-between">← Kembali Halaman Utama</a>
+                </div>
+            @endcan
+        </div>
 
         @if ($order->reservation_expires_at)
             <p class="mt-4 rounded-xl border border-border bg-surface px-4 py-3 text-sm">

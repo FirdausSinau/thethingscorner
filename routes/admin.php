@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductImageController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -39,4 +40,8 @@ Route::middleware(['auth', 'role:admin,admin_master'])
             Route::patch('/admins/{user}/deactivate', [UserController::class, 'deactivate'])->name('admins.deactivate');
             Route::patch('/admins/{user}/activate', [UserController::class, 'activate'])->name('admins.activate');
         });
+
+        Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
+        Route::patch('orders/bulk-status', [AdminOrderController::class, 'bulkStatus'])->name('orders.bulk-status');
+        Route::patch('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
     });

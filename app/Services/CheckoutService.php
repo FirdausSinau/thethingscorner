@@ -40,12 +40,12 @@ class CheckoutService
                 ->get();
 
             if ($cartItems->isEmpty()) {
-                throw ValidationException::withMessages([
-                    'cart' => 'Keranjang masih kosong.',
-                ]);
+                throw ValidationException::withMessages(['cart' => 'Keranjang masih kosong.']);
             }
 
+            // 2. Kunci varian (urut id supaya tidak deadlock), relasi dimuat sekaligus
             $variants = ProductVariant::query()
+                ->with('color.product')
                 ->whereIn('id', $cartItems->pluck('variant_id')->unique())
                 ->orderBy('id')
                 ->lockForUpdate()
@@ -59,51 +59,53 @@ class CheckoutService
 
             foreach ($cartItems as $item) {
                 $variant = $variants->get($item->variant_id);
+                $product = $variant?->color?->product;
 
-                if (! $variant) {
+                if (! $variant || ! $product) {
                     throw ValidationException::withMessages([
                         'cart' => 'Ada varian yang sudah tidak tersedia.',
                     ]);
                 }
 
-                if (! $variant->color?->product?->is_active) {
+                if (! $product->is_active) {
                     throw ValidationException::withMessages([
-                        'cart' => "Produk {$variant->color?->product?->name} sudah tidak dijual.",
+                        'cart' => "Produk {$product->name} sudah tidak dijual.",
                     ]);
                 }
 
                 if ($item->qty > $variant->stock_available) {
                     throw ValidationException::withMessages([
-                        'cart' => "Stok {$variant->color->product->name} ukuran {$variant->size} tidak cukup.",
+                        'cart' => "Stok {$product->name} ukuran {$variant->size} tidak cukup.",
                     ]);
                 }
 
-                $unitPrice = $variant->effective_price;
+                $unitPrice    = $variant->effective_price;
                 $lineSubtotal = $unitPrice * $item->qty;
-                $subtotal += $lineSubtotal;
+                $subtotal    += $lineSubtotal;
 
                 $lines[] = [
-                    'variant' => $variant,
-                    'qty' => $item->qty,
+                    'variant'    => $variant,
+                    'product'    => $product,
+                    'qty'        => $item->qty,
                     'unit_price' => $unitPrice,
-                    'subtotal' => $lineSubtotal,
+                    'subtotal'   => $lineSubtotal,
                 ];
             }
 
             $order = Order::create([
-                'order_code' => $this->makeOrderCode(),
-                'user_id' => $user->id,
-                'channel' => OrderChannel::Web,
-                'status' => OrderStatus::MenungguPembayaran,
+                'order_code'     => $this->makeOrderCode(),
+                'user_id'        => $user->id,
+                'channel'        => OrderChannel::Web,
+                'status'         => OrderStatus::MenungguPembayaran,
                 'payment_method' => $paymentMethod,
-                'subtotal' => $subtotal,
-                'shipping_cost' => $shippingCost,
-                'total' => $subtotal + $shippingCost,
-                'recipient' => $address->recipient,
-                'phone' => $address->phone,
-                'address' => $this->addressSnapshot($address),
-                'city' => $address->city,
-                'postal_code' => $address->postal_code,
+                'subtotal'       => $subtotal,
+                'shipping_cost'  => $shippingCost,
+                'total'          => $subtotal + $shippingCost,
+                'recipient'      => $address->recipient,
+                'phone'          => $address->phone,
+                'address'        => $this->addressSnapshot($address),
+                'city'           => $address->city,
+                'postal_code'    => $address->postal_code,
             ]);
 
             $expiresAt = now()->addMinutes($paymentMethod->reservationMinutes());
@@ -111,37 +113,35 @@ class CheckoutService
             foreach ($lines as $line) {
                 /** @var ProductVariant $variant */
                 $variant = $line['variant'];
-                $product = $variant->color->product;
 
                 OrderItem::create([
-                    'order_id' => $order->id,
-                    'variant_id' => $variant->id,
-                    'product_name' => $product->name,
-                    'sku' => $variant->sku,
-                    'color' => $variant->color->name,
-                    'size' => $variant->size,
-                    'price' => $line['unit_price'],
-                    'qty' => $line['qty'],
-                    'subtotal' => $line['subtotal'],
+                    'order_id'     => $order->id,
+                    'variant_id'   => $variant->id,
+                    'product_name' => $line['product']->name,
+                    'sku'          => $variant->sku,
+                    'color'        => $variant->color->name,
+                    'size'         => $variant->size,
+                    'price'        => $line['unit_price'],
+                    'qty'          => $line['qty'],
+                    'subtotal'     => $line['subtotal'],
                 ]);
 
                 StockReservation::create([
-                    'order_id' => $order->id,
+                    'order_id'   => $order->id,
                     'variant_id' => $variant->id,
-                    'qty' => $line['qty'],
+                    'qty'        => $line['qty'],
                     'expires_at' => $expiresAt,
-                    'status' => ReservationStatus::Active,
+                    'status'     => ReservationStatus::Active,
                 ]);
 
-                $variant->forceFill([
-                    'stock_reserved' => $variant->stock_reserved + $line['qty'],
-                ])->save();
+                $variant->increment('stock_reserved', $line['qty']);
             }
 
+            // 6. Kosongkan keranjang
             CartItem::query()->where('user_id', $user->id)->delete();
 
             return $order->load(['items', 'reservations']);
-        });
+        }, 3); 
     }
 
     private function makeOrderCode(): string

@@ -6,6 +6,9 @@
     @php
         $btnGhost = 'rounded-full border border-border px-4 py-2 text-sm font-medium text-muted transition hover:border-primary/30 hover:text-primary-dark';
 
+        // Stok tersedia = stok fisik - stok yang sedang direservasi pesanan aktif
+        $avail = fn ($v) => max(0, (int) $v->stock - (int) $v->stock_reserved);
+
         // Warna sel stok: habis = merah, menipis = kuning, aman = netral
         $stockCls = fn (int $stock) => match (true) {
             $stock <= 0 => 'bg-red-50 text-red-700 font-semibold',
@@ -22,12 +25,6 @@
         <a href="{{ route('admin.products.create') }}" class="{{ $btnGhost }}">+ Tambah produk</a>
     </div>
 
-    @if (session('success'))
-        <div class="mt-6 rounded-xl border border-success/20 bg-success/5 px-4 py-3 text-sm text-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     {{-- Keterangan warna stok --}}
     <div class="mt-6 flex flex-wrap items-center gap-4 text-xs text-muted">
         <span class="flex items-center gap-1.5">
@@ -39,6 +36,7 @@
         <span class="flex items-center gap-1.5">
             <span class="h-3 w-3 rounded border border-red-200 bg-red-50"></span> Habis
         </span>
+        <span class="text-muted/80">Angka = stok tersedia (fisik dikurangi yang sedang dipesan)</span>
     </div>
 
     <div class="mt-3 overflow-x-auto rounded-2xl border border-border bg-surface">
@@ -57,12 +55,13 @@
             @forelse ($products as $product)
                 @php
                     $variants   = $product->colors->flatMap->variants;
-                    $totalStock = (int) $variants->sum('stock');
-                    $lowCount   = $variants->where('stock', '<=', 3)->count();
+                    $totalStock = (int) $variants->sum(fn ($v) => $avail($v));
+                    $lowCount   = $variants->filter(fn ($v) => $avail($v) <= 3)->count();
                     $sizes      = $variants->pluck('size')->unique()->sortBy(fn ($s) => (int) $s)->values();
                 @endphp
 
                 <tbody class="border-t border-border first:border-t-0">
+                    {{-- Baris 1: Produk (rowspan 2) | Kategori | Harga | Total stok | Status | Kelola --}}
                     <tr>
                         <td rowspan="2" class="border-r border-border px-4 py-4 align-top">
                             <span class="font-medium text-ink">{{ $product->name }}</span>
@@ -87,11 +86,11 @@
                         </td>
                         <td class="px-4 py-4 text-right">
                             <a href="{{ route('admin.products.edit', $product) }}"
-                               class="{{$btnGhost}}">Kelola</a>
+                               class="{{ $btnGhost }}">Kelola</a>
                         </td>
                     </tr>
 
-                    {{-- Baris 2: matriks warna x ukuran, masuk ke dalam area produk (di kanan kolom Produk) --}}
+                    {{-- Baris 2: matriks warna x ukuran, di dalam area produk --}}
                     <tr>
                         <td colspan="5" class="border-t border-border px-4 pb-4 pt-3">
                             @if ($product->colors->isEmpty())
@@ -117,18 +116,32 @@
                                                         <span class="text-ink">{{ $color->name }}</span>
                                                     </span>
                                                 </td>
+
                                                 @foreach ($sizes as $size)
-                                                    @php $v = $color->variants->firstWhere('size', $size); @endphp
+                                                    @php
+                                                        $v = $color->variants->firstWhere('size', $size);
+                                                        $a = $v ? $avail($v) : 0;
+                                                    @endphp
                                                     <td class="p-0.5 text-center">
                                                         @if ($v)
-                                                            <span class="mx-auto block w-16 rounded py-1 {{ $stockCls((int) $v->stock) }}"
-                                                                  title="{{ $v->sku }}">{{ $v->stock }}</span>
+                                                            <span class="mx-auto block w-16 rounded py-1 {{ $stockCls($a) }}"
+                                                                  title="{{ $v->sku }} · fisik {{ $v->stock }} · dipesan {{ $v->stock_reserved }}">
+                                                                {{ $a }}
+                                                                @if ((int) $v->stock_reserved > 0)
+                                                                    <span class="block text-[10px] font-normal leading-none opacity-70">
+                                                                        +{{ $v->stock_reserved }} dipesan
+                                                                    </span>
+                                                                @endif
+                                                            </span>
                                                         @else
                                                             <span class="block py-1 text-muted">&ndash;</span>
                                                         @endif
                                                     </td>
                                                 @endforeach
-                                                <td class="text-right font-semibold text-ink">{{ (int) $color->variants->sum('stock') }}</td>
+
+                                                <td class="text-right font-semibold text-ink">
+                                                    {{ (int) $color->variants->sum(fn ($v) => $avail($v)) }}
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

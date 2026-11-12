@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -8,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class ProductVariantController extends Controller
 {
@@ -31,22 +33,37 @@ class ProductVariantController extends Controller
         $request->validate([
             'variants'         => ['required', 'array'],
             'variants.*.stock' => ['required', 'integer', 'min:0'],
+            'variants.*.seen'  => ['required', 'integer'],
             'variants.*.price' => ['nullable', 'integer', 'min:0'],
         ]);
 
         DB::transaction(function () use ($request, $color) {
-            // Loop dari varian milik warna ini, jadi ID varian milik produk lain
-            // yang disisipkan di form tidak akan ikut berubah.
-            foreach ($color->variants as $variant) {
+            // Kunci semua varian warna ini (urut id agar tidak deadlock),
+            // supaya tidak bersilangan dengan perubahan status pesanan.
+            $variants = $color->variants()->orderBy('id')->lockForUpdate()->get();
+
+            foreach ($variants as $variant) {
                 $row = $request->input("variants.{$variant->id}");
 
                 if ($row === null) {
                     continue;
                 }
 
+                if ((int) $row['seen'] !== (int) $variant->stock) {
+                    throw ValidationException::withMessages([
+                        "variants.{$variant->id}.stock" => "Ukuran {$variant->size}: stok berubah saat kamu mengedit (sekarang {$variant->stock}). Muat ulang halaman, lalu coba lagi.",
+                    ]);
+                }
+
+                if ((int) $row['stock'] < (int) $variant->stock_reserved) {
+                    throw ValidationException::withMessages([
+                        "variants.{$variant->id}.stock" => "Ukuran {$variant->size}: stok tidak boleh di bawah {$variant->stock_reserved} (sedang ditahan pesanan).",
+                    ]);
+                }
+
                 $variant->update([
-                    'stock' => $row['stock'],
-                    'price' => $row['price'] ?? null,
+                    'stock' => (int) $row['stock'],
+                    'price' => isset($row['price']) && $row['price'] !== '' ? (int) $row['price'] : null,
                 ]);
             }
         });
@@ -56,6 +73,12 @@ class ProductVariantController extends Controller
 
     public function destroy(ProductVariant $variant)
     {
+        if ($variant->orderItems()->exists() || $variant->stock_reserved > 0) {
+            return back()->withErrors([
+                'delete' => "Ukuran {$variant->size} sudah pernah dipesan atau sedang ditahan pesanan, jadi tidak bisa dihapus. Set stoknya ke 0 saja.",
+            ]);
+        }
+
         $variant->delete();
 
         return back()->with('status', 'Ukuran dihapus.');

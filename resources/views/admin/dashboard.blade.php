@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard Admin · thethingscorner')
+@section('title', 'Dashboard Admin · Thethingscorner')
 
 @section('content')
     <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
@@ -22,16 +22,11 @@
     </div>
 
     <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        @foreach ([
-            ['label' => 'Pesanan baru', 'value' => '0', 'note' => 'Belum ada data'],
-            ['label' => 'Perlu dikemas', 'value' => '0', 'note' => 'Belum ada data'],
-            ['label' => 'Stok kritis', 'value' => '0', 'note' => 'Belum ada data'],
-            ['label' => 'PO produksi', 'value' => '0', 'note' => 'Belum ada data'],
-        ] as $card)
+        @foreach ($cards as $card)
             <div class="rounded-2xl border border-border bg-surface p-5 shadow-sm">
                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-muted">{{ $card['label'] }}</p>
                 <p class="mt-3 font-display text-3xl text-primary-dark">{{ $card['value'] }}</p>
-                <p class="mt-1 text-xs text-muted">{{ $card['note'] }}</p>
+                <p class="mt-1 text-xs text-muted">{{ $card['value'] > 0 ? $card['note'] : 'Tidak ada antrean' }}</p>
             </div>
         @endforeach
     </div>
@@ -73,4 +68,3 @@
         </div>
     @endif
 @endsection
-

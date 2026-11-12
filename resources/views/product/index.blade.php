@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'Katalog · thethingscorner')
+@section('title', 'Katalog · Thethingscorner')
 
 @section('content')
     <section class="mx-auto w-full max-w-6xl px-5 py-10 md:px-8 md:py-14">

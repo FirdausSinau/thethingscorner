@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'thethingscorner')</title>
+    <title>@yield('title', 'Thethingscorner')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -14,7 +14,7 @@
         <header class="border-b border-border bg-surface">
             <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 md:px-8">
                 <a href="{{ route('home') }}" class="font-display text-lg font-semibold text-primary-dark">
-                    thethingscorner
+                    Thethingscorner
                 </a>
                 <a href="{{ route('home') }}" class="text-sm font-medium text-muted transition hover:text-primary-dark">
                     Kembali ke toko

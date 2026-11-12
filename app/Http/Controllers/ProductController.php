@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product\Product;
-use Illuminate\Http\Request;   // <- tambahkan ini
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -13,10 +13,11 @@ class ProductController extends Controller
 
         $product->load(['category', 'images', 'colors.images', 'colors.variants']);
 
-        $activeColor = $product->colors->firstWhere('id', (int) $request->query('warna'))
-            ?? $product->colors->first();
+        $colorChosen = $request->filled('warna');
 
-        $colorChosen = $request->has('warna');
+        $activeColor = $colorChosen
+            ? $product->colors->firstWhere('id', (int) $request->query('warna'))
+            : null;
 
         return view('product.product-show', compact('product', 'activeColor', 'colorChosen'));
     }

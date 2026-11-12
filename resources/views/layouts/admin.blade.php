@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin · thethingscorner')</title>
+    <title>@yield('title', 'Admin · Thethingscorner')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -14,7 +14,7 @@
         <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
             <div class="flex items-center gap-3">
                 <a href="{{ route('admin.dashboard') }}" class="font-display text-lg font-semibold text-primary-dark">
-                    thethingscorner
+                    Thethingscorner
                 </a>
                 <span class="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
                     Admin
@@ -79,9 +79,15 @@
                     class="flex items-center justify-between rounded-xl px-3 py-2.5 transition {{ request()->routeIs('admin.products.*') ? 'bg-primary/5 font-medium text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}">
                     Produk &amp; stok
                 </a>
+
+                <a href="{{ route('admin.orders.index') }}"
+                class="flex items-center justify-between rounded-xl px-3 py-2.5 transition {{ request()->routeIs('admin.orders.*') ? 'bg-primary/5 font-medium text-primary-dark' : 'text-muted hover:bg-primary/5 hover:text-primary-dark' }}"
+                @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif>
+                    Pesanan
+                </a>
                 
 
-                    @foreach (['Pesanan', 'Custom PO', 'Review', 'Laporan'] as $item)
+                    @foreach (['Custom PO', 'Review', 'Laporan'] as $item)
                         <span class="flex items-center justify-between rounded-xl px-3 py-2.5 text-muted">
                             {{ $item }}
                             <span class="text-[10px] uppercase tracking-wide text-muted/70">segera</span>
@@ -97,8 +103,19 @@
                 </div>
             @endif
 
+            @if ($errors->any())
+                <div class="mb-6 rounded-xl border border-danger/20 bg-danger/5 px-4 py-3 text-sm text-danger">
+                    <ul class="space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             @yield('content')
         </main>
+
     </div>
 </body>
 </html>

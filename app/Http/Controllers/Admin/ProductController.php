@@ -8,6 +8,9 @@ use App\Http\Requests\Admin\ProductRequest;
 use App\Models\Product\Category;
 use App\Models\Product\Product;
 use Illuminate\Support\Str;
+use App\Models\OrderItem;
+use App\Models\StockReservation;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -41,7 +44,11 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load('colors.images', 'colors.variants');
+        $product->load([
+            'images',
+            'colors.images',
+            'colors.variants' => fn ($q) => $q->withCount('orderItems'),
+        ]);
 
         return view('admin.products.edit', [
             'product'    => $product,
@@ -59,7 +66,25 @@ class ProductController extends Controller
 
     public function deactivate(Product $product)
     {
-        $product->update(['is_active' => false]);
+        $product->load(['images', 'colors.images', 'colors.variants']);
+
+        $variantIds = $product->colors->flatMap->variants->pluck('id');
+
+        if (OrderItem::whereIn('variant_id', $variantIds)->exists()
+            || StockReservation::whereIn('variant_id', $variantIds)->exists()) {
+            return back()->withErrors([
+                'delete' => 'Produk ini sudah pernah dipesan, jadi tidak bisa dihapus. Nonaktifkan lewat "Tampilkan di katalog".',
+            ]);
+        }
+
+        $paths = $product->images->pluck('path')
+            ->merge($product->colors->flatMap->images->pluck('path'))
+            ->all();
+
+        DB::transaction(fn () => $product->delete());
+
+        // file dihapus SETELAH data berhasil dihapus
+        Storage::disk('s3')->delete($paths);
 
         return redirect()
             ->route('admin.products.index')
