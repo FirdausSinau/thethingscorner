@@ -23,13 +23,23 @@
                 </a>
             </div>
         @else
+            @php
+                $adaMasalah = false;
+                foreach ($items as $item) {
+                    $produk = $item->variant->color->product;
+                    if (! $produk->is_active || $item->qty > $item->variant->stock_available) {
+                        $adaMasalah = true;
+                    }
+                }
+            @endphp
+
             <ul class="mt-8 space-y-4">
                 @foreach ($items as $item)
                     @include('storefront.cart.partials.item', ['item' => $item])
                 @endforeach
             </ul>
 
-            @include('storefront.cart.partials.summary', ['subtotal' => $subtotal, 'count' => $count])
+            @include('storefront.cart.partials.summary', ['subtotal' => $subtotal, 'count' => $count, 'adaMasalah' => $adaMasalah])
         @endif
     </section>
 @endsection
