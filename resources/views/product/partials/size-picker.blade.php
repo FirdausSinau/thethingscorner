@@ -39,10 +39,14 @@
             </p>
         @elseif ($hasStock)
             @auth
-                <button type="submit"
-                        class="mt-6 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary-dark">
-                    Tambah ke keranjang
-                </button>
+                @if (auth()->user()->isAdmin())
+                    <p class="mt-6 text-sm text-muted">Gunakan akun pembeli.</p>
+                @else
+                    <button type="submit"
+                            class="mt-6 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary-dark">
+                        Tambah ke keranjang
+                    </button>
+                @endif
             @else
                 <a href="{{ route('login') }}"
                    class="mt-6 inline-flex rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary-dark">

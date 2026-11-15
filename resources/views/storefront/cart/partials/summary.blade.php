@@ -7,10 +7,16 @@
     <p class="mt-3 text-xs text-muted">Stok belum dikunci sampai checkout.</p>
 
     <div class="mt-4 flex flex-wrap items-center gap-3">
-        <a href="{{ route('checkout.index') }}"
-           class="inline-flex rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary-dark">
-            Checkout
-        </a>
+        @if ($adaMasalah)
+            <p class="rounded-xl bg-danger/5 px-4 py-3 text-sm text-danger">
+                Perbaiki item yang bertanda merah dulu sebelum checkout.
+            </p>
+        @else
+            <a href="{{ route('checkout.index') }}"
+               class="inline-flex rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary-dark">
+                Checkout
+            </a>
+        @endif
 
         <form method="POST" action="{{ route('cart.clear') }}"
               onsubmit="return confirm('Kosongkan seluruh keranjang?')">
