@@ -23,6 +23,16 @@
                 </a>
             </div>
         @else
+            @php
+                $adaMasalah = false;
+                foreach ($items as $item) {
+                    $produk = $item->variant->color->product;
+                    if (! $produk->is_active || $item->qty > $item->variant->stock_available) {
+                        $adaMasalah = true;
+                    }
+                }
+            @endphp
+
             <ul class="mt-8 space-y-4">
                 @foreach ($items as $item)
                     <li class="rounded-2xl border border-border bg-surface p-4">
@@ -55,6 +65,7 @@
                 @endforeach
             </ul>
 
+<<<<<<< Updated upstream
             <div class="mt-6 rounded-2xl border border-border bg-surface p-5">
                 <p class="flex justify-between text-sm">
                     <span class="text-muted">Subtotal ({{ $count }} barang)</span>
@@ -66,6 +77,9 @@
                     Checkout
                 </a>
             </div>
+=======
+            @include('storefront.cart.partials.summary', ['subtotal' => $subtotal, 'count' => $count, 'adaMasalah' => $adaMasalah])
+>>>>>>> Stashed changes
         @endif
     </section>
 @endsection

@@ -55,8 +55,13 @@
 
                 <div class="relative flex h-full flex-col justify-between">
                     <div class="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] text-muted">
+<<<<<<< Updated upstream
                         <span>thethingscorner</span>
                         <span>Since 2015</span>
+=======
+                        <span>Thethingscorner</span>
+                        <span>Bandung</span>
+>>>>>>> Stashed changes
                     </div>
 
                     <div class="py-12">

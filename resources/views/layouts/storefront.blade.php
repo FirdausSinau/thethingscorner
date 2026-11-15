@@ -24,6 +24,7 @@
                 </a>
 
                 @auth
+<<<<<<< Updated upstream
                      <a href="{{ route('cart.index') }}"
                        class="rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5">
                         Keranjang
@@ -32,6 +33,18 @@
                        class="hidden rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5 sm:inline-flex">
                         Dashboard
                     </a>
+=======
+                    @if (! auth()->user()->isAdmin())
+                        <a href="{{ route('cart.index') }}"
+                           class="rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5">
+                            Keranjang
+                        </a>
+                        <a href="{{ route('orders.index') }}"
+                           class="rounded-full px-3 py-2 font-medium text-primary-dark transition hover:bg-primary/5">
+                            Pesanan
+                        </a>
+                    @endif
+>>>>>>> Stashed changes
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"

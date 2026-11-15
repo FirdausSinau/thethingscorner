@@ -16,7 +16,7 @@ Route::get('/produk', [CatalogController::class, 'index'])->name('catalog.index'
 Route::get('/produk/{product:slug}', [ProductController::class, 'show'])
     ->name('products.show');
 
-Route::middleware('auth')->group(function (): void {
+Route::middleware(['auth', 'role:buyer'])->group(function (): void {
     Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
     Route::post('/keranjang', [CartController::class, 'store'])->name('cart.store');
     Route::patch('/keranjang/{cartItem}', [CartController::class, 'update'])->name('cart.update');
@@ -25,5 +25,9 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
+    Route::get('/pesanan', [OrderController::class, 'index'])->name('orders.index');
+});
+
+Route::middleware('auth')->group(function (): void {
     Route::get('/pesanan/{order:order_code}', [OrderController::class, 'show'])->name('orders.show');
 });
