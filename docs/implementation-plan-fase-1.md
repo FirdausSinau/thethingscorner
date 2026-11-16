@@ -95,7 +95,7 @@ feat: add review reply and moderation
 | 2026-11-16 | 5-7 | Fondasi Sprint 3: kontrak payment/shipping/tracking, `payments`, `shipments`, `integration_logs`, enum, model, fake adapter, config, 141 test lulus. | `c979946` |
 | 2026-11-16 | 5-6 | `PaymentService` dan `ShippingService`: idempotensi, konsumsi reservasi, expiry, verifikasi manual, callback, tarif flat, shipment, tracking, 170 test lulus. | `15658cf` |
 | 2026-11-16 | 5-7 | Backend Sprint 3: payment/shipping service, policy lifecycle, refund, auto-selesai, scheduler, migration pilihan kurir; UI Anand/Hafiez belum dikerjakan; 186 test backend lulus. | `709dc68` |
-| 2026-11-16 | 5-7 | Webhook fake payment/shipping, `PaymentService::attachProof`, notifikasi database, fake provider default off, 206 test backend lulus. | belum di-commit |
+| 2026-11-16 | 5-7 | Webhook fake payment/shipping, `PaymentService::attachProof`, notifikasi database, fake provider default off, 206 test backend lulus. | `90346ff` |
 
 ---
 
