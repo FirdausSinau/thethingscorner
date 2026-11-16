@@ -22,4 +22,49 @@ return [
         'manual_transfer_seconds' => (int) env('MANUAL_TRANSFER_RESERVATION_SECONDS', 3600),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Transfer manual
+    |--------------------------------------------------------------------------
+    |
+    | Data rekening masih placeholder. Ganti lewat .env setelah client
+    | memberikan rekening resmi. Jangan menulis rekening di Blade.
+    |
+    */
+
+    'manual' => [
+        'bank_name' => env('PAYMENT_MANUAL_BANK_NAME', 'Bank Contoh'),
+        'account_number' => env('PAYMENT_MANUAL_ACCOUNT_NUMBER', '0000000000'),
+        'account_holder' => env('PAYMENT_MANUAL_ACCOUNT_HOLDER', 'Thethingscorner'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bukti transfer
+    |--------------------------------------------------------------------------
+    |
+    | Disk privat, bukan public. File hanya boleh diakses lewat controller
+    | yang memeriksa pemilik order atau admin.
+    |
+    */
+
+    'proof' => [
+        'disk' => env('PAYMENT_PROOF_DISK', 'local'),
+        'max_kb' => (int) env('PAYMENT_PROOF_MAX_KB', 2048),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fake gateway
+    |--------------------------------------------------------------------------
+    |
+    | Hanya untuk lokal dan demo. Matikan di produksi. Tombol simulasi
+    | pembayaran tidak boleh muncul saat nilainya false.
+    |
+    */
+
+    'fake' => [
+        'enabled' => filter_var(env('PAYMENT_FAKE_ENABLED', true), FILTER_VALIDATE_BOOL),
+    ],
+
 ];

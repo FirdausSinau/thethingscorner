@@ -1,6 +1,6 @@
 # Dokumentasi Teknis - Thethingscorner
 
-**Update terakhir:** 9 November 2026
+**Update terakhir:** 16 November 2026
 
 Folder ini hanya berisi dokumentasi yang berkaitan dengan kode dan produk. Dokumen kerja tim, setup laptop, data request, dan file client ada di [`../project-management/`](../project-management/README.md).
 
@@ -17,7 +17,10 @@ Folder ini hanya berisi dokumentasi yang berkaitan dengan kode dan produk. Dokum
 | [`sprint-1-catalog-contract.md`](sprint-1-catalog-contract.md) | 2.2 | Kontrak schema produk, warna, varian, route, storage, dan status Sprint 1 |
 | [`sprint-2-cart-contract.md`](sprint-2-cart-contract.md) | 1.0 | Kontrak cart_items, CartService, route cart, dan aturan stok Sprint 2 |
 | [`sprint-2-checkout-contract.md`](sprint-2-checkout-contract.md) | 1.0 | Kontrak alamat, order, reservasi, CheckoutService, dan expiry Sprint 2 |
-| [`decisions.md`](decisions.md) | 0.9 | Decision log dan asumsi sementara |
+| [`sprint-3-payment-contract.md`](sprint-3-payment-contract.md) | 1.0 | Kontrak payments, PaymentStatus, fake gateway, transfer manual, dan refund |
+| [`sprint-3-shipping-contract.md`](sprint-3-shipping-contract.md) | 1.0 | Kontrak shipments, ShipmentStatus, fake provider, tarif flat, dan tracking |
+| [`sprint-3-order-tracking-contract.md`](sprint-3-order-tracking-contract.md) | 1.0 | Kontrak transisi pesanan, pembatalan, auto-selesai, dan refund |
+| [`decisions.md`](decisions.md) | 0.11 | Decision log dan asumsi sementara |
 | [`design-system.md`](design-system.md) | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
 | [`wireframes.md`](wireframes.md) | 0.1 | Wireframe pembeli dan admin |
 | [`implementation-plan-fase-1.md`](implementation-plan-fase-1.md) | 0.1 | Rencana per slice, test, commit, deployment |
@@ -54,5 +57,5 @@ Dokumen kerja tim:
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
-- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 cart dan Slice 4 checkout selesai, termasuk admin order dan buyer order history. Total 115 test lulus.
+- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 cart dan Slice 4 checkout selesai, termasuk admin order dan buyer order history. Slice 5-7 fondasi Sprint 3 selesai: kontrak, schema `payments`/`shipments`/`integration_logs`, enum, model, dan fake adapter. Total 141 test lulus.
 

@@ -103,7 +103,7 @@ Urutan:
 
 ### Batch 2 - Cart dan checkout
 
-**Status 13 November 2026:** cart, checkout, admin order, dan buyer order history selesai. Sprint 2 siap review dan merge ke `main`.
+**Status 16 November 2026:** Sprint 2 sudah merge ke `main`. Sprint 3 fondasi selesai: kontrak payment/shipping/tracking, schema `payments`/`shipments`/`integration_logs`, enum, model, fake adapter, dan config. Berikutnya `PaymentService` dan `ShippingService`.
 
 Fokus: Slice 3 lalu Slice 4.
 

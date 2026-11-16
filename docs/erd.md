@@ -1,8 +1,8 @@
 # ERD Fase 1 — The Things Corner
 
-**Versi:** 0.5  
-**Tanggal:** 11 November 2026  
-**Status:** Draft, schema katalog mengikuti implementasi warna dan varian  
+**Versi:** 0.6  
+**Tanggal:** 16 November 2026  
+**Status:** Draft, schema katalog mengikuti implementasi; payments dan shipments mengikuti Sprint 3  
 **Referensi:** PRD Fase 1 v0.2, RFP v0.3
 
 ---
@@ -202,9 +202,10 @@ erDiagram
         string provider
         string method
         string external_id
-        decimal amount
+        bigint amount
         string status
         string proof_path
+        datetime expires_at
         datetime paid_at
         bigint verified_by FK
     }
@@ -212,13 +213,17 @@ erDiagram
     SHIPMENTS {
         bigint id PK
         bigint order_id FK
+        string provider
         string courier
         string service
+        string provider_reference
         string tracking_number
-        decimal cost
+        int cost
+        int weight_grams
         string status
         datetime shipped_at
         datetime delivered_at
+        text notes
     }
 
     ORDER_STATUS_LOGS {
@@ -300,11 +305,12 @@ erDiagram
     INTEGRATION_LOGS {
         bigint id PK
         string provider
+        string type
         string event
         string external_id
         string status
-        text request_summary
-        text response_summary
+        json payload
+        text message
     }
 
     SETTINGS {
@@ -335,8 +341,8 @@ erDiagram
 | `stock_reservations` | Stok ditahan saat checkout | `order_id`, `variant_id` FK; index `(expires_at, status)` |
 | `orders` | Pesanan web/Shopee | `order_code` unik; `user_id` FK |
 | `order_items` | Item pesanan | `order_id`, `variant_id` FK; snapshot harga |
-| `payments` | Pembayaran | `external_id` unik; `order_id` FK; `verified_by` FK |
-| `shipments` | Pengiriman | `order_id` FK |
+| `payments` | Pembayaran | `external_id` unik; `order_id` FK; `verified_by` FK; `amount > 0` |
+| `shipments` | Pengiriman | `order_id` FK; `tracking_number` unik jika terisi; `weight_grams >= 0` |
 | `order_status_logs` | Riwayat status pesanan | append-only; `order_id`, `actor_id` FK |
 | `custom_pos` | Custom PO | `po_code` unik; `user_id` FK |
 | `po_status_logs` | Riwayat status PO | append-only; `custom_po_id`, `actor_id` FK |
@@ -344,7 +350,7 @@ erDiagram
 | `review_photos` | Foto review | `review_id` FK |
 | `notifications` | Pusat notifikasi | `user_id` FK |
 | `shopee_imports` | Riwayat import CSV | `imported_by` FK |
-| `integration_logs` | Log integrasi | tanpa secret |
+| `integration_logs` | Log integrasi | append-only; tanpa secret |
 | `settings` | Pengaturan toko | `key` unik |
 
 ---
@@ -396,6 +402,13 @@ Catatan:
 | `orders` | `(user_id, created_at)` | Riwayat pembeli |
 | `orders` | `(status, created_at)` | Antrean admin |
 | `payments` | `external_id` unik | Idempotency webhook |
+| `payments` | `(order_id, created_at)` | Riwayat pembayaran order |
+| `payments` | `(status, expires_at)` | Scheduler pembayaran kedaluwarsa |
+| `shipments` | `tracking_number` unik | Pencarian resi dan webhook tracking |
+| `shipments` | `(order_id, created_at)` | Riwayat pengiriman order |
+| `shipments` | `(status, created_at)` | Antrean pengiriman aktif |
+| `integration_logs` | `(provider, external_id)` | Telusuri callback provider |
+| `integration_logs` | `(type, created_at)` | Riwayat webhook masuk |
 | `stock_reservations` | `(expires_at, status)` | Scheduler kedaluwarsa |
 | `reviews` | `order_item_id` unik | Satu review per item |
 | `reviews` | `(product_id, is_hidden)` | Rating produk |

@@ -1,7 +1,7 @@
 # Decision Log — The Things Corner
 
-**Versi:** 0.9  
-**Tanggal:** 12 November 2026  
+**Versi:** 0.11  
+**Tanggal:** 16 November 2026  
 **Status:** Draft  
 **Referensi:** RFP v0.3, PRD Fase 1 v0.2
 
@@ -63,6 +63,8 @@ Aturan:
 | D-32 | Status pesanan | `MENUNGGU_PEMBAYARAN` → `DIBAYAR` → `MENUNGGU_KONFIRMASI` (label: Dipending) → `DIKEMAS` → `DIKIRIM` → `SELESAI` | Confirmed | State machine, UI, laporan | Tim |
 | D-33 | Preorder dan Custom PO | Konsep yang sama. Produk preorder tidak lewat keranjang, pembeli mengajukan lewat form PO | Assumption | Katalog, keranjang, checkout, alur PO, pembayaran DP | Tim |
 | D-34 | Log status pesanan | Tabel `order_status_logs` append-only, mencatat status asal, status tujuan, aktor, dan catatan | Confirmed | Audit dan halaman admin | Tim |
+| D-35 | Integrasi eksternal Sprint 3 | Fake adapter, transfer manual, dan tarif flat dulu; Midtrans/Biteship setelah aplikasi selesai dan sandbox siap | Confirmed | Payment, shipping, testing | Tim |
+| D-36 | Lifecycle pesanan Sprint 3 | Pembatalan pembeli sebelum dikemas, konfirmasi terima saat dikirim, auto-selesai 7 hari, refund manual Admin Master | Confirmed | Policy, stok, audit, UI | Tim |
 
 ---
 
@@ -330,6 +332,38 @@ Setiap perubahan status pesanan dicatat di `order_status_logs`:
 
 Log append-only: tidak diubah atau dihapus. Halaman detail pesanan admin menampilkan riwayat ini.
 
+### D-35 - Integrasi eksternal Sprint 3
+
+Sprint 3 dikerjakan dengan fake adapter dan fallback manual:
+
+- Payment: `FakePaymentGateway`, transfer manual, dan upload bukti.
+- Shipping: `FakeShippingProvider`, tarif flat, dan resi manual.
+- Midtrans, Xendit, dan Biteship ditunda sampai aplikasi selesai, akun sandbox tersedia, dan UAT siap.
+
+Aturan:
+
+- Key provider tidak boleh masuk repo.
+- Rekening manual dan tarif flat disimpan di config atau `.env`, bukan di Blade.
+- Provider asli masuk lewat adapter yang sama, tanpa mengubah controller atau Blade.
+- Fake adapter harus deterministik supaya test tidak bergantung internet.
+
+### D-36 - Lifecycle pesanan Sprint 3
+
+Aturan yang dikunci:
+
+- Pembeli boleh membatalkan saat `MENUNGGU_PEMBAYARAN` dan `MENUNGGU_KONFIRMASI`.
+- Pembatalan saat menunggu pembayaran melepas reservasi; pembatalan setelah dibayar mengembalikan stok fisik.
+- Pembeli boleh mengonfirmasi terima hanya saat `DIKIRIM`.
+- Order `DIKIRIM` otomatis menjadi `SELESAI` setelah 7 hari sejak `shipped_at`.
+- Refund hanya manual dan hanya Admin Master.
+- Semua perubahan status tetap lewat `OrderStatusService` dan `order_status_logs`.
+
+Konsekuensi:
+
+- `OrderStatus::allowedNext()` perlu menambah `DIBAYAR -> DIBATALKAN` dan `DIKEMAS -> DIBATALKAN` khusus Admin Master saat Slice 7.
+- Tombol pembatalan dan konfirmasi terima harus dilindungi policy, bukan hanya disembunyikan di Blade.
+- Command auto-selesai memakai penanda sistem dan tidak berjalan untuk shipment `RETURNED`.
+
 ---
 
 ## 4. Fitur yang ditunda
@@ -384,3 +418,5 @@ Log append-only: tidak diubah atau dihapus. Halaman detail pesanan admin menampi
 | 0.7 | 12 Nov 2026 | Preorder disamakan dengan Custom PO. Produk preorder lewat alur PO, bukan keranjang (D-33, Assumption) |
 | 0.8 | 12 Nov 2026 | Brand resmi `Thethingscorner`; status `PENDING` dihapus dari pesanan; log status pesanan ditambahkan (D-34) |
 | 0.9 | 13 Nov 2026 | Label `MENUNGGU_KONFIRMASI` menjadi Dipending; tabel admin order dibuat fixed tanpa scroll horizontal |
+| 0.10 | 16 Nov 2026 | Sprint 3 memakai fake adapter dan fallback manual; Midtrans/Biteship ditunda (D-35) |
+| 0.11 | 16 Nov 2026 | Lifecycle pesanan Sprint 3: batas pembatalan, konfirmasi terima, auto-selesai 7 hari, refund manual (D-36) |
