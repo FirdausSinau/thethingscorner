@@ -15,7 +15,7 @@ Dokumen ini adalah kontrak Slice 5: pembayaran gateway dan transfer manual.
 - Sprint 3 memakai `FakePaymentGateway` dan transfer manual.
 - Midtrans atau Xendit baru dipasang setelah aplikasi selesai dan akun sandbox siap.
 - `PENDING` adalah status pembayaran, bukan status pesanan.
-- Status pesanan tetap memakai `OrderStatus`. Label `MENUNGGU_KONFIRMASI` adalah **Dipending**.
+- Status pesanan tetap memakai `OrderStatus`. Status `DIPENDING` memakai label **Dipending**.
 - Pembayaran sukses mengonsumsi reservasi dan mengurangi stok fisik tepat satu kali.
 - Pembayaran gagal atau kedaluwarsa tidak boleh mengurangi stok fisik.
 - Bukti transfer disimpan di disk privat, bukan `public`.

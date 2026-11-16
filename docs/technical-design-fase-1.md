@@ -185,7 +185,6 @@ Buyer isi form PO
 ```text
 MENUNGGU_PEMBAYARAN
 → DIBAYAR
-→ MENUNGGU_KONFIRMASI
 → DIKEMAS
 → DIKIRIM
 → SELESAI
@@ -194,21 +193,21 @@ Dari MENUNGGU_PEMBAYARAN:
 → DIBATALKAN
 → KEDALUWARSA
 
-Dari MENUNGGU_KONFIRMASI:
+Dari DIKEMAS:
+→ DIPENDING
+
+Dari DIPENDING:
+→ DIKIRIM
 → DIBATALKAN
-
-Dari DIBAYAR/DIKEMAS:
-→ DIBATALKAN (Admin Master)
-
-Dari DIKIRIM:
-→ DIBATALKAN (Admin Master, setelah shipment RETURNED)
 ```
 
 Aturan:
 
-- `MENUNGGU_KONFIRMASI` berarti pembayaran sudah diterima dan pesanan menunggu konfirmasi admin sebelum dikemas.
+- `DIPENDING` adalah status setelah pengemasan yang ditahan sementara. Label UI: **Dipending**.
 - `SELESAI` hanya dari `DIKIRIM`, oleh buyer atau auto-selesai 7 hari.
-- `DIBATALKAN` oleh pembeli/admin sebelum `DIKEMAS`. Admin Master boleh membatalkan setelah `DIKEMAS` lewat refund manual (D-36).
+- Pembeli boleh membatalkan saat `MENUNGGU_PEMBAYARAN` dan `DIPENDING`.
+- Refund Admin Master memakai force-cancel di `OrderStatusService`, bukan dropdown status normal.
+- Force-cancel dari `DIKIRIM` hanya setelah shipment `RETURNED`.
 - `KEDALUWARSA` hanya jika pembayaran tidak selesai.
 - Refund dicatat terpisah; tidak mengubah riwayat.
 
@@ -409,7 +408,7 @@ Webhook tidak memakai CSRF, tetapi wajib verifikasi signature/token.
 | Policy | Aturan |
 |---|---|
 | `OrderPolicy@view` | Pemilik atau admin |
-| `OrderPolicy@cancel` | Pemilik dan status `MENUNGGU_PEMBAYARAN`/`MENUNGGU_KONFIRMASI` |
+| `OrderPolicy@cancel` | Pemilik dan status `MENUNGGU_PEMBAYARAN`/`DIPENDING` |
 | `OrderPolicy@confirm` | Pemilik dan status `DIKIRIM` |
 | `CustomPoPolicy@view` | Pemilik atau admin |
 | `CustomPoPolicy@update` | Pemilik saat `DIAJUKAN`; admin sesuai status |

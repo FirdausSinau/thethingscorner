@@ -32,5 +32,6 @@
         @include('admin.orders.partials.items', ['order' => $order])
     </div>
 
+    @include('admin.orders.partials.shipment', ['order' => $order])
     @include('admin.orders.partials.status-history', ['order' => $order])
 @endsection

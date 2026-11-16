@@ -86,9 +86,9 @@ class OrderNotificationTest extends TestCase
 
         app(OrderStatusService::class)->change(
             $order->fresh(),
-            OrderStatus::MenungguKonfirmasi,
+            OrderStatus::Dikemas,
             User::factory()->create(),
-            'Dikonfirmasi admin',
+            'Dikemas admin',
         );
 
         $this->assertSame(2, $this->buyer->notifications()->count());

@@ -207,7 +207,7 @@ class AdminOrderTest extends TestCase
         ]);
     }
 
-    public function test_paid_order_can_move_to_confirmation_without_stock_change(): void
+    public function test_paid_order_moves_to_packing_without_stock_change(): void
     {
         $admin = $this->admin();
         $order = $this->placeOrder($this->buyer());
@@ -220,21 +220,21 @@ class AdminOrderTest extends TestCase
 
         $this->actingAs($admin)
             ->from(route('admin.orders.index'))
-            ->patch(route('admin.orders.status', $order), ['status' => OrderStatus::MenungguKonfirmasi->value])
+            ->patch(route('admin.orders.status', $order), ['status' => OrderStatus::Dikemas->value])
             ->assertRedirect(route('admin.orders.index'));
 
         $order->refresh();
 
-        $this->assertSame(OrderStatus::MenungguKonfirmasi, $order->status);
+        $this->assertSame(OrderStatus::Dikemas, $order->status);
         $this->assertSame($stockAfterPayment, $this->variant->fresh()->stock);
         $this->assertDatabaseHas('order_status_logs', [
             'order_id' => $order->id,
             'from_status' => OrderStatus::Dibayar->value,
-            'to_status' => OrderStatus::MenungguKonfirmasi->value,
+            'to_status' => OrderStatus::Dikemas->value,
         ]);
     }
 
-    public function test_cancelling_confirmed_order_restores_stock(): void
+    public function test_cancelling_dipending_order_restores_stock(): void
     {
         $admin = $this->admin();
         $order = $this->placeOrder($this->buyer());
@@ -246,7 +246,11 @@ class AdminOrderTest extends TestCase
 
         $this->actingAs($admin)
             ->from(route('admin.orders.index'))
-            ->patch(route('admin.orders.status', $order), ['status' => OrderStatus::MenungguKonfirmasi->value]);
+            ->patch(route('admin.orders.status', $order), ['status' => OrderStatus::Dikemas->value]);
+
+        $this->actingAs($admin)
+            ->from(route('admin.orders.index'))
+            ->patch(route('admin.orders.status', $order), ['status' => OrderStatus::Dipending->value]);
 
         $this->actingAs($admin)
             ->from(route('admin.orders.index'))

@@ -7,21 +7,37 @@ use PHPUnit\Framework\TestCase;
 
 class OrderStatusTest extends TestCase
 {
-    public function test_menunggu_konfirmasi_is_labelled_dipending(): void
+    public function test_dipending_status_is_labelled_dipending(): void
     {
-        $this->assertSame('Dipending', OrderStatus::MenungguKonfirmasi->label());
+        $this->assertSame('Dipending', OrderStatus::Dipending->label());
+        $this->assertSame('DIPENDING', OrderStatus::Dipending->value);
     }
 
-    public function test_paid_order_moves_to_confirmation_first(): void
+    public function test_paid_order_moves_to_packing(): void
     {
-        $this->assertTrue(OrderStatus::Dibayar->canTransitionTo(OrderStatus::MenungguKonfirmasi));
-        $this->assertFalse(OrderStatus::Dibayar->canTransitionTo(OrderStatus::Dikemas));
+        $this->assertTrue(OrderStatus::Dibayar->canTransitionTo(OrderStatus::Dikemas));
+        $this->assertFalse(OrderStatus::Dibayar->canTransitionTo(OrderStatus::Dipending));
+        $this->assertFalse(OrderStatus::Dibayar->canTransitionTo(OrderStatus::Dibatalkan));
     }
 
-    public function test_confirmation_can_move_to_packing_or_cancel(): void
+    public function test_packing_can_move_to_shipping_or_dipending(): void
     {
-        $this->assertTrue(OrderStatus::MenungguKonfirmasi->canTransitionTo(OrderStatus::Dikemas));
-        $this->assertTrue(OrderStatus::MenungguKonfirmasi->canTransitionTo(OrderStatus::Dibatalkan));
+        $this->assertTrue(OrderStatus::Dikemas->canTransitionTo(OrderStatus::Dikirim));
+        $this->assertTrue(OrderStatus::Dikemas->canTransitionTo(OrderStatus::Dipending));
+        $this->assertFalse(OrderStatus::Dikemas->canTransitionTo(OrderStatus::Dibatalkan));
+    }
+
+    public function test_dipending_can_move_to_shipping_or_cancel(): void
+    {
+        $this->assertTrue(OrderStatus::Dipending->canTransitionTo(OrderStatus::Dikirim));
+        $this->assertTrue(OrderStatus::Dipending->canTransitionTo(OrderStatus::Dibatalkan));
+        $this->assertFalse(OrderStatus::Dipending->canTransitionTo(OrderStatus::Dikemas));
+    }
+
+    public function test_shipping_can_only_finish(): void
+    {
+        $this->assertTrue(OrderStatus::Dikirim->canTransitionTo(OrderStatus::Selesai));
+        $this->assertFalse(OrderStatus::Dikirim->canTransitionTo(OrderStatus::Dibatalkan));
     }
 
     public function test_final_status_has_no_next_step(): void

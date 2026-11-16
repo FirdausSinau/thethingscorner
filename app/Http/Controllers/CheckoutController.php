@@ -62,7 +62,7 @@ class CheckoutController extends Controller
         });
 
         return redirect()
-            ->route('orders.show', ['order' => $order->order_code])
-            ->with('status', 'Pesanan berhasil dibuat.');
+            ->route('orders.index')
+            ->with('status', 'Pesanan berhasil dibuat. Lihat pesanan di halaman Pesanan saya.');
     }
 }

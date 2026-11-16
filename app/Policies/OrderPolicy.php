@@ -24,7 +24,7 @@ class OrderPolicy
             return Response::denyAsNotFound();
         }
 
-        if (! in_array($order->status, [OrderStatus::MenungguPembayaran, OrderStatus::MenungguKonfirmasi], true)) {
+        if (! in_array($order->status, [OrderStatus::MenungguPembayaran, OrderStatus::Dipending], true)) {
             return Response::deny('Pesanan ini sudah tidak bisa dibatalkan.');
         }
 

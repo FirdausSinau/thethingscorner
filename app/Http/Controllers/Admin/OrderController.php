@@ -68,6 +68,7 @@ class OrderController extends Controller
             'items',
             'reservations.variant.color.product',
             'statusLogs.actor',
+            'latestShipment',
         ]);
 
         return view('admin.orders.show', ['order' => $order]);

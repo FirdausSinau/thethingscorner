@@ -27,9 +27,10 @@ class OrderStatusService
         OrderStatus $to,
         ?User $actor = null,
         ?string $note = null,
-        bool $bySystem = false
+        bool $bySystem = false,
+        bool $force = false,
     ): Order {
-        return DB::transaction(function () use ($order, $to, $actor, $note, $bySystem): Order {
+        return DB::transaction(function () use ($order, $to, $actor, $note, $bySystem, $force): Order {
             $order = Order::query()
                 ->whereKey($order->getKey())
                 ->lockForUpdate()
@@ -45,20 +46,21 @@ class OrderStatusService
                 $this->fail('Status Kedaluwarsa hanya bisa diatur otomatis oleh sistem.');
             }
 
-            if (! $from->canTransitionTo($to)) {
-                $this->fail($this->transitionMessage($order, $from, $to));
-            }
+            if ($force) {
+                if ($to !== OrderStatus::Dibatalkan || ! $actor?->isAdminMaster()) {
+                    $this->fail('Pembatalan paksa hanya bisa dilakukan Admin Master.');
+                }
 
-            if ($to === OrderStatus::Dibatalkan
-                && in_array($from, [OrderStatus::Dibayar, OrderStatus::Dikemas, OrderStatus::Dikirim], true)) {
-                if (! $actor?->isAdminMaster()) {
-                    $this->fail('Pembatalan setelah pembayaran hanya bisa dilakukan Admin Master.');
+                if ($from->isFinal()) {
+                    $this->fail("{$order->order_code} sudah {$from->label()} dan tidak bisa dibatalkan lagi.");
                 }
 
                 if ($from === OrderStatus::Dikirim
                     && $order->latestShipment?->status !== ShipmentStatus::Returned) {
                     $this->fail('Pembatalan setelah dikirim hanya bisa setelah paket dikembalikan ke toko.');
                 }
+            } elseif (! $from->canTransitionTo($to)) {
+                $this->fail($this->transitionMessage($order, $from, $to));
             }
 
             $this->syncStock($order, $from, $to);

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductColorImageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\Admin\ShipmentLabelController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,8 @@ Route::middleware(['auth', 'role:admin,admin_master'])
         Route::patch('orders/bulk-status', [AdminOrderController::class, 'bulkStatus'])->name('orders.bulk-status');
         Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
         Route::patch('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+
+        Route::get('shipments/{shipment}/label', [ShipmentLabelController::class, 'show'])->name('shipments.label');
 
         Route::middleware('role:admin_master')->group(function (): void {
             Route::get('/admins', [UserController::class, 'index'])->name('admins.index');

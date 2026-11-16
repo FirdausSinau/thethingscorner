@@ -106,7 +106,7 @@ class CartCheckoutUiTest extends TestCase
             ->assertSee('Budi Santoso');
     }
 
-    public function test_checkout_store_creates_order_and_shows_order_page(): void
+    public function test_checkout_store_creates_order_and_redirects_to_order_list(): void
     {
         app(CartService::class)->add($this->buyer, $this->variant, 1);
 
@@ -123,10 +123,10 @@ class CartCheckoutUiTest extends TestCase
 
         $order = Order::query()->firstOrFail();
 
-        $response->assertRedirect(route('orders.show', ['order' => $order->order_code]));
+        $response->assertRedirect(route('orders.index'));
 
         $this->actingAs($this->buyer)
-            ->get(route('orders.show', ['order' => $order->order_code]))
+            ->get(route('orders.index'))
             ->assertOk()
             ->assertSee($order->order_code)
             ->assertSee('Menunggu pembayaran');

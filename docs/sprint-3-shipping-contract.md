@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 16 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Backend selesai: schema, enum, model, fake provider, `ShippingService`, tarif flat, shipment service, tracking service, dan webhook fake. Checkout UI Anand, shipment admin Hafiez, dan signature/webhook Biteship menyusul.  
+**Status:** Backend selesai: schema, enum, model, fake provider, `ShippingService`, tarif flat, shipment service, tracking service, webhook fake, dan cetak resi PDF admin-only. Checkout UI Anand, shipment admin Hafiez, dan signature/webhook Biteship menyusul.  
 **Keputusan terkait:** D-35
 
 Dokumen ini adalah kontrak Slice 6: tarif ongkir, pembuatan pengiriman, resi, dan tracking.
@@ -200,7 +200,29 @@ Pembeli menampilkan:
 - Ongkir masuk ke `orders.shipping_cost` dan `orders.total`.
 - Pengiriman tidak mengubah stok.
 
-## 10. Di luar kontrak
+## 11. Cetak resi
+
+- Cetak resi hanya untuk admin. Pembeli tidak memiliki route, tombol, atau akses PDF.
+- PDF dibuat on-demand, tidak disimpan permanen.
+- Library: `barryvdh/laravel-dompdf` dan `picqer/php-barcode-generator`.
+- Ukuran label 100 x 150 mm.
+- Barcode Code128 dibuat dari nomor resi.
+- Nomor resi wajib ada. Jika kosong, cetak ditolak dengan error validasi `shipping`.
+- Isi label: nama toko, kurir/layanan, nomor resi, penerima, telepon, alamat, kota/kode pos, origin, berat, jumlah item, dan nomor order.
+- Route: `GET /admin/shipments/{shipment}/label` dengan name `admin.shipments.label`.
+- Service: `App\Services\ShipmentLabelService`.
+- Controller: `App\Http\Controllers\Admin\ShipmentLabelController`.
+- Template: `resources/views/pdf/shipment-label.blade.php`.
+- Tombol **Cetak resi PDF** tampil di halaman detail pesanan admin jika shipment punya nomor resi.
+
+Test:
+
+- Admin bisa mengunduh PDF.
+- Pembeli mendapat 403.
+- Resi kosong ditolak.
+- Tombol cetak tampil di halaman admin.
+
+## 12. Di luar kontrak
 
 - Integrasi Biteship asli.
 - Perhitungan tarif berdasarkan volume.

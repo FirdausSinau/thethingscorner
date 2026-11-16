@@ -1,6 +1,6 @@
 # Decision Log — The Things Corner
 
-**Versi:** 0.11  
+**Versi:** 0.12  
 **Tanggal:** 16 November 2026  
 **Status:** Draft  
 **Referensi:** RFP v0.3, PRD Fase 1 v0.2
@@ -60,11 +60,12 @@ Aturan:
 | D-29 | Struktur katalog | Produk -> warna -> varian ukuran; foto bisa per produk dan per warna | Confirmed | Model, admin, katalog | Tim produk |
 | D-30 | Brand | Nama resmi `Thethingscorner`, huruf T besar dan satu kata | Confirmed | UI, email, dokumen | Client |
 | D-31 | Media produk | `PRODUCT_IMAGES_DISK=public` untuk lokal, `s3` untuk Neon Object Storage | Confirmed | Upload, URL, hapus gambar | Tim |
-| D-32 | Status pesanan | `MENUNGGU_PEMBAYARAN` → `DIBAYAR` → `MENUNGGU_KONFIRMASI` (label: Dipending) → `DIKEMAS` → `DIKIRIM` → `SELESAI` | Confirmed | State machine, UI, laporan | Tim |
+| D-32 | Status pesanan | `MENUNGGU_PEMBAYARAN` → `DIBAYAR` → `DIKEMAS` → `DIKIRIM` → `SELESAI`; `DIKEMAS` bisa ke `DIPENDING`; `DIPENDING` bisa ke `DIKIRIM` atau `DIBATALKAN` | Confirmed | State machine, UI, laporan | Tim |
 | D-33 | Preorder dan Custom PO | Konsep yang sama. Produk preorder tidak lewat keranjang, pembeli mengajukan lewat form PO | Assumption | Katalog, keranjang, checkout, alur PO, pembayaran DP | Tim |
 | D-34 | Log status pesanan | Tabel `order_status_logs` append-only, mencatat status asal, status tujuan, aktor, dan catatan | Confirmed | Audit dan halaman admin | Tim |
 | D-35 | Integrasi eksternal Sprint 3 | Fake adapter, transfer manual, dan tarif flat dulu; Midtrans/Biteship setelah aplikasi selesai dan sandbox siap | Confirmed | Payment, shipping, testing | Tim |
-| D-36 | Lifecycle pesanan Sprint 3 | Pembatalan pembeli sebelum dikemas, konfirmasi terima saat dikirim, auto-selesai 7 hari, refund manual Admin Master | Confirmed | Policy, stok, audit, UI | Tim |
+| D-36 | Lifecycle pesanan Sprint 3 | Pembatalan pembeli saat menunggu pembayaran atau dipending, konfirmasi terima saat dikirim, auto-selesai 7 hari, refund manual Admin Master | Confirmed | Policy, stok, audit, UI | Tim |
+| D-37 | Cetak resi | PDF admin-only memakai dompdf dan barcode Code128, ukuran 100 x 150 mm, dibuat on-demand | Confirmed | Label, deployment | Tim |
 
 ---
 
@@ -279,10 +280,16 @@ Alur:
 ```text
 MENUNGGU_PEMBAYARAN
 → DIBAYAR
-→ MENUNGGU_KONFIRMASI
 → DIKEMAS
 → DIKIRIM
 → SELESAI
+
+Dari DIKEMAS:
+→ DIPENDING
+
+Dari DIPENDING:
+→ DIKIRIM
+→ DIBATALKAN
 ```
 
 Status lain:
@@ -296,8 +303,8 @@ Arti:
 
 - `MENUNGGU_PEMBAYARAN`: order sudah dibuat, pembayaran belum diterima.
 - `DIBAYAR`: pembayaran sudah diterima.
-- `MENUNGGU_KONFIRMASI`: pembayaran diterima, pesanan menunggu konfirmasi admin sebelum dikemas. Label UI: **Dipending**.
-- `DIBATALKAN`: dibatalkan sebelum dikemas.
+- `DIPENDING`: pesanan ditahan sementara setelah dikemas. Label UI: **Dipending**.
+- `DIBATALKAN`: dibatalkan saat menunggu pembayaran atau dipending.
 - `KEDALUWARSA`: pembayaran tidak selesai sampai batas reservasi.
 
 `PENDING` bukan status pesanan. `PENDING` adalah status pembayaran dan akan dipisahkan di `PaymentStatus` pada Slice 5. Status `PENDING` sempat ditambahkan sebagai status pesanan di PR #3, lalu dihapus lagi pada 12 November 2026 karena bertentangan dengan keputusan ini.
@@ -351,7 +358,7 @@ Aturan:
 
 Aturan yang dikunci:
 
-- Pembeli boleh membatalkan saat `MENUNGGU_PEMBAYARAN` dan `MENUNGGU_KONFIRMASI`.
+- Pembeli boleh membatalkan saat `MENUNGGU_PEMBAYARAN` dan `DIPENDING`.
 - Pembatalan saat menunggu pembayaran melepas reservasi; pembatalan setelah dibayar mengembalikan stok fisik.
 - Pembeli boleh mengonfirmasi terima hanya saat `DIKIRIM`.
 - Order `DIKIRIM` otomatis menjadi `SELESAI` setelah 7 hari sejak `shipped_at`.
@@ -360,11 +367,22 @@ Aturan yang dikunci:
 
 Konsekuensi:
 
-- `OrderStatus::allowedNext()` sudah menambah `DIBAYAR -> DIBATALKAN`, `DIKEMAS -> DIBATALKAN`, dan `DIKIRIM -> DIBATALKAN` khusus Admin Master.
-- Pembatalan setelah `DIKIRIM` hanya boleh setelah shipment terakhir `RETURNED`.
+- `OrderStatus::allowedNext()` mengikuti alur Hafiez: `DIBAYAR -> DIKEMAS`, `DIKEMAS -> DIKIRIM/DIPENDING`, dan `DIPENDING -> DIKIRIM/DIBATALKAN`.
+- Refund memakai force-cancel Admin Master karena pembatalan normal dari `DIBAYAR`, `DIKEMAS`, atau `DIKIRIM` tidak ada di dropdown.
+- Pembatalan force dari `DIKIRIM` hanya boleh setelah shipment terakhir `RETURNED`.
 - Tombol pembatalan dan konfirmasi terima dilindungi policy, bukan hanya disembunyikan di Blade.
 - Command auto-selesai memakai penanda sistem dan tidak berjalan untuk shipment `RETURNED`.
 - Refund manual mengubah `PaymentStatus` menjadi `REFUNDED`, membatalkan order, dan mengembalikan stok bila barang belum dikirim.
+
+### D-37 - Cetak resi
+
+- Cetak resi hanya untuk admin. Pembeli tidak mendapat route atau tombol cetak.
+- PDF dibuat on-demand, tidak disimpan permanen.
+- Library: `barryvdh/laravel-dompdf` dan `picqer/php-barcode-generator`.
+- Ukuran label 100 x 150 mm.
+- Barcode memakai Code128 dari nomor resi.
+- Isi label: toko, kurir/layanan, resi, penerima, alamat, origin, berat, jumlah item, nomor order.
+- Jika nomor resi belum ada, cetak ditolak dengan pesan validasi.
 
 ---
 
@@ -422,3 +440,4 @@ Konsekuensi:
 | 0.9 | 13 Nov 2026 | Label `MENUNGGU_KONFIRMASI` menjadi Dipending; tabel admin order dibuat fixed tanpa scroll horizontal |
 | 0.10 | 16 Nov 2026 | Sprint 3 memakai fake adapter dan fallback manual; Midtrans/Biteship ditunda (D-35) |
 | 0.11 | 16 Nov 2026 | Lifecycle pesanan Sprint 3: batas pembatalan, konfirmasi terima, auto-selesai 7 hari, refund manual (D-36) |
+| 0.12 | 16 Nov 2026 | Adopsi alur status Hafiez: `DIPENDING`, `DIBAYAR -> DIKEMAS`, `DIKEMAS -> DIKIRIM/DIPENDING`; refund memakai force-cancel Admin Master; cetak resi admin-only (D-37) |

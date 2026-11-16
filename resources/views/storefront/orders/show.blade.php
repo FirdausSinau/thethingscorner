@@ -26,9 +26,8 @@
             @endcan
         </div>
 
+        @include('storefront.orders.partials.summary', ['order' => $order])
         @include('storefront.orders.partials.items', ['order' => $order])
         @include('storefront.orders.partials.shipping', ['order' => $order])
-
-        <p class="mt-6 text-xs text-muted">Instruksi pembayaran akan tersedia di tahap berikutnya.</p>
     </section>
 @endsection

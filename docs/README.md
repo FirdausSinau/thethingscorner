@@ -20,7 +20,7 @@ Folder ini hanya berisi dokumentasi yang berkaitan dengan kode dan produk. Dokum
 | [`sprint-3-payment-contract.md`](sprint-3-payment-contract.md) | 1.0 | Kontrak payments, PaymentStatus, fake gateway, transfer manual, dan refund |
 | [`sprint-3-shipping-contract.md`](sprint-3-shipping-contract.md) | 1.0 | Kontrak shipments, ShipmentStatus, fake provider, tarif flat, dan tracking |
 | [`sprint-3-order-tracking-contract.md`](sprint-3-order-tracking-contract.md) | 1.0 | Kontrak transisi pesanan, pembatalan, auto-selesai, dan refund |
-| [`decisions.md`](decisions.md) | 0.11 | Decision log dan asumsi sementara |
+| [`decisions.md`](decisions.md) | 0.12 | Decision log dan asumsi sementara |
 | [`design-system.md`](design-system.md) | 0.1 | Token warna, tipografi, komponen, aksesibilitas |
 | [`wireframes.md`](wireframes.md) | 0.1 | Wireframe pembeli dan admin |
 | [`implementation-plan-fase-1.md`](implementation-plan-fase-1.md) | 0.1 | Rencana per slice, test, commit, deployment |
@@ -57,5 +57,5 @@ Dokumen kerja tim:
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
-- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 cart dan Slice 4 checkout selesai, termasuk admin order dan buyer order history. Backend Sprint 3 (Slice 5-7) selesai untuk bagian Firdaus: kontrak, schema `payments`/`shipments`/`integration_logs`, enum, model, fake adapter, `PaymentService`, `ShippingService`, policy, scheduler, auto-selesai, dan refund service. Halaman pembeli dikerjakan Anand dan halaman admin dikerjakan Hafiez. Total 206 test backend lulus.
+- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 cart dan Slice 4 checkout selesai, termasuk admin order dan buyer order history. Backend Sprint 3 (Slice 5-7) selesai untuk bagian Firdaus: kontrak, schema `payments`/`shipments`/`integration_logs`, enum, model, fake adapter, `PaymentService`, `ShippingService`, policy, scheduler, auto-selesai, dan refund service. Halaman pembeli dikerjakan Anand dan halaman admin dikerjakan Hafiez. Total 213 test backend lulus.
 

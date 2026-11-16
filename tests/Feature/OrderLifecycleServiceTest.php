@@ -94,25 +94,24 @@ class OrderLifecycleServiceTest extends TestCase
         $payments->markPaid($payment);
     }
 
-    public function test_buyer_cancel_policy_only_before_packing(): void
+    public function test_buyer_cancel_policy_only_before_shipping(): void
     {
         $unpaid = $this->placeOrder();
         $this->assertTrue(Gate::forUser($this->buyer)->allows('cancel', $unpaid));
 
         $dipending = $this->placeOrder();
         $this->pay($dipending);
-        app(OrderStatusService::class)->change(
-            $dipending->fresh(),
-            OrderStatus::MenungguKonfirmasi,
-            $this->userWithRole(UserRole::Admin),
-        );
+
+        $statuses = app(OrderStatusService::class);
+        $admin = $this->userWithRole(UserRole::Admin);
+
+        $statuses->change($dipending->fresh(), OrderStatus::Dikemas, $admin);
+        $statuses->change($dipending->fresh(), OrderStatus::Dipending, $admin);
+
         $this->assertTrue(Gate::forUser($this->buyer)->allows('cancel', $dipending->fresh()));
 
-        app(OrderStatusService::class)->change(
-            $dipending->fresh(),
-            OrderStatus::Dikemas,
-            $this->userWithRole(UserRole::Admin),
-        );
+        $statuses->change($dipending->fresh(), OrderStatus::Dikirim, $admin);
+
         $this->assertFalse(Gate::forUser($this->buyer)->allows('cancel', $dipending->fresh()));
     }
 
@@ -136,7 +135,8 @@ class OrderLifecycleServiceTest extends TestCase
         $statuses = app(OrderStatusService::class);
         $admin = $this->userWithRole(UserRole::Admin);
 
-        $statuses->change($order->fresh(), OrderStatus::MenungguKonfirmasi, $admin);
+        $statuses->change($order->fresh(), OrderStatus::Dikemas, $admin);
+        $statuses->change($order->fresh(), OrderStatus::Dipending, $admin);
         $statuses->change($order->fresh(), OrderStatus::Dibatalkan, $this->buyer, 'Berubah pikiran');
 
         $this->assertSame(OrderStatus::Dibatalkan, $order->fresh()->status);
@@ -170,6 +170,7 @@ class OrderLifecycleServiceTest extends TestCase
             OrderStatus::Dibatalkan,
             $this->userWithRole(UserRole::AdminMaster),
             'Dibatalkan Admin Master',
+            force: true,
         );
 
         $this->assertSame(OrderStatus::Dibatalkan, $order->fresh()->status);
@@ -216,7 +217,6 @@ class OrderLifecycleServiceTest extends TestCase
         $admin = $this->userWithRole(UserRole::Admin);
         $master = $this->userWithRole(UserRole::AdminMaster);
 
-        $statuses->change($order->fresh(), OrderStatus::MenungguKonfirmasi, $admin);
         $statuses->change($order->fresh(), OrderStatus::Dikemas, $admin);
 
         $shipping = app(ShippingService::class);

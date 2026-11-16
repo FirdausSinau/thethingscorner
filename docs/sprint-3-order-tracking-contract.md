@@ -16,7 +16,7 @@ Dokumen ini mengunci lifecycle pesanan Sprint 3: pembayaran, pengemasan, pengiri
 - `PaymentStatus` dan `ShipmentStatus` adalah status pendukung, bukan pengganti status pesanan.
 - Semua perubahan status pesanan lewat `OrderStatusService` agar lock, stok, dan log konsisten.
 - `order_status_logs` append-only. Tidak ada update atau hapus.
-- `MENUNGGU_KONFIRMASI` selalu tampil sebagai **Dipending**.
+- `DIPENDING` selalu tampil sebagai **Dipending**.
 - Aksi pembeli dan admin dibatasi policy, bukan hanya tombol yang disembunyikan.
 
 ## 2. Tabel transisi
@@ -26,22 +26,20 @@ Dokumen ini mengunci lifecycle pesanan Sprint 3: pembayaran, pengemasan, pengiri
 | MENUNGGU_PEMBAYARAN | DIBAYAR | sistem | PaymentStatus PAID, nominal cocok |
 | MENUNGGU_PEMBAYARAN | DIBATALKAN | pembeli, admin | reservasi masih aktif |
 | MENUNGGU_PEMBAYARAN | KEDALUWARSA | sistem | semua reservasi kedaluwarsa |
-| DIBAYAR | MENUNGGU_KONFIRMASI | admin | pembayaran sudah diverifikasi |
-| DIBAYAR | DIBATALKAN | Admin Master | refund manual dicatat |
-| MENUNGGU_KONFIRMASI | DIKEMAS | admin | stok sudah terpotong saat pembayaran |
-| MENUNGGU_KONFIRMASI | DIBATALKAN | pembeli, admin | belum dikemas, stok dikembalikan |
+| DIBAYAR | DIKEMAS | admin | pembayaran sudah diterima |
 | DIKEMAS | DIKIRIM | admin, sistem | shipment aktif punya resi |
-| DIKEMAS | DIBATALKAN | Admin Master | refund manual, stok dikembalikan |
+| DIKEMAS | DIPENDING | admin | pesanan ditahan sementara |
+| DIPENDING | DIKIRIM | admin, sistem | shipment aktif punya resi |
+| DIPENDING | DIBATALKAN | pembeli, admin | stok dikembalikan |
 | DIKIRIM | SELESAI | pembeli, sistem | diterima pembeli atau auto-selesai |
-| DIKIRIM | DIBATALKAN | Admin Master | shipment RETURNED, refund manual |
 | SELESAI | - | - | final |
 | DIBATALKAN | - | - | final |
 | KEDALUWARSA | - | - | final |
 
 Catatan:
 
-- `DIBAYAR -> DIBATALKAN`, `DIKEMAS -> DIBATALKAN`, dan `DIKIRIM -> DIBATALKAN` hanya untuk Admin Master.
-- `DIKIRIM -> DIBATALKAN` baru boleh setelah shipment terakhir `RETURNED`.
+- Refund Admin Master memakai force-cancel di `OrderStatusService`, bukan transisi dropdown normal.
+- Force-cancel dari `DIKIRIM` hanya setelah shipment terakhir `RETURNED`.
 - `KEDALUWARSA` hanya boleh diatur sistem. Admin tidak boleh memilihnya dari dropdown.
 - `DIBATALKAN` setelah pembayaran wajib punya catatan alasan dan status pembayaran `REFUNDED` atau alasan refund tertunda.
 
@@ -73,16 +71,17 @@ Catatan:
 
 Aturan pembeli:
 
-- Boleh membatalkan saat `MENUNGGU_PEMBAYARAN` dan `MENUNGGU_KONFIRMASI`.
+- Boleh membatalkan saat `MENUNGGU_PEMBAYARAN` dan `DIPENDING`.
 - Tidak boleh membatalkan saat `DIKEMAS`, `DIKIRIM`, `SELESAI`, `DIBATALKAN`, atau `KEDALUWARSA`.
 - Pembatalan saat `MENUNGGU_PEMBAYARAN` melepas reservasi tanpa mengurangi stok fisik.
-- Pembatalan saat `MENUNGGU_KONFIRMASI` mengembalikan stok fisik karena stok sudah terpotong saat pembayaran.
+- Pembatalan saat `DIPENDING` mengembalikan stok fisik karena stok sudah terpotong saat pembayaran.
 - Alasan pembatalan wajib diisi dan masuk `order_status_logs`.
 
 Aturan admin:
 
-- Admin biasa boleh membatalkan sebelum `DIKEMAS`.
-- Admin Master boleh membatalkan setelah pembayaran dan setelah `DIKEMAS` dengan refund manual.
+- Admin biasa boleh membatalkan saat `MENUNGGU_PEMBAYARAN` dan `DIPENDING`.
+- Admin Master boleh memakai force-cancel refund dari `DIBAYAR`, `DIKEMAS`, atau `DIPENDING`.
+- Force-cancel dari `DIKIRIM` hanya setelah shipment `RETURNED`.
 - Pembatalan setelah `DIKIRIM` tidak lewat tombol biasa; harus lewat alur retur dan refund.
 
 ## 6. Konfirmasi terima dan auto-selesai

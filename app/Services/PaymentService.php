@@ -352,7 +352,13 @@ class PaymentService
             ]);
 
             if ($order->status !== OrderStatus::Dibatalkan) {
-                $this->statusService->change($order, OrderStatus::Dibatalkan, $admin, 'Refund: '.$note);
+                $this->statusService->change(
+                    $order,
+                    OrderStatus::Dibatalkan,
+                    $admin,
+                    'Refund: '.$note,
+                    force: true,
+                );
             }
 
             $this->logIntegration(

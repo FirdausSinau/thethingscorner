@@ -107,7 +107,7 @@ Index `(order_id, created_at)`.
 ```text
 MENUNGGU_PEMBAYARAN
 DIBAYAR
-MENUNGGU_KONFIRMASI
+DIPENDING
 DIKEMAS
 DIKIRIM
 SELESAI
@@ -115,7 +115,7 @@ DIBATALKAN
 KEDALUWARSA
 ```
 
-Label UI untuk `MENUNGGU_KONFIRMASI`: **Dipending**. Nilai database tetap `MENUNGGU_KONFIRMASI`.
+Status `DIPENDING` memakai label UI **Dipending**.
 
 ### OrderChannel
 
@@ -224,7 +224,7 @@ Controller:
 1. Validasi alamat dan `payment_method`.
 2. Simpan/perbarui alamat default user.
 3. Panggil `CheckoutService`.
-4. Redirect ke halaman pesanan atau pembayaran Slice 5.
+4. Redirect ke halaman **Pesanan saya** (`/pesanan`) setelah pesanan dibuat.
 
 ### Admin order, milik Hafiez
 

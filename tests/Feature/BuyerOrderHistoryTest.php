@@ -58,6 +58,29 @@ class BuyerOrderHistoryTest extends TestCase
             ->assertDontSee($otherOrder->order_code);
     }
 
+    public function test_buyer_order_detail_shows_order_summary(): void
+    {
+        $buyer = $this->userWithRole(UserRole::Buyer);
+        $order = $this->makeOrder($buyer);
+        $order->update([
+            'subtotal' => 250000,
+            'shipping_cost' => 15000,
+            'total' => 265000,
+        ]);
+
+        $this->actingAs($buyer)
+            ->get(route('orders.show', ['order' => $order->order_code]))
+            ->assertOk()
+            ->assertSee('Ringkasan pesanan')
+            ->assertSee('Budi Santoso')
+            ->assertSee('081234567890')
+            ->assertSee('Jl. Contoh No. 1')
+            ->assertSee('Bandung 40132')
+            ->assertSee('Rp 250.000')
+            ->assertSee('Rp 15.000')
+            ->assertSee('Rp 265.000');
+    }
+
     public function test_buyer_without_orders_sees_empty_state(): void
     {
         $buyer = $this->userWithRole(UserRole::Buyer);

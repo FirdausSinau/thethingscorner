@@ -27,6 +27,12 @@
 
                             <p class="mt-1 text-xs text-muted">{{ $order->created_at->format('d/m/Y H:i') }}</p>
 
+                            <p class="mt-2 text-sm text-muted">
+                                {{ $order->recipient }}
+                                &middot; {{ $order->items_count }} item
+                                &middot; {{ $order->payment_method->label() }}
+                            </p>
+
                             <p class="mt-3 text-sm font-semibold">
                                 Rp {{ number_format($order->total, 0, ',', '.') }}
                             </p>

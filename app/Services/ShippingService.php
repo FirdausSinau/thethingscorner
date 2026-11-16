@@ -286,7 +286,7 @@ class ShippingService
             $locked->update($attributes);
 
             if (in_array($event->status, [ShipmentStatus::Pickup, ShipmentStatus::InTransit, ShipmentStatus::Delivered], true)) {
-                if ($order->status === OrderStatus::Dikemas) {
+                if (in_array($order->status, [OrderStatus::Dikemas, OrderStatus::Dipending], true)) {
                     $this->statusService->change($order, OrderStatus::Dikirim, null, 'Paket diserahkan ke kurir', true);
                     $order->refresh();
                 }
