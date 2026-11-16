@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 16 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Schema, enum, model, dan fake provider selesai; service, checkout, dan halaman tracking menyusul  
+**Status:** Schema, enum, model, fake provider, dan `ShippingService` selesai; checkout dan halaman tracking menyusul  
 **Keputusan terkait:** D-35
 
 Dokumen ini adalah kontrak Slice 6: tarif ongkir, pembuatan pengiriman, resi, dan tracking.

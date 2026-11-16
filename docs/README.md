@@ -57,5 +57,5 @@ Dokumen kerja tim:
 - Provider Fase 1: Midtrans/Xendit, Biteship, `wa.me`, local storage + Cloudflare.
 - Provider Fase 2: Shopee API, WA API, Google Maps, analytics, Cloudinary, Sentry, PDF, CAPTCHA.
 - Sample data masih dummy; data asli client menyusul.
-- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 cart dan Slice 4 checkout selesai, termasuk admin order dan buyer order history. Slice 5-7 fondasi Sprint 3 selesai: kontrak, schema `payments`/`shipments`/`integration_logs`, enum, model, dan fake adapter. Total 141 test lulus.
+- Implementasi: Slice 1 auth/role selesai. Slice 2 katalog dan admin produk selesai. Slice 3 cart dan Slice 4 checkout selesai, termasuk admin order dan buyer order history. Slice 5-7 fondasi Sprint 3 selesai: kontrak, schema `payments`/`shipments`/`integration_logs`, enum, model, fake adapter, `PaymentService`, dan `ShippingService`. Total 170 test lulus.
 
