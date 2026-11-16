@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Enums\OrderStatus;
 use App\Enums\ReservationStatus;
+use App\Enums\ShipmentStatus;
 use App\Models\Order;
 use App\Models\OrderStatusLog;
 use App\Models\Product\ProductVariant;
 use App\Models\User;
+use App\Notifications\OrderStatusChanged;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -47,6 +49,18 @@ class OrderStatusService
                 $this->fail($this->transitionMessage($order, $from, $to));
             }
 
+            if ($to === OrderStatus::Dibatalkan
+                && in_array($from, [OrderStatus::Dibayar, OrderStatus::Dikemas, OrderStatus::Dikirim], true)) {
+                if (! $actor?->isAdminMaster()) {
+                    $this->fail('Pembatalan setelah pembayaran hanya bisa dilakukan Admin Master.');
+                }
+
+                if ($from === OrderStatus::Dikirim
+                    && $order->latestShipment?->status !== ShipmentStatus::Returned) {
+                    $this->fail('Pembatalan setelah dikirim hanya bisa setelah paket dikembalikan ke toko.');
+                }
+            }
+
             $this->syncStock($order, $from, $to);
 
             $order->status = $to;
@@ -68,6 +82,13 @@ class OrderStatusService
                 'actor_id' => $actor?->id,
                 'note' => $note,
             ]);
+
+            try {
+                $order->user?->notify(new OrderStatusChanged($order, $from, $to));
+            } catch (\Throwable $e) {
+                // Notifikasi tidak boleh membatalkan perubahan status yang sudah valid.
+                report($e);
+            }
 
             return $order;
         }, 3);

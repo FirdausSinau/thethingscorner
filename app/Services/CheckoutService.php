@@ -24,7 +24,9 @@ class CheckoutService
         User $user,
         Address $address,
         PaymentMethod $paymentMethod,
-        int $shippingCost = 0
+        int $shippingCost = 0,
+        ?string $shippingCourier = null,
+        ?string $shippingService = null,
     ): Order {
         if (! $user->isBuyer()) {
             throw new AuthorizationException('Akun admin tidak bisa berbelanja.');
@@ -38,7 +40,7 @@ class CheckoutService
             ]);
         }
 
-        return DB::transaction(function () use ($user, $address, $paymentMethod, $shippingCost): Order {
+        return DB::transaction(function () use ($user, $address, $paymentMethod, $shippingCost, $shippingCourier, $shippingService): Order {
             $cartItems = CartItem::query()
                 ->where('user_id', $user->id)
                 ->lockForUpdate()
@@ -111,6 +113,8 @@ class CheckoutService
                 'payment_method' => $paymentMethod,
                 'subtotal' => $subtotal,
                 'shipping_cost' => $shippingCost,
+                'shipping_courier' => $shippingCourier,
+                'shipping_service' => $shippingService,
                 'total' => $subtotal + $shippingCost,
                 'recipient' => $address->recipient,
                 'phone' => $address->phone,

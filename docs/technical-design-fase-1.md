@@ -196,13 +196,19 @@ Dari MENUNGGU_PEMBAYARAN:
 
 Dari MENUNGGU_KONFIRMASI:
 → DIBATALKAN
+
+Dari DIBAYAR/DIKEMAS:
+→ DIBATALKAN (Admin Master)
+
+Dari DIKIRIM:
+→ DIBATALKAN (Admin Master, setelah shipment RETURNED)
 ```
 
 Aturan:
 
 - `MENUNGGU_KONFIRMASI` berarti pembayaran sudah diterima dan pesanan menunggu konfirmasi admin sebelum dikemas.
 - `SELESAI` hanya dari `DIKIRIM`, oleh buyer atau auto-selesai 7 hari.
-- `DIBATALKAN` hanya sebelum `DIKEMAS`.
+- `DIBATALKAN` oleh pembeli/admin sebelum `DIKEMAS`. Admin Master boleh membatalkan setelah `DIKEMAS` lewat refund manual (D-36).
 - `KEDALUWARSA` hanya jika pembayaran tidak selesai.
 - Refund dicatat terpisah; tidak mengubah riwayat.
 
@@ -215,7 +221,10 @@ PENDING
 
 PENDING
 → EXPIRED
+
+PENDING
 → FAILED
+→ PAID
 ```
 
 ### 4.3 Shipment
@@ -226,7 +235,10 @@ PENDING
 → IN_TRANSIT
 → DELIVERED
 
-IN_TRANSIT
+PENDING
+→ IN_TRANSIT
+
+PENDING/PICKUP/IN_TRANSIT
 → RETURNED
 ```
 

@@ -103,7 +103,7 @@ Urutan:
 
 ### Batch 2 - Cart dan checkout
 
-**Status 13 November 2026:** cart, checkout, admin order, dan buyer order history selesai. Sprint 2 siap review dan merge ke `main`.
+**Status 16 November 2026:** Sprint 2 sudah merge ke `main`. Backend Sprint 3 untuk bagian Firdaus selesai: schema payment/shipping, fake adapter, service, policy, scheduler, auto-selesai, refund, webhook fake, proof service, dan notifikasi database. Anand lanjut halaman pembayaran, checkout ongkir, tracking pembeli, dan tampilan notifikasi. Hafiez lanjut verifikasi transfer dan shipment admin. Setelah itu QA, UAT, dan integrasi provider asli.
 
 Fokus: Slice 3 lalu Slice 4.
 
