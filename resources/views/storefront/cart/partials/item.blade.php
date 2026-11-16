@@ -1,9 +1,22 @@
-<li class="rounded-2xl border border-border bg-surface p-4">
-    <p class="font-semibold text-primary-dark">{{ $item->variant->color->product->name }}</p>
+@php
+    $produk = $item->variant->color->product;
+    $bermasalah = ! $produk->is_active || $item->qty > $item->variant->stock_available;
+@endphp
+
+<li class="rounded-2xl border bg-surface p-4 {{ $bermasalah ? 'border-danger' : 'border-border' }}">
+    <p class="font-semibold text-primary-dark">{{ $produk->name }}</p>
     <p class="text-xs text-muted">
         {{ $item->variant->color->name }} · Ukuran {{ $item->variant->size }} · SKU {{ $item->variant->sku }}
     </p>
     <p class="mt-1 text-sm">Rp {{ number_format($item->unit_price, 0, ',', '.') }}</p>
+
+    @if (! $produk->is_active)
+        <p class="mt-2 text-sm font-medium text-danger">Produk ini sudah tidak dijual. Hapus dari keranjang.</p>
+    @elseif ($item->qty > $item->variant->stock_available)
+        <p class="mt-2 text-sm font-medium text-danger">
+            Stok tersisa {{ $item->variant->stock_available }}. Kurangi jumlah atau hapus item ini.
+        </p>
+    @endif
 
     <div class="mt-3 flex flex-wrap items-center gap-3">
         <form method="POST" action="{{ route('cart.update', $item) }}" class="flex items-center gap-2">

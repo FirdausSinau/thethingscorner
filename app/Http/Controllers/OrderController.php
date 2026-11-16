@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
+    public function index(Request $request)
+    {
+        $orders = $request->user()->orders()->latest()->paginate(10);
+
+        return view('storefront.orders.index', ['orders' => $orders]);
+    }
+    
     public function show(Order $order)
     {
         
