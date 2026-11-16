@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 16 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Backend selesai: schema, enum, model, fake gateway, `PaymentService`, verifikasi manual service, refund service, dan scheduler pembayaran kedaluwarsa. Halaman pembayaran Anand dan webhook provider asli menyusul.  
+**Status:** Backend selesai: schema, enum, model, fake gateway, `PaymentService`, proof service, webhook fake, verifikasi manual service, refund service, dan scheduler pembayaran kedaluwarsa. Halaman pembayaran Anand dan signature/webhook provider asli menyusul.  
 **Keputusan terkait:** D-05, D-06, D-17, D-32, D-35
 
 Dokumen ini adalah kontrak Slice 5: pembayaran gateway dan transfer manual.
@@ -113,10 +113,14 @@ Method minimal:
 
 ```php
 createForOrder(Order $order, PaymentMethod $method): Payment
+attachProof(Payment $payment, UploadedFile $file): string
 markPaid(Payment $payment, ?User $actor = null): void
+markFailed(Payment $payment, ?string $reason = null): void
+expire(Payment $payment): void
 verifyManual(Payment $payment, User $admin): void
 rejectManual(Payment $payment, User $admin, string $note): void
-expire(Payment $payment): void
+refundManual(Payment $payment, User $admin, string $note): void
+handleCallback(PaymentEvent $event): Payment
 ```
 
 Aturan:
@@ -136,6 +140,8 @@ Aturan:
 | POST | `/pembayaran/{order:order_code}/fake` | `payments.fake.pay` | pemilik order, lokal |
 | POST | `/admin/orders/{order}/verifikasi-pembayaran` | `admin.orders.verify-payment` | admin |
 | POST | `/webhooks/payment/{provider}` | `webhooks.payment` | tanpa CSRF, signature |
+
+Webhook backend untuk provider `fake` sudah ada. Signature provider asli dipasang di adapter Midtrans/Xendit saat integrasi dimulai. Route halaman pembayaran dan aksi admin menunggu Anand/Hafiez.
 
 Halaman pembayaran menampilkan:
 

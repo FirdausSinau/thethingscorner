@@ -47,6 +47,7 @@ return [
     */
 
     'fake' => [
+        'enabled' => filter_var(env('SHIPPING_FAKE_ENABLED', false), FILTER_VALIDATE_BOOL),
         'couriers' => [
             [
                 'courier' => 'JNE',

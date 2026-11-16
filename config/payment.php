@@ -64,7 +64,7 @@ return [
     */
 
     'fake' => [
-        'enabled' => filter_var(env('PAYMENT_FAKE_ENABLED', true), FILTER_VALIDATE_BOOL),
+        'enabled' => filter_var(env('PAYMENT_FAKE_ENABLED', false), FILTER_VALIDATE_BOOL),
     ],
 
 ];

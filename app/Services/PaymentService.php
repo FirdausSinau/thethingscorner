@@ -13,7 +13,9 @@ use App\Models\User;
 use App\Services\Payment\PaymentEvent;
 use App\Services\Payment\PaymentGateway;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class PaymentService
@@ -220,6 +222,68 @@ class PaymentService
                 ],
             );
         }, 3);
+    }
+
+    /**
+     * Simpan bukti transfer manual di disk privat. File lama dihapus
+     * supaya tidak menumpuk saat pembeli mengunggah ulang.
+     */
+    public function attachProof(Payment $payment, UploadedFile $file): string
+    {
+        $payment->refresh();
+
+        if ($payment->provider !== 'manual' || $payment->method !== PaymentMethod::ManualTransfer) {
+            $this->failProof('Pembayaran ini bukan transfer manual.');
+        }
+
+        if ($payment->status !== PaymentStatus::Pending) {
+            $this->failProof("Pembayaran berstatus {$payment->status->label()} dan tidak menerima bukti baru.");
+        }
+
+        if (! $file->isValid()) {
+            $this->failProof('File bukti transfer tidak valid.');
+        }
+
+        $maxBytes = (int) config('payment.proof.max_kb', 2048) * 1024;
+
+        if ($file->getSize() > $maxBytes) {
+            $this->failProof('Ukuran bukti transfer melebihi batas.');
+        }
+
+        $mime = (string) $file->getMimeType();
+
+        if (! in_array($mime, ['image/jpeg', 'image/png', 'application/pdf'], true)) {
+            $this->failProof('Bukti transfer harus berupa JPG, PNG, atau PDF.');
+        }
+
+        $disk = (string) config('payment.proof.disk', 'local');
+        $path = $file->store('payment-proofs', $disk);
+
+        if (! $path) {
+            $this->failProof('Bukti transfer gagal disimpan.');
+        }
+
+        $oldPath = $payment->proof_path;
+
+        $payment->update(['proof_path' => $path]);
+
+        if ($oldPath && $oldPath !== $path) {
+            Storage::disk($disk)->delete($oldPath);
+        }
+
+        $this->logIntegration(
+            provider: $payment->provider,
+            event: 'payment.proof_uploaded',
+            externalId: $payment->external_id,
+            status: IntegrationLog::STATUS_PROCESSED,
+            payload: [
+                'order_id' => $payment->order_id,
+                'mime' => $mime,
+                'size' => $file->getSize(),
+            ],
+        );
+
+        return $path;
     }
 
     /**
@@ -538,5 +602,10 @@ class PaymentService
     private function fail(string $message): never
     {
         throw ValidationException::withMessages(['payment' => $message]);
+    }
+
+    private function failProof(string $message): never
+    {
+        throw ValidationException::withMessages(['proof' => $message]);
     }
 }

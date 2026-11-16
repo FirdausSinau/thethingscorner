@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderStatusLog;
 use App\Models\Product\ProductVariant;
 use App\Models\User;
+use App\Notifications\OrderStatusChanged;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -81,6 +82,13 @@ class OrderStatusService
                 'actor_id' => $actor?->id,
                 'note' => $note,
             ]);
+
+            try {
+                $order->user?->notify(new OrderStatusChanged($order, $from, $to));
+            } catch (\Throwable $e) {
+                // Notifikasi tidak boleh membatalkan perubahan status yang sudah valid.
+                report($e);
+            }
 
             return $order;
         }, 3);

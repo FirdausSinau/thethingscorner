@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 16 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Backend selesai: schema, enum, model, fake provider, `ShippingService`, tarif flat, shipment service, dan tracking service. Checkout UI Anand, shipment admin Hafiez, dan webhook Biteship menyusul.  
+**Status:** Backend selesai: schema, enum, model, fake provider, `ShippingService`, tarif flat, shipment service, tracking service, dan webhook fake. Checkout UI Anand, shipment admin Hafiez, dan signature/webhook Biteship menyusul.  
 **Keputusan terkait:** D-35
 
 Dokumen ini adalah kontrak Slice 6: tarif ongkir, pembuatan pengiriman, resi, dan tracking.
@@ -157,6 +157,8 @@ Aturan:
 | POST | `/admin/orders/{order}/shipments` | `admin.shipments.store` | admin |
 | PATCH | `/admin/shipments/{shipment}` | `admin.shipments.update` | admin |
 | POST | `/webhooks/shipping/{provider}` | `webhooks.shipping` | tanpa CSRF, signature |
+
+Webhook backend untuk provider `fake` sudah ada. Webhook Biteship dan signature-nya menyusul saat integrasi asli.
 
 Checkout menampilkan:
 

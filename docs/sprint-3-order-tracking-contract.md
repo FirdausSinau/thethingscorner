@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 16 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Backend selesai: kontrak, policy pembatalan/konfirmasi, guard transisi, auto-selesai, dan refund service. Timeline pembeli Anand, UI admin Hafiez, dan notifikasi web menyusul.  
+**Status:** Backend selesai: kontrak, policy pembatalan/konfirmasi, guard transisi, auto-selesai, refund service, dan notifikasi database. Timeline pembeli Anand, UI admin Hafiez, dan tampilan notifikasi menyusul.  
 **Keputusan terkait:** D-32, D-34, D-35, D-36
 
 Dokumen ini mengunci lifecycle pesanan Sprint 3: pembayaran, pengemasan, pengiriman, pembatalan, konfirmasi terima, auto-selesai, dan refund.
@@ -105,7 +105,9 @@ Aturan admin:
 
 ## 8. Notifikasi
 
-Notifikasi web direncanakan untuk:
+Backend notifikasi database sudah ada di `App\Notifications\OrderStatusChanged`. Setiap perubahan status order membuat satu notifikasi untuk pembeli. Tampilan daftar notifikasi di UI menunggu Anand/Hafiez.
+
+Notifikasi direncanakan untuk:
 
 - pembayaran diterima;
 - pembayaran kedaluwarsa;

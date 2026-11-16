@@ -286,11 +286,11 @@ erDiagram
     }
 
     NOTIFICATIONS {
-        bigint id PK
-        bigint user_id FK
+        uuid id PK
         string type
-        string title
-        text body
+        string notifiable_type
+        bigint notifiable_id
+        json data
         datetime read_at
     }
 
@@ -350,7 +350,7 @@ erDiagram
 | `po_status_logs` | Riwayat status PO | append-only; `custom_po_id`, `actor_id` FK |
 | `reviews` | Review produk | unik `order_item_id`; `product_id`, `user_id` FK |
 | `review_photos` | Foto review | `review_id` FK |
-| `notifications` | Pusat notifikasi | `user_id` FK |
+| `notifications` | Pusat notifikasi | polymorphic `notifiable_type`/`notifiable_id`; `data` JSON |
 | `shopee_imports` | Riwayat import CSV | `imported_by` FK |
 | `integration_logs` | Log integrasi | append-only; tanpa secret |
 | `settings` | Pengaturan toko | `key` unik |
@@ -414,7 +414,7 @@ Catatan:
 | `stock_reservations` | `(expires_at, status)` | Scheduler kedaluwarsa |
 | `reviews` | `order_item_id` unik | Satu review per item |
 | `reviews` | `(product_id, is_hidden)` | Rating produk |
-| `notifications` | `(user_id, read_at)` | Pusat notifikasi |
+| `notifications` | `(notifiable_type, notifiable_id, read_at)` | Pusat notifikasi |
 | `shopee_imports` | `(source, created_at)` | Riwayat import |
 
 ---
