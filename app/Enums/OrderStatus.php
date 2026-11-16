@@ -6,7 +6,7 @@ enum OrderStatus: string
 {
     case MenungguPembayaran = 'MENUNGGU_PEMBAYARAN';
     case Dibayar = 'DIBAYAR';
-    case MenungguKonfirmasi = 'MENUNGGU_KONFIRMASI';
+    case Dipending = 'DIPENDING';
     case Dikemas = 'DIKEMAS';
     case Dikirim = 'DIKIRIM';
     case Selesai = 'SELESAI';
@@ -18,8 +18,8 @@ enum OrderStatus: string
         return match ($this) {
             self::MenungguPembayaran => 'Menunggu pembayaran',
             self::Dibayar => 'Dibayar',
-            self::MenungguKonfirmasi => 'Dipending',
             self::Dikemas => 'Dikemas',
+            self::Dipending => 'Dipending',
             self::Dikirim => 'Dikirim',
             self::Selesai => 'Selesai',
             self::Dibatalkan => 'Dibatalkan',
@@ -46,10 +46,10 @@ enum OrderStatus: string
     {
         return match ($this) {
             self::MenungguPembayaran => [self::Dibayar, self::Dibatalkan, self::Kedaluwarsa],
-            self::Dibayar => [self::MenungguKonfirmasi, self::Dibatalkan],
-            self::MenungguKonfirmasi => [self::Dikemas, self::Dibatalkan],
-            self::Dikemas => [self::Dikirim, self::Dibatalkan],
-            self::Dikirim => [self::Selesai, self::Dibatalkan],
+            self::Dibayar => [self::Dikemas],
+            self::Dikemas => [self::Dikirim,self::Dipending],
+            self::Dipending => [self::Dikirim, self::Dibatalkan],
+            self::Dikirim => [self::Selesai],
             self::Selesai, self::Dibatalkan, self::Kedaluwarsa => [],
         };
     }
