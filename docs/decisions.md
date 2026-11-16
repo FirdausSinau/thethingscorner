@@ -360,9 +360,11 @@ Aturan yang dikunci:
 
 Konsekuensi:
 
-- `OrderStatus::allowedNext()` perlu menambah `DIBAYAR -> DIBATALKAN` dan `DIKEMAS -> DIBATALKAN` khusus Admin Master saat Slice 7.
-- Tombol pembatalan dan konfirmasi terima harus dilindungi policy, bukan hanya disembunyikan di Blade.
+- `OrderStatus::allowedNext()` sudah menambah `DIBAYAR -> DIBATALKAN`, `DIKEMAS -> DIBATALKAN`, dan `DIKIRIM -> DIBATALKAN` khusus Admin Master.
+- Pembatalan setelah `DIKIRIM` hanya boleh setelah shipment terakhir `RETURNED`.
+- Tombol pembatalan dan konfirmasi terima dilindungi policy, bukan hanya disembunyikan di Blade.
 - Command auto-selesai memakai penanda sistem dan tidak berjalan untuk shipment `RETURNED`.
+- Refund manual mengubah `PaymentStatus` menjadi `REFUNDED`, membatalkan order, dan mengembalikan stok bila barang belum dikirim.
 
 ---
 

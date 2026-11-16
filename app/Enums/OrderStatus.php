@@ -46,10 +46,10 @@ enum OrderStatus: string
     {
         return match ($this) {
             self::MenungguPembayaran => [self::Dibayar, self::Dibatalkan, self::Kedaluwarsa],
-            self::Dibayar => [self::MenungguKonfirmasi],
+            self::Dibayar => [self::MenungguKonfirmasi, self::Dibatalkan],
             self::MenungguKonfirmasi => [self::Dikemas, self::Dibatalkan],
-            self::Dikemas => [self::Dikirim],
-            self::Dikirim => [self::Selesai],
+            self::Dikemas => [self::Dikirim, self::Dibatalkan],
+            self::Dikirim => [self::Selesai, self::Dibatalkan],
             self::Selesai, self::Dibatalkan, self::Kedaluwarsa => [],
         };
     }

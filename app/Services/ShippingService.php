@@ -13,6 +13,7 @@ use App\Services\Shipping\ShippingRate;
 use App\Services\Shipping\ShippingRateRequest;
 use App\Services\Shipping\TrackingEvent;
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -93,9 +94,20 @@ class ShippingService
     {
         $order->loadMissing('items.variant.color.product');
 
+        return $this->weightForItems($order->items);
+    }
+
+    /**
+     * Berat total untuk item keranjang atau order. Keduanya punya
+     * relasi `variant` dan kolom `qty`.
+     *
+     * @param  Collection<int, mixed>  $items
+     */
+    public function weightForItems(Collection $items): int
+    {
         $total = 0;
 
-        foreach ($order->items as $item) {
+        foreach ($items as $item) {
             $productWeight = (int) ($item->variant?->color?->product?->weight_grams ?? 0);
             $unitWeight = $productWeight > 0 ? $productWeight : 1000;
             $total += $unitWeight * $item->qty;

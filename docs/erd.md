@@ -173,6 +173,8 @@ erDiagram
         string payment_method
         bigint subtotal
         bigint shipping_cost
+        string shipping_courier
+        string shipping_service
         bigint total
         string recipient
         string phone

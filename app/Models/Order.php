@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
     'payment_method',
     'subtotal',
     'shipping_cost',
+    'shipping_courier',
+    'shipping_service',
     'total',
     'recipient',
     'phone',

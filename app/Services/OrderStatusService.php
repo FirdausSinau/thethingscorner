@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\OrderStatus;
 use App\Enums\ReservationStatus;
+use App\Enums\ShipmentStatus;
 use App\Models\Order;
 use App\Models\OrderStatusLog;
 use App\Models\Product\ProductVariant;
@@ -45,6 +46,18 @@ class OrderStatusService
 
             if (! $from->canTransitionTo($to)) {
                 $this->fail($this->transitionMessage($order, $from, $to));
+            }
+
+            if ($to === OrderStatus::Dibatalkan
+                && in_array($from, [OrderStatus::Dibayar, OrderStatus::Dikemas, OrderStatus::Dikirim], true)) {
+                if (! $actor?->isAdminMaster()) {
+                    $this->fail('Pembatalan setelah pembayaran hanya bisa dilakukan Admin Master.');
+                }
+
+                if ($from === OrderStatus::Dikirim
+                    && $order->latestShipment?->status !== ShipmentStatus::Returned) {
+                    $this->fail('Pembatalan setelah dikirim hanya bisa setelah paket dikembalikan ke toko.');
+                }
             }
 
             $this->syncStock($order, $from, $to);

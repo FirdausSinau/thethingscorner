@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
+use App\Enums\ShipmentStatus;
 use App\Models\IntegrationLog;
 use App\Models\Order;
 use App\Models\Payment;
@@ -239,6 +240,70 @@ class PaymentService
         $payment->refresh();
 
         $this->markPaid($payment, $admin);
+    }
+
+    /**
+     * Refund manual khusus Admin Master. Order ikut dibatalkan bila
+     * belum dikirim, sehingga stok fisik kembali.
+     */
+    public function refundManual(Payment $payment, User $admin, string $note): void
+    {
+        if (! $admin->isAdminMaster() || ! $admin->is_active) {
+            throw new AuthorizationException('Refund hanya bisa dilakukan Admin Master.');
+        }
+
+        $note = trim($note);
+
+        if ($note === '') {
+            $this->fail('Alasan refund wajib diisi.');
+        }
+
+        DB::transaction(function () use ($payment, $admin, $note): void {
+            $order = Order::query()
+                ->whereKey($payment->order_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $locked = Payment::query()
+                ->whereKey($payment->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if (! $locked->status->canTransitionTo(PaymentStatus::Refunded)) {
+                $this->fail("Pembayaran {$locked->external_id} berstatus {$locked->status->label()} dan tidak bisa direfund.");
+            }
+
+            if ($order->status === OrderStatus::Dikirim
+                && $order->latestShipment?->status !== ShipmentStatus::Returned) {
+                $this->fail('Refund setelah dikirim hanya bisa setelah paket dikembalikan ke toko.');
+            }
+
+            if (in_array($order->status, [OrderStatus::Selesai, OrderStatus::Kedaluwarsa], true)) {
+                $this->fail("Refund untuk pesanan berstatus {$order->status->label()} belum diaktifkan.");
+            }
+
+            $locked->update([
+                'status' => PaymentStatus::Refunded,
+                'verified_by' => $admin->id,
+            ]);
+
+            if ($order->status !== OrderStatus::Dibatalkan) {
+                $this->statusService->change($order, OrderStatus::Dibatalkan, $admin, 'Refund: '.$note);
+            }
+
+            $this->logIntegration(
+                provider: $locked->provider,
+                event: 'payment.refunded',
+                externalId: $locked->external_id,
+                status: IntegrationLog::STATUS_PROCESSED,
+                payload: [
+                    'order_code' => $order->order_code,
+                    'amount' => $locked->amount,
+                    'actor_id' => $admin->id,
+                ],
+                message: $note,
+            );
+        }, 3);
     }
 
     /**

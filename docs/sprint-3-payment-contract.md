@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 16 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Schema, enum, model, fake gateway, dan `PaymentService` selesai; halaman dan webhook menyusul  
+**Status:** Backend selesai: schema, enum, model, fake gateway, `PaymentService`, verifikasi manual service, refund service, dan scheduler pembayaran kedaluwarsa. Halaman pembayaran Anand dan webhook provider asli menyusul.  
 **Keputusan terkait:** D-05, D-06, D-17, D-32, D-35
 
 Dokumen ini adalah kontrak Slice 5: pembayaran gateway dan transfer manual.

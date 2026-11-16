@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 16 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Schema, enum, model, fake provider, dan `ShippingService` selesai; checkout dan halaman tracking menyusul  
+**Status:** Backend selesai: schema, enum, model, fake provider, `ShippingService`, tarif flat, shipment service, dan tracking service. Checkout UI Anand, shipment admin Hafiez, dan webhook Biteship menyusul.  
 **Keputusan terkait:** D-35
 
 Dokumen ini adalah kontrak Slice 6: tarif ongkir, pembuatan pengiriman, resi, dan tracking.
@@ -125,7 +125,8 @@ Aturan:
 - Jika berat tidak tersedia, default 1000 gram per item dan dicatat di log.
 - Tarif flat dipakai jika provider gagal, kosong, atau tidak mengembalikan layanan untuk kurir yang dipilih.
 - Tarif flat berasal dari `config/shipping.php`, bukan Blade.
-- Pilihan kurir disimpan di order saat checkout supaya total tidak berubah setelahnya.
+- Pilihan kurir disimpan di `orders.shipping_courier` dan `orders.shipping_service` saat checkout supaya total tidak berubah setelahnya.
+- Kolom pilihan kurir ditambahkan lewat migration additive `2026_11_16_000004_add_shipping_selection_to_orders_table`.
 
 ## 6. Service yang akan dibuat
 

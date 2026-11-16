@@ -60,9 +60,9 @@ feat: add review reply and moderation
 | 2 | Katalog dan varian | Selesai: katalog publik, detail, admin produk/warna/varian/foto, storage lokal; schema warna/varian dari tim produk; 37 test lulus (commit `51ee81e`) |
 | 3 | Keranjang persisten | Selesai: `cart_items`, `CartItem`, `CartService`, UI cart, add-to-cart; test service dan UI |
 | 4 | Checkout dan reservasi | Selesai: `addresses`, `orders`, `order_items`, `stock_reservations`, `CheckoutService`, expiry command, UI checkout, order show, admin order index/detail/aksi status, buyer order history, audit log `order_status_logs`, 115 test lulus |
-| 5 | Pembayaran | Fondasi dan `PaymentService` selesai: schema, enum, model, fake gateway, create/markPaid/expire/verifikasi manual/callback; UI dan webhook menyusul |
-| 6 | Pengiriman | Fondasi dan `ShippingService` selesai: schema, enum, model, fake provider, tarif flat, create shipment, tracking; checkout dan UI menyusul |
-| 7 | Pesanan dan tracking | Kontrak selesai: transisi, pembatalan, auto-selesai, refund; implementasi menyusul |
+| 5 | Pembayaran | Backend selesai: schema, enum, model, fake gateway, `PaymentService`, verifikasi manual service, scheduler, refund service; halaman pembayaran Anand dan webhook provider asli menyusul |
+| 6 | Pengiriman | Backend selesai: schema, enum, model, fake provider, `ShippingService`, tarif flat, shipment service, tracking service; checkout UI Anand, shipment admin Hafiez, dan webhook Biteship menyusul |
+| 7 | Pesanan dan tracking | Backend selesai: policy, guard transisi, auto-selesai 7 hari, refund service; timeline pembeli Anand, UI admin Hafiez, dan notifikasi web menyusul |
 | 8 | Custom PO | Belum |
 | 9 | Review dan retur | Belum |
 | 10 | Stok dan kartu stok | Belum |
@@ -93,7 +93,8 @@ feat: add review reply and moderation
 | 2026-11-13 | 3-4 | Label `MENUNGGU_KONFIRMASI` menjadi Dipending; tabel admin order memakai lebar kolom tetap agar tidak perlu scroll horizontal; 104 test lulus. | `aad008e` |
 | 2026-11-13 | 3-4 | Merge `main` ke `firdaus`, tambah unit test, test buyer order history, role buyer, peringatan keranjang, rebuild assets, 115 test lulus. | `c42c2a6` |
 | 2026-11-16 | 5-7 | Fondasi Sprint 3: kontrak payment/shipping/tracking, `payments`, `shipments`, `integration_logs`, enum, model, fake adapter, config, 141 test lulus. | `c979946` |
-| 2026-11-16 | 5-6 | `PaymentService` dan `ShippingService`: idempotensi, konsumsi reservasi, expiry, verifikasi manual, callback, tarif flat, shipment, tracking, 170 test lulus. | belum di-commit |
+| 2026-11-16 | 5-6 | `PaymentService` dan `ShippingService`: idempotensi, konsumsi reservasi, expiry, verifikasi manual, callback, tarif flat, shipment, tracking, 170 test lulus. | `15658cf` |
+| 2026-11-16 | 5-7 | Backend Sprint 3: payment/shipping service, policy lifecycle, refund, auto-selesai, scheduler, migration pilihan kurir; UI Anand/Hafiez belum dikerjakan; 186 test backend lulus. | belum di-commit |
 
 ---
 

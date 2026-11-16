@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 16 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Kontrak disepakati; policy, command, dan UI menyusul  
+**Status:** Backend selesai: kontrak, policy pembatalan/konfirmasi, guard transisi, auto-selesai, dan refund service. Timeline pembeli Anand, UI admin Hafiez, dan notifikasi web menyusul.  
 **Keputusan terkait:** D-32, D-34, D-35, D-36
 
 Dokumen ini mengunci lifecycle pesanan Sprint 3: pembayaran, pengemasan, pengiriman, pembatalan, konfirmasi terima, auto-selesai, dan refund.
@@ -33,13 +33,15 @@ Dokumen ini mengunci lifecycle pesanan Sprint 3: pembayaran, pengemasan, pengiri
 | DIKEMAS | DIKIRIM | admin, sistem | shipment aktif punya resi |
 | DIKEMAS | DIBATALKAN | Admin Master | refund manual, stok dikembalikan |
 | DIKIRIM | SELESAI | pembeli, sistem | diterima pembeli atau auto-selesai |
+| DIKIRIM | DIBATALKAN | Admin Master | shipment RETURNED, refund manual |
 | SELESAI | - | - | final |
 | DIBATALKAN | - | - | final |
 | KEDALUWARSA | - | - | final |
 
 Catatan:
 
-- `DIBAYAR -> DIBATALKAN` dan `DIKEMAS -> DIBATALKAN` memerlukan perubahan `allowedNext()` saat Slice 7 dikerjakan. Kontrak ini yang menjadi acuan.
+- `DIBAYAR -> DIBATALKAN`, `DIKEMAS -> DIBATALKAN`, dan `DIKIRIM -> DIBATALKAN` hanya untuk Admin Master.
+- `DIKIRIM -> DIBATALKAN` baru boleh setelah shipment terakhir `RETURNED`.
 - `KEDALUWARSA` hanya boleh diatur sistem. Admin tidak boleh memilihnya dari dropdown.
 - `DIBATALKAN` setelah pembayaran wajib punya catatan alasan dan status pembayaran `REFUNDED` atau alasan refund tertunda.
 

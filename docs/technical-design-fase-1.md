@@ -196,6 +196,12 @@ Dari MENUNGGU_PEMBAYARAN:
 
 Dari MENUNGGU_KONFIRMASI:
 → DIBATALKAN
+
+Dari DIBAYAR/DIKEMAS:
+→ DIBATALKAN (Admin Master)
+
+Dari DIKIRIM:
+→ DIBATALKAN (Admin Master, setelah shipment RETURNED)
 ```
 
 Aturan:
