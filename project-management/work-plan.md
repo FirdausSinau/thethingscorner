@@ -103,7 +103,7 @@ Urutan:
 
 ### Batch 2 - Cart dan checkout
 
-**Status 12 November 2026:** cart, checkout, dan admin order selesai (index, detail, aksi status, audit log). Menunggu integrasi Sprint 2 dan review bersama.
+**Status 13 November 2026:** cart, checkout, admin order, dan buyer order history selesai. Sprint 2 siap review dan merge ke `main`.
 
 Fokus: Slice 3 lalu Slice 4.
 

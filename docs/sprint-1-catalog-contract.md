@@ -238,7 +238,7 @@ php artisan test
 npm run build
 ```
 
-Status terakhir: total suite 104 test lulus, 297 assertions, termasuk test upload gambar ke disk `public` dan `s3`.
+Status terakhir: total suite 115 test lulus, 323 assertions, termasuk test upload gambar ke disk `public` dan `s3`.
 
 ---
 

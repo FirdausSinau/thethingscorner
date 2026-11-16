@@ -3,7 +3,7 @@
 **Versi:** 1.0  
 **Tanggal:** 11 November 2026  
 **Untuk:** Firdaus, Anand, Hafiez  
-**Status:** Backend dan UI checkout selesai; admin order index, detail, dan aksi status selesai
+**Status:** Backend, UI checkout, admin order, dan buyer order history selesai; siap review Sprint 2
 
 Dokumen ini adalah kontrak Slice 4: checkout, order, dan reservasi stok.
 
@@ -315,10 +315,13 @@ Yang dilakukan:
 - reservasi kedaluwarsa melepas stok dan mengubah order menjadi kedaluwarsa.
 
 Status service: 6 test lulus, 32 assertions.  
-Test UI cart/checkout/order: 7 test lulus, 32 assertions.  
+Test UI cart/checkout/order: 9 test lulus, 40 assertions.  
 Test admin order: 15 test, termasuk render semua status, otorisasi, transisi stok, pembatalan setelah bayar, pencarian, bulk status, dan audit log.  
 Test admin produk: 8 test, termasuk render halaman, nonaktifkan, guard hapus varian/warna, dan validasi stok.  
-Total suite: 104 test lulus, 297 assertions. Termasuk test QRIS yang kedaluwarsa setelah 30 detik dan label Dipending.
+Test buyer order history: 4 test, termasuk daftar pesanan sendiri, empty state, admin 403, dan guest redirect.  
+Test buyer-only access: 4 test, termasuk admin tidak bisa membuka keranjang, checkout, dan daftar pesanan.  
+Test unit status: 4 test untuk label Dipending dan aturan transisi.  
+Total suite: 115 test lulus, 323 assertions. Termasuk test QRIS yang kedaluwarsa setelah 30 detik dan label Dipending.
 
 ---
 

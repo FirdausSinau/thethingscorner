@@ -59,7 +59,7 @@ feat: add review reply and moderation
 | 1 | Auth dan role | Selesai: register/login/logout, reset password, role middleware, dashboard per role, kelola Admin Biasa (commit `990ea92`, `91280d5`) |
 | 2 | Katalog dan varian | Selesai: katalog publik, detail, admin produk/warna/varian/foto, storage lokal; schema warna/varian dari tim produk; 37 test lulus (commit `51ee81e`) |
 | 3 | Keranjang persisten | Selesai: `cart_items`, `CartItem`, `CartService`, UI cart, add-to-cart; test service dan UI |
-| 4 | Checkout dan reservasi | Selesai: `addresses`, `orders`, `order_items`, `stock_reservations`, `CheckoutService`, expiry command, UI checkout, order show, admin order index/detail/aksi status, audit log `order_status_logs`, 104 test lulus |
+| 4 | Checkout dan reservasi | Selesai: `addresses`, `orders`, `order_items`, `stock_reservations`, `CheckoutService`, expiry command, UI checkout, order show, admin order index/detail/aksi status, buyer order history, audit log `order_status_logs`, 115 test lulus |
 | 5 | Pembayaran | Belum |
 | 6 | Pengiriman | Belum |
 | 7 | Pesanan dan tracking | Belum |
@@ -91,6 +91,7 @@ feat: add review reply and moderation
 | 2026-11-11 | 3-4 | Review: hapus status `BARU`, tambah `MENUNGGU_KONFIRMASI`, route clear cart, transaksi alamat, eager load checkout, produk dinonaktifkan bukan dihapus, 63 test lulus. | `7caaa22` |
 | 2026-11-12 | 3-4 | Integrasi PR #3/#4: admin order index/detail/aksi status, audit log `order_status_logs`, guard stok/varian/warna, brand `Thethingscorner`, Blade dipecah menjadi partial, upload gambar Neon, QRIS 30 detik sementara, 104 test lulus. | `cfcdb4c` |
 | 2026-11-13 | 3-4 | Label `MENUNGGU_KONFIRMASI` menjadi Dipending; tabel admin order memakai lebar kolom tetap agar tidak perlu scroll horizontal; 104 test lulus. | `aad008e` |
+| 2026-11-13 | 3-4 | Merge `main` ke `firdaus`, tambah unit test, test buyer order history, role buyer, peringatan keranjang, rebuild assets, 115 test lulus. | belum di-commit |
 
 ---
 

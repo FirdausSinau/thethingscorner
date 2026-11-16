@@ -81,4 +81,13 @@ class BuyerOnlyPurchaseTest extends TestCase
 
         $this->assertSame($buyer->id, $item->user_id);
     }
+
+    public function test_admin_cannot_open_buyer_routes(): void
+    {
+        $admin = $this->userWithRole(UserRole::Admin);
+
+        $this->actingAs($admin)->get(route('cart.index'))->assertForbidden();
+        $this->actingAs($admin)->get(route('checkout.index'))->assertForbidden();
+        $this->actingAs($admin)->get(route('orders.index'))->assertForbidden();
+    }
 }

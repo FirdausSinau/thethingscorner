@@ -159,6 +159,34 @@ class CartCheckoutUiTest extends TestCase
         $this->assertDatabaseCount('cart_items', 1);
     }
 
+    public function test_inactive_product_blocks_checkout_from_cart(): void
+    {
+        app(CartService::class)->add($this->buyer, $this->variant, 1);
+
+        $this->variant->color->product->update(['is_active' => false]);
+
+        $this->actingAs($this->buyer)
+            ->get(route('cart.index'))
+            ->assertOk()
+            ->assertSee('Produk ini sudah tidak dijual')
+            ->assertSee('Perbaiki item yang bertanda merah dulu sebelum checkout.')
+            ->assertDontSee(route('checkout.index'));
+    }
+
+    public function test_insufficient_stock_blocks_checkout_from_cart(): void
+    {
+        app(CartService::class)->add($this->buyer, $this->variant, 1);
+
+        $this->variant->forceFill(['stock_reserved' => $this->variant->stock])->save();
+
+        $this->actingAs($this->buyer)
+            ->get(route('cart.index'))
+            ->assertOk()
+            ->assertSee('Stok tersisa 0')
+            ->assertSee('Perbaiki item yang bertanda merah dulu sebelum checkout.')
+            ->assertDontSee(route('checkout.index'));
+    }
+
     public function test_guest_cannot_open_cart_or_checkout(): void
     {
         $this->get(route('cart.index'))->assertRedirect(route('login'));
