@@ -76,6 +76,26 @@ class ShipmentLabelTest extends TestCase
             ->assertDownload('resi-JNE123456.pdf');
     }
 
+    public function test_admin_master_can_download_shipment_label_pdf(): void
+    {
+        $order = $this->makeOrder();
+        $shipment = app(ShippingService::class)->createForOrder(
+            $order,
+            'JNE',
+            'REG',
+            1200,
+            9000,
+            'JNE123456',
+        );
+
+        $admin = $this->userWithRole(UserRole::AdminMaster);
+
+        $this->actingAs($admin)
+            ->get(route('admin.shipments.label', $shipment))
+            ->assertOk()
+            ->assertDownload('resi-JNE123456.pdf');
+    }
+
     public function test_buyer_cannot_download_shipment_label(): void
     {
         $order = $this->makeOrder();
@@ -131,7 +151,7 @@ class ShipmentLabelTest extends TestCase
         $this->actingAs($admin)
             ->get(route('admin.orders.show', $order))
             ->assertOk()
-            ->assertSee('Cetak resi PDF')
+            ->assertSee('Cetak resi')
             ->assertSee('JNE123456');
     }
 }

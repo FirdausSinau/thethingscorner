@@ -34,13 +34,8 @@
             </div>
         </dl>
 
-        @if ($shipment->tracking_number)
-            <a href="{{ route('admin.shipments.label', $shipment) }}"
-               class="mt-4 inline-flex rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark">
-                Cetak resi PDF
-            </a>
-        @else
+        @unless ($shipment->tracking_number)
             <p class="mt-4 text-sm text-muted">Nomor resi belum tersedia.</p>
-        @endif
+        @endunless
     </section>
 @endif

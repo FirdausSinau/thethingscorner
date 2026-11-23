@@ -202,7 +202,7 @@ Pembeli menampilkan:
 
 ## 11. Cetak resi
 
-- Cetak resi hanya untuk admin. Pembeli tidak memiliki route, tombol, atau akses PDF.
+- Cetak resi hanya untuk Admin dan Admin Master. Pembeli tidak memiliki route, tombol, atau akses PDF.
 - PDF dibuat on-demand, tidak disimpan permanen.
 - Library: `barryvdh/laravel-dompdf` dan `picqer/php-barcode-generator`.
 - Ukuran label 100 x 150 mm.
@@ -213,14 +213,14 @@ Pembeli menampilkan:
 - Service: `App\Services\ShipmentLabelService`.
 - Controller: `App\Http\Controllers\Admin\ShipmentLabelController`.
 - Template: `resources/views/pdf/shipment-label.blade.php`.
-- Tombol **Cetak resi PDF** tampil di halaman detail pesanan admin jika shipment punya nomor resi.
+- Tombol **Cetak resi** dengan icon print tampil di header **Ringkasan Pesanan** admin jika shipment punya nomor resi.
 
 Test:
 
 - Admin bisa mengunduh PDF.
 - Pembeli mendapat 403.
 - Resi kosong ditolak.
-- Tombol cetak tampil di halaman admin.
+- Tombol cetak tampil di Ringkasan Pesanan admin untuk Admin dan Admin Master.
 
 ## 12. Di luar kontrak
 

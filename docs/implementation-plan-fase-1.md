@@ -97,6 +97,7 @@ feat: add review reply and moderation
 | 2026-11-16 | 5-7 | Backend Sprint 3: payment/shipping service, policy lifecycle, refund, auto-selesai, scheduler, migration pilihan kurir; UI Anand/Hafiez belum dikerjakan; 186 test backend lulus. | `709dc68` |
 | 2026-11-16 | 5-7 | Webhook fake payment/shipping, `PaymentService::attachProof`, notifikasi database, fake provider default off, 206 test backend lulus. | `90346ff` |
 | 2026-11-16 | 6 | Cetak resi PDF admin-only, ringkasan pesanan pembeli, checkout redirect ke `/pesanan`, adopsi alur status Hafiez, 213 test lulus. | `ca0e398` |
+| 2026-11-23 | 6 | Tombol Cetak resi dengan icon print pindah ke header Ringkasan Pesanan, akses Admin dan Admin Master, 214 test lulus. | belum di-commit |
 
 ---
 
